@@ -103,7 +103,7 @@ Views resolve entities by route params (`gradeId`, `subjectId`, `exerciseId`) ag
 | `trig-grapher` | `TrigGrapherExercise.vue` |
 | anything else (e.g. `graph-interactive`) | `ExerciseFallback.vue` |
 
-`trig-grapher` uses [`src/utils/trigSolver.js`](../src/utils/trigSolver.js) to parse `y = A f(B(x-C))+D`, compute period/phase/key points, and plot multi-segment SVG paths that break at asymptotes. Formulas render with KaTeX. It is the first module built on the **Standard Math Module Pattern** below.
+`trig-grapher` uses [`src/utils/trigSolver.js`](../src/utils/trigSolver.js) to parse `y = A f(B(x-C))+D`, compute period/phase/key points, and plot multi-segment SVG paths that break at asymptotes. The parser accepts fractional/parenthesized coefficients (e.g. `(1/2)csc(x)`, `-3/2tan(x)`), bare signs (`-sin(x)`), `x/k` arguments, and fractional midlines (`+1/2`). Formulas render with KaTeX. It is the first module built on the **Standard Math Module Pattern** below.
 
 Components emit `answered` with `{ correct: boolean }`. The view keeps the exercise mounted (inputs disabled) and shows a completion banner below with **Try Again** (on incorrect), **Next Exercise**, and **Back to Subject**.
 

@@ -13,23 +13,84 @@ function gcd(a, b) {
   return x || 1
 }
 
-/** Parse a coefficient that may include pi, e.g. "-3", "pi/2", "-2pi", "3*pi/4" */
+function stripOuterParens(s) {
+  let t = s
+  while (t.startsWith('(') && t.endsWith(')')) {
+    let depth = 0
+    let wraps = true
+    for (let i = 0; i < t.length; i++) {
+      if (t[i] === '(') depth++
+      else if (t[i] === ')') {
+        depth--
+        if (depth === 0 && i < t.length - 1) {
+          wraps = false
+          break
+        }
+      }
+    }
+    if (!wraps) break
+    t = t.slice(1, -1)
+  }
+  return t
+}
+
+function parseNumberToken(raw) {
+  if (raw === '' || raw === '+') return 1
+  if (raw === '-') return -1
+  const n = Number(raw)
+  if (!Number.isFinite(n)) throw new Error(`Cannot parse number: ${raw}`)
+  return n
+}
+
+/**
+ * Parse a coefficient: decimals, a/b fractions, pi forms, optional outer parens.
+ * Examples: 2, -1.25, 1/2, (1/2), -3/2, pi/2, (3pi/2), -(1/2)
+ */
 export function parseCoeff(raw) {
   if (raw == null || String(raw).trim() === '') return 0
   let s = String(raw).trim().replace(/\s+/g, '').replace(/·/g, '*').replace(/π/g, 'pi')
 
-  if (s === 'pi' || s === '+pi') return PI
-  if (s === '-pi') return -PI
-
-  let m = s.match(/^([+-]?\d*\.?\d*)\*?pi(?:\/([+-]?\d*\.?\d+))?$/)
-  if (m) {
-    const num = m[1] === '' || m[1] === '+' ? 1 : m[1] === '-' ? -1 : Number(m[1])
-    const den = m[2] != null ? Number(m[2]) : 1
-    return (num * PI) / den
+  // Unary sign before a parenthesized group: -(1/2)
+  let sign = 1
+  if (s.startsWith('+-') || s.startsWith('-+')) {
+    throw new Error(`Cannot parse coefficient: ${raw}`)
+  }
+  if (s.startsWith('+')) s = s.slice(1)
+  else if (s.startsWith('-') && s[1] === '(') {
+    sign = -1
+    s = s.slice(1)
   }
 
+  s = stripOuterParens(s)
+
+  if (s === 'pi' || s === '+pi') return sign * PI
+  if (s === '-pi') return sign * -PI
+
+  // (±n)?pi(/d)?  or  (±n)*pi(/d)?
+  let m = s.match(/^([+-]?\d*\.?\d*)\*?pi(?:\/([+-]?\d*\.?\d+))?$/)
+  if (m) {
+    const num = parseNumberToken(m[1] ?? '')
+    const den = m[2] != null ? Number(m[2]) : 1
+    if (!Number.isFinite(den) || den === 0) throw new Error(`Cannot parse coefficient: ${raw}`)
+    return (sign * num * PI) / den
+  }
+
+  // (±a)/(±b) plain fraction (no pi)
+  m = s.match(/^([+-]?\d*\.?\d+)\/([+-]?\d*\.?\d+)$/)
+  if (m) {
+    const num = Number(m[1])
+    const den = Number(m[2])
+    if (!Number.isFinite(num) || !Number.isFinite(den) || den === 0) {
+      throw new Error(`Cannot parse coefficient: ${raw}`)
+    }
+    return (sign * num) / den
+  }
+
+  // plain decimal / integer
   m = s.match(/^([+-]?\d*\.?\d+)$/)
-  if (m) return Number(m[1])
+  if (m && m[1] !== '' && m[1] !== '+' && m[1] !== '-' && m[1] !== '.') {
+    return sign * Number(m[1])
+  }
 
   throw new Error(`Cannot parse coefficient: ${raw}`)
 }
@@ -94,70 +155,136 @@ function normalizeInput(raw) {
 }
 
 function parseLeadingCoeff(raw) {
-  if (raw == null || raw === '' || raw === '+') return 1
-  if (raw === '-') return -1
-  return parseCoeff(raw)
+  if (raw == null) return 1
+  let s = String(raw).trim().replace(/\s+/g, '')
+  // Ignore trailing optional multiply before the function name
+  if (s.endsWith('*')) s = s.slice(0, -1)
+  if (s === '' || s === '+') return 1
+  if (s === '-') return -1
+  return parseCoeff(s)
+}
+
+function extractBalanced(s, openIndex) {
+  if (s[openIndex] !== '(') throw new Error('Expected opening parenthesis.')
+  let depth = 0
+  for (let i = openIndex; i < s.length; i++) {
+    if (s[i] === '(') depth++
+    else if (s[i] === ')') {
+      depth--
+      if (depth === 0) {
+        return {
+          inner: s.slice(openIndex + 1, i),
+          end: i,
+        }
+      }
+    }
+  }
+  throw new Error('Unbalanced parentheses in equation.')
+}
+
+/**
+ * Parse the trig argument into B and C for B(x - C).
+ */
+export function parseArgument(argRaw) {
+  let arg = String(argRaw).trim().replace(/\s+/g, '')
+  if (!arg) throw new Error('Missing function argument.')
+
+  // Unwrap a single full wrap only when it is purely "(x)" or "(x/k)" etc. handled below
+  // Forms: x, (x)
+  if (arg === 'x' || arg === '(x)') {
+    return { B: 1, C: 0 }
+  }
+
+  // (B)(x±C) or B(x±C) or (1/2)(x-pi)
+  let fm = arg.match(/^(.+)\(x([+-].+)\)$/i)
+  if (fm && fm[1] !== '' && !fm[1].endsWith('/')) {
+    // Avoid matching x(something) — require coeff part not ending mid-token oddly
+    const coeffPart = fm[1].endsWith('*') ? fm[1].slice(0, -1) : fm[1]
+    // Exclude case where coeffPart is just something that is actually "x/2" style handled later
+    if (!coeffPart.includes('x')) {
+      const B = parseLeadingCoeff(coeffPart)
+      const C = -parseCoeff(fm[2])
+      if (Math.abs(B) < EPS) throw new Error('B cannot be zero.')
+      return { B, C }
+    }
+  }
+
+  // (x±C) with implied B=1
+  fm = arg.match(/^\(x([+-].+)\)$/i)
+  if (fm) {
+    return { B: 1, C: -parseCoeff(fm[1]) }
+  }
+
+  // x/k ± C'  or  (x/k) ± C'  or  x/k
+  fm = arg.match(/^\(x\/([^)]+)\)([+-].+)?$/i)
+  if (fm) {
+    const k = parseCoeff(fm[1])
+    if (Math.abs(k) < EPS) throw new Error('B cannot be zero.')
+    const B = 1 / k
+    const constTerm = fm[2] ? parseCoeff(fm[2]) : 0
+    return { B, C: -constTerm / B }
+  }
+
+  fm = arg.match(/^x\/([^+\-]+)([+-].+)?$/i)
+  if (fm) {
+    const k = parseCoeff(fm[1])
+    if (Math.abs(k) < EPS) throw new Error('B cannot be zero.')
+    const B = 1 / k
+    const constTerm = fm[2] ? parseCoeff(fm[2]) : 0
+    return { B, C: -constTerm / B }
+  }
+
+  // Also handle x/2-pi/4 via split (in case den has no +-)
+  // Already covered by x\/([^+\-]+)([+-].+)?
+
+  // (B)x ± C'  or Bx ± C'
+  fm = arg.match(/^(.+)\*?x([+-].+)?$/i)
+  if (fm) {
+    const coeffPart = fm[1]
+    // Must not be empty-only weirdness; empty coeff => B=1
+    if (coeffPart === '' || !coeffPart.includes('x')) {
+      const B = parseLeadingCoeff(coeffPart)
+      const constTerm = fm[2] ? parseCoeff(fm[2]) : 0
+      if (Math.abs(B) < EPS) throw new Error('B cannot be zero.')
+      return { B, C: -constTerm / B }
+    }
+  }
+
+  throw new Error(`Unrecognized argument: ${argRaw}`)
 }
 
 /**
  * Parse y = A*f(B(x-C))+D or y = A*f(Bx-C')+D
+ * Supports fractional A/D and args like x/2, (1/2)csc(x), -csc(x).
  */
 export function parseTrigEquation(rawString) {
   const s = normalizeInput(rawString)
   if (!s) throw new Error('Enter an equation to analyze.')
 
   const fnAlt = TRIG_FNS.join('|')
-  const re = new RegExp(
-    `^([+-]?(?:\\d*\\.?\\d+)?(?:\\*?pi(?:\\/\\d+)?)?)?\\*?(${fnAlt})\\((.+)\\)([+-].+)?$`,
-    'i'
-  )
-  const m = s.match(re)
-  if (!m) {
-    throw new Error('Use a form like 2sin(2x-pi)+1 or -3cos(2(x-pi/4))+1.')
+  const fnRe = new RegExp(`(${fnAlt})`, 'i')
+  const fnMatch = fnRe.exec(s)
+  if (!fnMatch) {
+    throw new Error('Use a form like (1/2)sin(x), 2sin(2x-pi)+1, or cos(x/2)+1/2.')
   }
 
-  const A = parseLeadingCoeff(m[1])
-  const f = m[2].toLowerCase()
-  const arg = m[3]
-  const D = m[4] != null && m[4] !== '' ? parseCoeff(m[4]) : 0
+  const f = fnMatch[1].toLowerCase()
+  const fnIndex = fnMatch.index
+  const prefix = s.slice(0, fnIndex)
+  const afterFn = s.slice(fnIndex + f.length)
 
-  // Form 1: B(x±C)  e.g. 2(x-pi/2)
-  let fm = arg.match(
-    /^([+-]?(?:\d*\.?\d+)?(?:\*?pi(?:\/\d+)?)?)?\*\(x([+-][^)]+)\)$/i
-  )
-  if (!fm) {
-    fm = arg.match(/^([+-]?(?:\d*\.?\d+)?(?:\*?pi(?:\/\d+)?)?)?\(x([+-][^)]+)\)$/i)
-  }
-  if (fm) {
-    const B = parseLeadingCoeff(fm[1])
-    // (x - π/2) => fm[2] = "-pi/2" => inner = -π/2 => C = -inner = +π/2 (shift RIGHT)
-    const C = -parseCoeff(fm[2])
-    if (Math.abs(B) < EPS) throw new Error('B cannot be zero.')
-    return { A, f, B, C, D }
+  if (!afterFn.startsWith('(')) {
+    throw new Error(`Expected "(" after ${f}. Try ${f}(x).`)
   }
 
-  // (x±C) with implied B=1
-  fm = arg.match(/^\(x([+-][^)]+)\)$/i)
-  if (fm) {
-    return { A, f, B: 1, C: -parseCoeff(fm[1]), D }
-  }
+  const { inner: arg, end } = extractBalanced(afterFn, 0)
+  const suffix = afterFn.slice(end + 1) // may be +1/2, -3/4, etc.
 
-  // Form 2: Bx±C'  e.g. 2x-pi, x+pi/2, -2x
-  fm = arg.match(/^([+-]?(?:\d*\.?\d+)?(?:\*?pi(?:\/\d+)?)?)?\*?x([+-].+)?$/i)
-  if (fm) {
-    const B = parseLeadingCoeff(fm[1])
-    const constTerm = fm[2] != null && fm[2] !== '' ? parseCoeff(fm[2]) : 0
-    // B(x - C) = Bx - B C  =>  constTerm = -B C  =>  C = -constTerm / B
-    const C = -constTerm / B
-    if (Math.abs(B) < EPS) throw new Error('B cannot be zero.')
-    return { A, f, B, C, D }
-  }
+  const A = parseLeadingCoeff(prefix)
+  const D = suffix === '' ? 0 : parseCoeff(suffix)
+  const { B, C } = parseArgument(arg)
 
-  if (arg === 'x') {
-    return { A, f, B: 1, C: 0, D }
-  }
-
-  throw new Error(`Unrecognized argument: ${arg}`)
+  return { A, f, B, C, D }
 }
 
 function periodFor(f, B) {
