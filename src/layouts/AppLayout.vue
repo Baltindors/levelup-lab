@@ -22,7 +22,7 @@ const subject = computed(() => getSubject(route.params.gradeId, route.params.sub
         <RouterLink to="/" class="display text-xl font-bold text-[var(--color-primary)] no-underline">
           LevelUp Lab
         </RouterLink>
-        <p class="text-sm text-[var(--color-muted)]">Homework helper for curious kids</p>
+        <p class="text-sm text-[var(--color-muted)]">Homework helper</p>
       </div>
     </header>
 
