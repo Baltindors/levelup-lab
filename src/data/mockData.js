@@ -72,6 +72,26 @@ export const mockData = {
       blurb: 'Unit circle fluency, identities, and polar thinking for college-ready trig.',
       subjects: [
         {
+          id: 'graphing-trig',
+          name: 'Graphing Trigonometric Functions',
+          description: 'Transform and graph sine, cosine, tangent, and reciprocal functions.',
+          exercises: [
+            {
+              id: 'trig-explorer',
+              title: 'Trigonometric Function Grapher & Step-by-Step Solver',
+              exerciseType: 'trig-grapher',
+              content:
+                'Graph y = A f(B(x - C)) + D and walk through the analysis steps.',
+              presets: [
+                '2tan(2x)+3',
+                '-3sin(2x-pi)+1',
+                'cos(x-pi/2)-1',
+                '2csc(x)+1',
+              ],
+            },
+          ],
+        },
+        {
           id: 'unit-circle-radians',
           name: 'Unit Circle & Radians',
           description: 'Convert degrees and radians and locate standard angles on the unit circle.',
