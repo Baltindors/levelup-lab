@@ -69,7 +69,12 @@ Mock data lives in `src/data/mockData.js` and follows this shape:
               id: 'fraction-pizza-slices',
               title: 'Pizza Slice Fractions',
               exerciseType: 'multiple-choice', // multiple-choice | flashcard | graph-interactive
-              content: '...'
+              content: '...',
+              question: '...',
+              options: [{ id: 'a', label: '...' }],
+              correctOptionId: 'a',
+              // flashcard fields when exerciseType === 'flashcard':
+              // front: '...', back: '...'
             }
           ]
         }
@@ -85,4 +90,16 @@ Mock data lives in `src/data/mockData.js` and follows this shape:
 }
 ```
 
-Views resolve entities by route params (`gradeId`, `subjectId`, `exerciseId`) against this tree. Helpers may be added under `src/data/` later, but no remote fetch layer is required for v1.
+Views resolve entities by route params (`gradeId`, `subjectId`, `exerciseId`) against this tree. Helpers: `getGrade`, `getSubject`, `getExercise`, `getNextExercise`. No remote fetch layer is required for v1.
+
+## Exercise Engine
+
+`ExerciseView.vue` loads the active exercise from mock data and renders it with a dynamic component from `src/components/exercises/index.js`:
+
+| `exerciseType` | Component |
+|----------------|-----------|
+| `multiple-choice` | `MultipleChoiceExercise.vue` |
+| `flashcard` | `FlashcardExercise.vue` |
+| anything else (e.g. `graph-interactive`) | `ExerciseFallback.vue` |
+
+Components emit `answered` with `{ correct: boolean }`. The view keeps the exercise mounted (inputs disabled) and shows a completion banner below with **Try Again** (on incorrect), **Next Exercise**, and **Back to Subject**.

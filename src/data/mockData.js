@@ -15,7 +15,15 @@ export const mockData = {
               id: 'fraction-pizza-slices',
               title: 'Pizza Slice Fractions',
               exerciseType: 'multiple-choice',
-              content: 'Choose the fraction that matches the shaded pizza slices. (Placeholder exercise.)',
+              content: 'Choose the fraction that matches the shaded pizza slices.',
+              question: 'A pizza is cut into 8 equal slices. 3 slices are eaten. What fraction of the pizza is left?',
+              options: [
+                { id: 'a', label: '3/8' },
+                { id: 'b', label: '5/8' },
+                { id: 'c', label: '1/2' },
+                { id: 'd', label: '8/3' },
+              ],
+              correctOptionId: 'b',
             },
           ],
         },
@@ -28,7 +36,9 @@ export const mockData = {
               id: 'food-web-flashcards',
               title: 'Food Web Flashcards',
               exerciseType: 'flashcard',
-              content: 'Flip cards to match producers, consumers, and decomposers. (Placeholder exercise.)',
+              content: 'Flip cards to match producers, consumers, and decomposers.',
+              front: 'What do we call an organism that makes its own food using sunlight?',
+              back: 'A producer (for example, a green plant or algae).',
             },
           ],
         },
@@ -41,7 +51,15 @@ export const mockData = {
               id: 'figurative-language-quiz',
               title: 'Figurative Language Quiz',
               exerciseType: 'multiple-choice',
-              content: 'Identify similes, metaphors, and idioms in short sentences. (Placeholder exercise.)',
+              content: 'Identify similes, metaphors, and idioms in short sentences.',
+              question: 'Which sentence contains a simile?',
+              options: [
+                { id: 'a', label: 'The classroom was a zoo.' },
+                { id: 'b', label: 'She ran as fast as lightning.' },
+                { id: 'c', label: 'Break a leg before the play!' },
+                { id: 'd', label: 'Time flies when you are having fun.' },
+              ],
+              correctOptionId: 'b',
             },
           ],
         },
@@ -62,7 +80,8 @@ export const mockData = {
               id: 'unit-circle-explorer',
               title: 'Unit Circle Explorer',
               exerciseType: 'graph-interactive',
-              content: 'Explore angles on the unit circle and read off sine and cosine. (Placeholder exercise.)',
+              content:
+                'Explore angles on the unit circle and read off sine and cosine. Interactive graph coming soon.',
             },
           ],
         },
@@ -75,7 +94,9 @@ export const mockData = {
               id: 'identity-drill',
               title: 'Identity Drill',
               exerciseType: 'flashcard',
-              content: 'Recall core trig identities from flashcards. (Placeholder exercise.)',
+              content: 'Recall core trig identities from flashcards.',
+              front: 'What is the Pythagorean identity relating sin θ and cos θ?',
+              back: 'sin²θ + cos²θ = 1',
             },
           ],
         },
@@ -88,7 +109,15 @@ export const mockData = {
               id: 'polar-conversion-check',
               title: 'Polar Conversion Check',
               exerciseType: 'multiple-choice',
-              content: 'Select the correct polar form for a given rectangular point. (Placeholder exercise.)',
+              content: 'Select the correct polar form for a given rectangular point.',
+              question: 'Convert the point (0, 2) from rectangular to polar form (r, θ), with θ in radians.',
+              options: [
+                { id: 'a', label: '(2, 0)' },
+                { id: 'b', label: '(2, π/2)' },
+                { id: 'c', label: '(2, π)' },
+                { id: 'd', label: '(√2, π/4)' },
+              ],
+              correctOptionId: 'b',
             },
           ],
         },
@@ -109,4 +138,14 @@ export function getSubject(gradeId, subjectId) {
 export function getExercise(gradeId, subjectId, exerciseId) {
   const subject = getSubject(gradeId, subjectId)
   return subject?.exercises.find((exercise) => exercise.id === exerciseId) ?? null
+}
+
+export function getNextExercise(gradeId, subjectId, exerciseId) {
+  const subject = getSubject(gradeId, subjectId)
+  if (!subject) return null
+
+  const index = subject.exercises.findIndex((exercise) => exercise.id === exerciseId)
+  if (index < 0 || index >= subject.exercises.length - 1) return null
+
+  return subject.exercises[index + 1]
 }
