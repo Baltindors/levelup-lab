@@ -2,7 +2,7 @@ export const mockData = {
   grades: [
     {
       id: 'grade-5',
-      name: '5th Grade',
+      name: '6th Grade',
       theme: 'theme-grade-5',
       blurb: 'Fractions, ecosystems, and language skills with a playful vibe.',
       subjects: [
@@ -87,6 +87,88 @@ export const mockData = {
                 '-3sin(2x-pi)+1',
                 'cos(x-pi/2)-1',
                 '2csc(x)+1',
+              ],
+              practicePool: [
+                {
+                  id: 'tg-01',
+                  equation: '-3sin(2x-pi)+1',
+                  prompt: 'Find amplitude/stretch, period, phase shift, and midline.',
+                },
+                {
+                  id: 'tg-02',
+                  equation: '2cos(3x)+1',
+                  prompt: 'Find amplitude/stretch, period, phase shift, and midline.',
+                },
+                {
+                  id: 'tg-03',
+                  equation: 'cos(x-pi/2)-1',
+                  prompt: 'Find amplitude/stretch, period, phase shift, and midline.',
+                },
+                {
+                  id: 'tg-04',
+                  equation: '2tan(2x)+3',
+                  prompt: 'Find vertical stretch, period, phase shift, and midline.',
+                },
+                {
+                  id: 'tg-05',
+                  equation: '2csc(x)+1',
+                  prompt: 'Find vertical stretch, period, phase shift, and midline.',
+                },
+                {
+                  id: 'tg-06',
+                  equation: '4sin(x)+2',
+                  prompt: 'Find amplitude/stretch, period, phase shift, and midline.',
+                },
+                {
+                  id: 'tg-07',
+                  equation: '-2cos(2(x-pi/4))+1',
+                  prompt: 'Find amplitude/stretch, period, phase shift, and midline.',
+                },
+                {
+                  id: 'tg-08',
+                  equation: '3sin(2x+pi)-1',
+                  prompt: 'Find amplitude/stretch, period, phase shift, and midline.',
+                },
+                {
+                  id: 'tg-09',
+                  equation: 'sec(2x)',
+                  prompt: 'Find vertical stretch, period, phase shift, and midline.',
+                },
+                {
+                  id: 'tg-10',
+                  equation: 'cot(x-pi/2)',
+                  prompt: 'Find vertical stretch, period, phase shift, and midline.',
+                },
+                {
+                  id: 'tg-11',
+                  equation: '-sin(4x)+3',
+                  prompt: 'Find amplitude/stretch, period, phase shift, and midline.',
+                },
+                {
+                  id: 'tg-12',
+                  equation: '5cos(x+pi/3)-2',
+                  prompt: 'Find amplitude/stretch, period, phase shift, and midline.',
+                },
+                {
+                  id: 'tg-13',
+                  equation: 'tan(3x-pi)+1',
+                  prompt: 'Find vertical stretch, period, phase shift, and midline.',
+                },
+                {
+                  id: 'tg-14',
+                  equation: '-4csc(2x)+2',
+                  prompt: 'Find vertical stretch, period, phase shift, and midline.',
+                },
+                {
+                  id: 'tg-15',
+                  equation: '2sin(pi*x)',
+                  prompt: 'Find amplitude/stretch, period, phase shift, and midline.',
+                },
+                {
+                  id: 'tg-16',
+                  equation: 'cos(2(x+pi/6))-3',
+                  prompt: 'Find amplitude/stretch, period, phase shift, and midline.',
+                },
               ],
             },
           ],

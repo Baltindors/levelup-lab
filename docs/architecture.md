@@ -58,7 +58,7 @@ Mock data lives in `src/data/mockData.js` and follows this shape:
   grades: [
     {
       id: 'grade-5',
-      name: '5th Grade',
+      name: '6th Grade',
       theme: 'theme-grade-5',
       subjects: [
         {
@@ -103,6 +103,45 @@ Views resolve entities by route params (`gradeId`, `subjectId`, `exerciseId`) ag
 | `trig-grapher` | `TrigGrapherExercise.vue` |
 | anything else (e.g. `graph-interactive`) | `ExerciseFallback.vue` |
 
-`trig-grapher` uses [`src/utils/trigSolver.js`](../src/utils/trigSolver.js) to parse `y = A f(B(x-C))+D`, compute period/phase/key points, and plot multi-segment SVG paths that break at asymptotes. Formulas render with KaTeX.
+`trig-grapher` uses [`src/utils/trigSolver.js`](../src/utils/trigSolver.js) to parse `y = A f(B(x-C))+D`, compute period/phase/key points, and plot multi-segment SVG paths that break at asymptotes. Formulas render with KaTeX. It is the first module built on the **Standard Math Module Pattern** below.
 
 Components emit `answered` with `{ correct: boolean }`. The view keeps the exercise mounted (inputs disabled) and shows a completion banner below with **Try Again** (on incorrect), **Next Exercise**, and **Back to Subject**.
+
+## Standard Math Module Pattern
+
+Every math topic should follow the same two-phase UX:
+
+1. **Explore & Learn** — untimed sandbox (calculators, visualizers, step solvers).
+2. **Practice Drill** — standardized 10-card quiz with scoring, feedback, missed-item explanations, and **Retry Missed Only**.
+
+### Core pieces
+
+| Piece | Path |
+|-------|------|
+| Drill state | [`src/composables/useMathDrill.js`](../src/composables/useMathDrill.js) |
+| Shell UI | [`src/components/exercises/common/MathModuleShell.vue`](../src/components/exercises/common/MathModuleShell.vue) |
+
+### Required slots
+
+Future modules (e.g. 6th Grade Fractions) must wrap `MathModuleShell` and provide:
+
+- `#explorer` — sandbox tool for the topic
+- `#question` — props/bindings: `question`, `submit(studentAnswers)`, `feedback`
+- `#explanation` — binding: `item` (`{ question, studentAnswers, isCorrect }`) for missed review
+
+### Conventions
+
+- Question cards must remount per item (`:key="currentQuestion.id"` in the shell) so form state does not bleed.
+- Record the answer on **Submit**; advance only when the student clicks **Next Card →**.
+- Emit `answered({ correct: passed })` when a full drill session completes.
+- Put a `practicePool` (15+ items recommended) on the exercise object in `src/data/mockData.js`.
+
+### Example skeleton (Fractions)
+
+```vue
+<MathModuleShell :grade-answer="gradeFractions" ...>
+  <template #explorer><FractionExplorer /></template>
+  <template #question="ctx"><FractionDrillQuestion v-bind="ctx" /></template>
+  <template #explanation="{ item }"><FractionDrillExplanation :item="item" /></template>
+</MathModuleShell>
+```
