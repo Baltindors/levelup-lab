@@ -63,7 +63,7 @@ function scrollStatusClass(subject) {
       <p class="mt-2 text-[var(--color-muted)]">{{ grade.blurb }}</p>
     </div>
 
-    <div class="grid gap-4 sm:grid-cols-2">
+    <div :class="['grid gap-4', grade.subjects.length > 1 ? 'sm:grid-cols-2' : 'max-w-xl']">
       <RouterLink
         v-for="subject in grade.subjects"
         :key="subject.id"

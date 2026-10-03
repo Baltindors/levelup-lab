@@ -48,7 +48,7 @@ import { mockData } from '../data/mockData'
           <span class="dojo-cta-arrow" aria-hidden="true">→</span>
         </p>
         <p v-else class="mt-4 text-sm font-semibold text-[var(--color-primary)]">
-          {{ grade.subjects.length }} subjects →
+          {{ grade.subjects.length }} {{ grade.subjects.length === 1 ? 'subject' : 'subjects' }} →
         </p>
       </RouterLink>
     </div>

@@ -625,7 +625,7 @@ onUnmounted(() => {
         role="status"
       >
         <p class="display text-xl tracking-wide text-[#ffaa00] sm:text-2xl">
-          SCROLL IV FULLY MASTERED • RANK LEVEL UP UNLOCKED!
+          SCROLL I FULLY MASTERED • RANK LEVEL UP UNLOCKED!
         </p>
         <button
           type="button"
