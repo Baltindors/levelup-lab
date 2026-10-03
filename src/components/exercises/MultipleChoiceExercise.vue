@@ -30,27 +30,27 @@ function selectOption(optionId) {
 
 function optionClasses(optionId) {
   const base =
-    'w-full rounded-[var(--radius-card)] border px-4 py-3 text-left transition disabled:cursor-not-allowed'
+    'min-h-11 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] px-4 py-3 text-left transition disabled:cursor-not-allowed'
 
   if (!hasAnswered.value) {
-    return `${base} border-black/10 bg-[var(--color-panel)] hover:border-[var(--color-primary)] hover:bg-[var(--color-primary-soft)]`
+    return `${base} bg-[var(--color-panel)] text-[var(--color-text)] hover:border-[var(--color-primary)] hover:bg-[var(--color-primary-soft)]`
   }
 
   const isSelected = selectedId.value === optionId
   const isCorrect = optionId === props.exercise.correctOptionId
 
   if (isCorrect) {
-    return `${base} border-emerald-500 bg-emerald-50 text-emerald-900`
+    return `${base} feedback-correct`
   }
   if (isSelected) {
-    return `${base} border-rose-400 bg-rose-50 text-rose-900`
+    return `${base} feedback-incorrect`
   }
-  return `${base} border-black/5 bg-[var(--color-panel)] opacity-60`
+  return `${base} bg-[var(--color-panel)] text-[var(--color-text)] opacity-60`
 }
 </script>
 
 <template>
-  <div class="theme-card space-y-4 border border-black/5 bg-[var(--color-panel)] p-6 shadow-sm">
+  <div class="theme-card space-y-4 border border-[var(--color-border)] bg-[var(--color-panel)] p-4 shadow-sm sm:p-6">
     <p class="text-lg font-medium leading-relaxed text-[var(--color-text)]">{{ question }}</p>
 
     <div class="grid gap-3" role="listbox" aria-label="Answer choices">

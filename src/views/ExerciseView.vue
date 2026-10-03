@@ -19,8 +19,13 @@ const exerciseComponent = computed(() =>
   resolveExerciseComponent(exercise.value?.exerciseType)
 )
 
+const isShinobi = computed(() => grade.value?.theme === 'theme-grade-5')
+
 const completion = ref(null)
 const attemptKey = ref(0)
+const showVictory = computed(
+  () => isShinobi.value && completion.value?.correct && grade.value?.victoryTitle
+)
 
 watch(
   () => route.params.exerciseId,
@@ -58,11 +63,25 @@ function tryAgain() {
 
     <div
       v-if="completion"
-      class="theme-card border border-black/5 bg-[var(--color-primary-soft)] p-5 shadow-sm"
+      class="theme-card border p-4 shadow-sm sm:p-5"
+      :class="
+        showVictory
+          ? 'speedlines border-[var(--color-primary)]'
+          : 'border-black/5 bg-[var(--color-primary-soft)]'
+      "
       role="status"
     >
-      <p class="display text-xl font-bold text-[var(--color-text)]">
-        {{ completion.correct ? 'Nice work!' : 'Not quite — review and try again.' }}
+      <p
+        class="font-bold text-[var(--color-text)]"
+        :class="showVictory ? 'display text-2xl tracking-wide sm:text-4xl' : 'display text-xl'"
+      >
+        {{
+          showVictory
+            ? grade.victoryTitle
+            : completion.correct
+              ? 'Nice work!'
+              : 'Not quite — review and try again.'
+        }}
       </p>
       <p class="mt-1 text-sm text-[var(--color-muted)]">
         {{
@@ -76,7 +95,7 @@ function tryAgain() {
         <button
           v-if="!completion.correct"
           type="button"
-          class="theme-pill bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white"
+          class="theme-pill inline-flex min-h-11 items-center bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white"
           @click="tryAgain"
         >
           Try Again
@@ -92,7 +111,7 @@ function tryAgain() {
               exerciseId: nextExercise.id,
             },
           }"
-          class="theme-pill bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white no-underline"
+          class="theme-pill inline-flex min-h-11 items-center bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white no-underline"
         >
           Next Exercise
         </RouterLink>
@@ -102,7 +121,7 @@ function tryAgain() {
             name: 'subject',
             params: { gradeId: grade.id, subjectId: subject.id },
           }"
-          class="theme-pill border border-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-[var(--color-primary)] no-underline"
+          class="theme-pill inline-flex min-h-11 items-center border border-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-[var(--color-primary)] no-underline"
         >
           Back to Subject
         </RouterLink>

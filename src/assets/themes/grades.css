@@ -5,6 +5,7 @@
   --color-panel: #ffffff;
   --color-text: #0f172a;
   --color-muted: #64748b;
+  --color-border: rgb(0 0 0 / 0.08);
   --radius-card: 0.75rem;
   --radius-pill: 9999px;
   --font-display: 'Trebuchet MS', 'Segoe UI', sans-serif;
@@ -12,15 +13,17 @@
 }
 
 .theme-grade-5 {
-  --color-primary: #059669;
-  --color-primary-soft: #fef3c7;
-  --color-surface: #ecfdf5;
-  --color-panel: #ffffff;
-  --color-text: #064e3b;
-  --color-muted: #b45309;
-  --radius-card: 1.25rem;
+  --color-primary: #ff5e1e;
+  --color-primary-soft: #3a1d0e;
+  --color-accent: #00e5ff;
+  --color-surface: #111217;
+  --color-panel: #1a1c24;
+  --color-text: #f3f4f6;
+  --color-muted: #9ca3af;
+  --color-border: #2e3344;
+  --radius-card: 0.75rem;
   --radius-pill: 9999px;
-  --font-display: 'Comic Sans MS', 'Trebuchet MS', sans-serif;
+  --font-display: 'Bangers', Impact, sans-serif;
   --font-body: 'Segoe UI', system-ui, sans-serif;
 }
 
@@ -31,6 +34,7 @@
   --color-panel: #ffffff;
   --color-text: #1e293b;
   --color-muted: #475569;
+  --color-border: rgb(0 0 0 / 0.08);
   --radius-card: 0.5rem;
   --radius-pill: 0.375rem;
   --font-display: Georgia, 'Times New Roman', serif;
@@ -57,4 +61,80 @@
 .app-shell h2,
 .app-shell .display {
   font-family: var(--font-display);
+}
+
+.theme-grade-5.theme-card,
+.theme-grade-5 .theme-card,
+.theme-grade-5 header,
+.theme-grade-5 nav {
+  border-color: var(--color-border);
+}
+
+.theme-grade-5 :focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.ninja-tag {
+  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+}
+
+.chakra-meter {
+  background: linear-gradient(90deg, var(--color-accent), var(--color-primary));
+}
+
+.speedlines {
+  background-color: #1a120c;
+  background-image: repeating-linear-gradient(
+    -18deg,
+    transparent,
+    transparent 8px,
+    rgba(255, 94, 30, 0.16) 8px,
+    rgba(255, 94, 30, 0.16) 10px
+  );
+}
+
+.dojo-cta-arrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.group:hover .dojo-cta-arrow {
+  transform: translateX(0.35rem);
+}
+
+.feedback-correct {
+  background: #ecfdf5;
+  color: #064e3b;
+  border-color: #10b981;
+}
+
+.feedback-incorrect {
+  background: #fff1f2;
+  color: #881337;
+  border-color: #fb7185;
+}
+
+.feedback-pending {
+  background: #fffbeb;
+  color: #78350f;
+  border-color: #fbbf24;
+}
+
+.theme-grade-5 .feedback-correct {
+  background: #052e24;
+  color: #a7f3d0;
+  border-color: #34d399;
+}
+
+.theme-grade-5 .feedback-incorrect {
+  background: #3f1218;
+  color: #fecdd3;
+  border-color: #fb7185;
+}
+
+.theme-grade-5 .feedback-pending {
+  background: #3a2a0e;
+  color: #fde68a;
+  border-color: #fbbf24;
 }

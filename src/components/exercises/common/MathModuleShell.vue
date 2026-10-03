@@ -1,5 +1,13 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { getGrade } from '../../../data/mockData'
+
+const route = useRoute()
+const activeGrade = computed(() => getGrade(route.params.gradeId))
+const shinobi = computed(() => activeGrade.value?.theme === 'theme-grade-5')
+const phaseLabels = computed(() => (shinobi.value ? activeGrade.value?.phaseLabels : null))
+const victoryTitle = computed(() => (shinobi.value ? activeGrade.value?.victoryTitle : null))
 
 const props = defineProps({
   gradeAnswer: {
@@ -104,14 +112,14 @@ function toggleResult(id) {
 <template>
   <div class="space-y-5">
     <div
-      class="theme-card flex flex-wrap gap-2 border border-black/5 bg-[var(--color-panel)] p-2 shadow-sm"
+      class="theme-card flex flex-col gap-2 border border-[var(--color-border)] bg-[var(--color-panel)] p-2 shadow-sm sm:flex-row"
       role="tablist"
       aria-label="Math module mode"
     >
       <button
         type="button"
         role="tab"
-        class="theme-pill flex-1 px-4 py-2 text-sm font-semibold"
+        class="theme-pill min-h-11 flex-1 px-4 py-2 text-sm font-semibold"
         :class="
           tab === 'explore'
             ? 'bg-[var(--color-primary)] text-white'
@@ -120,12 +128,12 @@ function toggleResult(id) {
         :aria-selected="tab === 'explore'"
         @click="selectTab('explore')"
       >
-        Explore &amp; Learn
+        {{ phaseLabels?.explore ?? 'Explore & Learn' }}
       </button>
       <button
         type="button"
         role="tab"
-        class="theme-pill flex-1 px-4 py-2 text-sm font-semibold"
+        class="theme-pill min-h-11 flex-1 px-4 py-2 text-sm font-semibold"
         :class="
           tab === 'practice'
             ? 'bg-[var(--color-primary)] text-white'
@@ -134,7 +142,7 @@ function toggleResult(id) {
         :aria-selected="tab === 'practice'"
         @click="selectTab('practice')"
       >
-        Practice Drill ({{ drillSize }} Questions)
+        {{ phaseLabels?.practice ?? `Practice Drill (${drillSize} Questions)` }}
       </button>
     </div>
 
@@ -177,17 +185,13 @@ function toggleResult(id) {
       <div v-if="cardFeedback" class="flex flex-wrap items-center gap-3">
         <p
           class="theme-pill px-3 py-1.5 text-sm font-bold"
-          :class="
-            cardFeedback === 'correct'
-              ? 'bg-emerald-100 text-emerald-800'
-              : 'bg-rose-100 text-rose-800'
-          "
+          :class="cardFeedback === 'correct' ? 'feedback-correct' : 'feedback-incorrect'"
         >
           {{ cardFeedback === 'correct' ? 'Correct' : 'Incorrect' }}
         </p>
         <button
           type="button"
-          class="theme-pill bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white"
+          class="theme-pill inline-flex min-h-11 items-center bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white"
           @click="onNext"
         >
           {{ isLastCard ? 'See Results →' : 'Next Card →' }}
@@ -197,7 +201,16 @@ function toggleResult(id) {
 
     <!-- Practice results -->
     <div v-else-if="isComplete" class="space-y-5">
-      <div class="theme-card border border-black/5 bg-[var(--color-panel)] p-5 shadow-sm">
+      <div
+        v-if="passed && victoryTitle"
+        class="speedlines theme-card border border-[var(--color-primary)] p-4 sm:p-5"
+        role="status"
+      >
+        <p class="display text-2xl tracking-wide text-[var(--color-text)] sm:text-4xl">
+          {{ victoryTitle }}
+        </p>
+      </div>
+      <div class="theme-card border border-[var(--color-border)] bg-[var(--color-panel)] p-4 shadow-sm sm:p-5">
         <p class="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">
           Drill complete
         </p>
@@ -206,7 +219,7 @@ function toggleResult(id) {
         </p>
         <p
           class="theme-pill mt-3 inline-block px-3 py-1 text-sm font-bold"
-          :class="passed ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'"
+          :class="passed ? 'feedback-correct' : 'feedback-pending'"
         >
           {{ passed ? 'Passed' : 'Keep practicing' }}
         </p>
@@ -215,21 +228,21 @@ function toggleResult(id) {
           <button
             v-if="missedQuestions.length"
             type="button"
-            class="theme-pill bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white"
+            class="theme-pill inline-flex min-h-11 items-center bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white"
             @click="onRetryMissed"
           >
             Retry Missed Questions
           </button>
           <button
             type="button"
-            class="theme-pill border border-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-[var(--color-primary)]"
+            class="theme-pill inline-flex min-h-11 items-center border border-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-[var(--color-primary)]"
             @click="onRetake"
           >
             Retake Full Drill
           </button>
           <button
             type="button"
-            class="theme-pill border border-black/10 px-4 py-2 text-sm font-semibold text-[var(--color-muted)]"
+            class="theme-pill inline-flex min-h-11 items-center border border-[var(--color-border)] px-4 py-2 text-sm font-semibold text-[var(--color-muted)]"
             @click="selectTab('explore')"
           >
             Back to Explore
@@ -242,7 +255,7 @@ function toggleResult(id) {
         <div
           v-for="(item, idx) in results"
           :key="item.question.id + '-' + idx"
-          class="theme-card border border-black/5 bg-[var(--color-panel)] shadow-sm"
+          class="theme-card border border-[var(--color-border)] bg-[var(--color-panel)] shadow-sm"
         >
           <button
             type="button"
@@ -254,20 +267,20 @@ function toggleResult(id) {
             </span>
             <span
               class="theme-pill px-2 py-0.5 text-xs font-bold uppercase"
-              :class="item.isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'"
+              :class="item.isCorrect ? 'feedback-correct' : 'feedback-incorrect'"
             >
               {{ item.isCorrect ? 'Correct' : 'Missed' }}
             </span>
           </button>
           <div
             v-if="!item.isCorrect && openResultIds.includes(item.question.id + '-' + idx)"
-            class="border-t border-black/5 px-4 py-3"
+            class="border-t border-[var(--color-border)] px-4 py-3"
           >
             <slot name="explanation" :item="item" />
           </div>
           <div
             v-else-if="item.isCorrect && openResultIds.includes(item.question.id + '-' + idx)"
-            class="border-t border-black/5 px-4 py-3 text-sm text-[var(--color-muted)]"
+            class="border-t border-[var(--color-border)] px-4 py-3 text-sm text-[var(--color-muted)]"
           >
             Nice work on this one.
           </div>
@@ -276,11 +289,11 @@ function toggleResult(id) {
     </div>
 
     <!-- Practice idle (should rarely show) -->
-    <div v-else class="theme-card border border-black/5 bg-[var(--color-panel)] p-5 shadow-sm">
+    <div v-else class="theme-card border border-[var(--color-border)] bg-[var(--color-panel)] p-4 shadow-sm sm:p-5">
       <p class="text-[var(--color-muted)]">Ready when you are.</p>
       <button
         type="button"
-        class="theme-pill mt-3 bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white"
+        class="theme-pill mt-3 inline-flex min-h-11 items-center bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white"
         @click="startDrill(); tab = 'practice'"
       >
         Start Practice Drill

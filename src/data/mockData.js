@@ -4,11 +4,23 @@ export const mockData = {
       id: 'grade-5',
       name: '6th Grade',
       theme: 'theme-grade-5',
-      blurb: 'Fractions, ecosystems, and language skills with a playful vibe.',
+      cardTitle: '6TH GRADE: SHINOBI ACADEMY',
+      rankBadge: 'GENIN RANK • LEVEL 1',
+      cta: 'Enter Dojo',
+      blurb: 'Train in math jutsu, master the scrolls, and level up your rank.',
+      hud: { rank: 'Genin', chakra: 120, chakraMax: 200 },
+      victoryTitle: 'MISSION ACCOMPLISHED',
+      phaseLabels: {
+        explore: 'Dojo Sandbox / Practice Kata',
+        practice: '10-Chakra Trial',
+      },
       subjects: [
         {
           id: 'fractions-decimals',
           name: 'Math — Fractions & Decimals',
+          missionTitle: 'Scroll I: Fractions & Decimals Jutsu',
+          difficulty: 'B-Rank Mission',
+          status: 'Scroll Unlocked',
           description: 'Compare fractions, convert decimals, and solve everyday number problems.',
           exercises: [
             {
@@ -30,6 +42,9 @@ export const mockData = {
         {
           id: 'ecosystems',
           name: 'Science — Ecosystems',
+          missionTitle: 'Scroll II: Ecosystems',
+          difficulty: 'C-Rank Mission',
+          status: 'Scroll Unlocked',
           description: 'Food webs, habitats, and how living things depend on each other.',
           exercises: [
             {
@@ -45,6 +60,9 @@ export const mockData = {
         {
           id: 'language-arts',
           name: 'Language Arts',
+          missionTitle: 'Scroll III: Language Arts Seals',
+          difficulty: 'C-Rank Mission',
+          status: 'Scroll Unlocked',
           description: 'Grammar, vocabulary, and short reading passages.',
           exercises: [
             {

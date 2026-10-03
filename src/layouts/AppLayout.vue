@@ -17,8 +17,8 @@ const subject = computed(() => getSubject(route.params.gradeId, route.params.sub
 
 <template>
   <div :class="['app-shell', themeClass]">
-    <header class="border-b border-black/5 bg-[var(--color-panel)]/80 backdrop-blur-sm">
-      <div class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-4">
+    <header class="border-b border-black/5 bg-[var(--color-panel)]">
+      <div class="mx-auto flex max-w-5xl flex-col items-start gap-1 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
         <RouterLink to="/" class="display text-xl font-bold text-[var(--color-primary)] no-underline">
           LevelUp Lab
         </RouterLink>
@@ -27,7 +27,7 @@ const subject = computed(() => getSubject(route.params.gradeId, route.params.sub
     </header>
 
     <nav
-      class="sticky top-0 z-10 border-b border-black/5 bg-[var(--color-panel)]/95 backdrop-blur-sm"
+      class="sticky top-0 z-10 border-b border-black/5 bg-[var(--color-panel)]"
       aria-label="Breadcrumb"
     >
       <ol class="mx-auto flex max-w-5xl flex-wrap items-center gap-2 px-4 py-3 text-sm text-[var(--color-muted)]">

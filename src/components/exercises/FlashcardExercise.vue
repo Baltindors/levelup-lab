@@ -35,10 +35,10 @@ function markReviewAgain() {
 </script>
 
 <template>
-  <div class="theme-card space-y-4 border border-black/5 bg-[var(--color-panel)] p-6 shadow-sm">
+  <div class="theme-card space-y-4 border border-[var(--color-border)] bg-[var(--color-panel)] p-4 shadow-sm sm:p-6">
     <button
       type="button"
-      class="min-h-40 w-full rounded-[var(--radius-card)] border border-black/10 bg-[var(--color-primary-soft)] p-6 text-left transition hover:border-[var(--color-primary)] disabled:cursor-not-allowed"
+      class="min-h-40 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-primary-soft)] p-4 text-left transition hover:border-[var(--color-primary)] disabled:cursor-not-allowed sm:p-6"
       :disabled="hasAnswered"
       :aria-pressed="flipped"
       @click="flipCard"
@@ -57,7 +57,7 @@ function markReviewAgain() {
     <div v-if="flipped" class="flex flex-wrap gap-3">
       <button
         type="button"
-        class="theme-pill bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
+        class="theme-pill inline-flex min-h-11 items-center bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
         :disabled="hasAnswered"
         @click="markGotIt"
       >
@@ -65,7 +65,7 @@ function markReviewAgain() {
       </button>
       <button
         type="button"
-        class="theme-pill border border-[var(--color-primary)] bg-transparent px-4 py-2 text-sm font-semibold text-[var(--color-primary)] disabled:opacity-50"
+        class="theme-pill inline-flex min-h-11 items-center border border-[var(--color-primary)] bg-transparent px-4 py-2 text-sm font-semibold text-[var(--color-primary)] disabled:opacity-50"
         :disabled="hasAnswered"
         @click="markReviewAgain"
       >
