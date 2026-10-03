@@ -138,3 +138,61 @@
   color: #fde68a;
   border-color: #fbbf24;
 }
+
+/* =========================================================================
+   ANIME FIGHTING GAME "VERSUS" INTRO (Shinobi Theme)
+   ========================================================================= */
+@keyframes vs-flash {
+  0% { opacity: 0.95; }
+  100% { opacity: 0; }
+}
+
+@keyframes vs-door-left {
+  0% { transform: translate3d(-105%, -105%, 0); }
+  75% { transform: translate3d(2%, 2%, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes vs-door-right {
+  0% { transform: translate3d(105%, 105%, 0); }
+  75% { transform: translate3d(-2%, -2%, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes vs-lightning {
+  0% { opacity: 0; stroke-dashoffset: 1000; }
+  15% { opacity: 1; stroke-dashoffset: 0; }
+  30% { opacity: 0.2; }
+  45% { opacity: 1; }
+  70% { opacity: 0.85; }
+  100% { opacity: 0; }
+}
+
+@keyframes vs-title-impact {
+  0% { transform: scale(3.2) skewX(-12deg); opacity: 0; }
+  55% { transform: scale(0.92) skewX(-12deg); opacity: 1; }
+  75% { transform: scale(1.04) skewX(-12deg); }
+  100% { transform: scale(1) skewX(-12deg); opacity: 1; }
+}
+
+@keyframes vs-slice-out-left {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-125%, 0, 0); }
+}
+
+@keyframes vs-slice-out-right {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(125%, 0, 0); }
+}
+
+.anim-vs-flash { animation: vs-flash 0.22s ease-out forwards; }
+.anim-vs-door-l { animation: vs-door-left 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.anim-vs-door-r { animation: vs-door-right 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.anim-vs-lightning { stroke-dasharray: 1000; animation: vs-lightning 0.55s ease-in-out forwards; }
+.anim-vs-title { animation: vs-title-impact 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+.anim-vs-exit-l { animation: vs-slice-out-left 0.32s cubic-bezier(0.7, 0, 0.84, 0) forwards; }
+.anim-vs-exit-r { animation: vs-slice-out-right 0.32s cubic-bezier(0.7, 0, 0.84, 0) forwards; }
+
+.shinobi-versus-intro {
+  font-family: var(--font-display);
+}

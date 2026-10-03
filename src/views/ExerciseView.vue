@@ -3,6 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { getExercise, getGrade, getNextExercise, getSubject } from '../data/mockData'
 import { resolveExerciseComponent } from '../components/exercises'
+import ShinobiVersusIntro from '../components/common/ShinobiVersusIntro.vue'
 
 const route = useRoute()
 
@@ -23,6 +24,7 @@ const isShinobi = computed(() => grade.value?.theme === 'theme-grade-5')
 
 const completion = ref(null)
 const attemptKey = ref(0)
+const showIntro = ref(true)
 const showVictory = computed(
   () => isShinobi.value && completion.value?.correct && grade.value?.victoryTitle
 )
@@ -32,6 +34,7 @@ watch(
   () => {
     completion.value = null
     attemptKey.value = 0
+    showIntro.value = isShinobi.value
   }
 )
 
@@ -47,6 +50,13 @@ function tryAgain() {
 
 <template>
   <section v-if="grade && subject && exercise" class="space-y-6">
+    <ShinobiVersusIntro
+      v-if="showIntro && isShinobi"
+      :mission-title="subject.missionTitle || exercise.title"
+      :sub-title="grade.rankBadge || 'SHINOBI TRAINING'"
+      @complete="showIntro = false"
+    />
+
     <div>
       <h1 class="display text-4xl font-bold">{{ exercise.title }}</h1>
       <p class="mt-2 text-sm uppercase tracking-wide text-[var(--color-muted)]">
