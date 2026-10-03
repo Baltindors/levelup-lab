@@ -1,3 +1,8 @@
+<script>
+// Survives remounts so a new intro can cut off a previous ~4s clip.
+let activeTransitionAudio = null
+</script>
+
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue'
 
@@ -14,28 +19,41 @@ const showTitle = ref(false)
 const timers = []
 let keyHandler = null
 
-function playImpactSound() {
+function stopImpactSound() {
+  if (!activeTransitionAudio) return
   try {
-    const AudioCtx = window.AudioContext || window.webkitAudioContext
-    if (!AudioCtx) return
-    const ctx = new AudioCtx()
-    if (ctx.state === 'suspended') ctx.resume()
-
-    const osc = ctx.createOscillator()
-    const gain = ctx.createGain()
-    osc.type = 'sawtooth'
-    osc.frequency.setValueAtTime(150, ctx.currentTime)
-    osc.frequency.exponentialRampToValueAtTime(30, ctx.currentTime + 0.3)
-
-    gain.gain.setValueAtTime(0.35, ctx.currentTime)
-    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3)
-
-    osc.connect(gain)
-    gain.connect(ctx.destination)
-    osc.start()
-    osc.stop(ctx.currentTime + 0.32)
+    activeTransitionAudio.pause()
+    activeTransitionAudio.currentTime = 0
   } catch {
-    // AudioContext blocked fallback
+    // Ignore pause failures.
+  }
+  activeTransitionAudio = null
+}
+
+function playImpactSound() {
+  stopImpactSound()
+  try {
+    const audio = new Audio(
+      `${import.meta.env.BASE_URL}sounds/transition_sound_effects_1.mp3`,
+    )
+    audio.preload = 'auto'
+    audio.volume = 0.9
+    activeTransitionAudio = audio
+    audio.addEventListener(
+      'ended',
+      () => {
+        if (activeTransitionAudio === audio) activeTransitionAudio = null
+      },
+      { once: true },
+    )
+    const playPromise = audio.play()
+    if (playPromise && typeof playPromise.catch === 'function') {
+      playPromise.catch(() => {
+        // Autoplay may be blocked until a user gesture; click/key skip still works.
+      })
+    }
+  } catch {
+    // Audio playback unavailable.
   }
 }
 
@@ -81,6 +99,8 @@ onUnmounted(() => {
     window.removeEventListener('keydown', keyHandler)
     keyHandler = null
   }
+  // Do not stop activeTransitionAudio here — let the ~4s SFX finish after
+  // the visual exit. The next intro call to playImpactSound() will replace it.
 })
 </script>
 
