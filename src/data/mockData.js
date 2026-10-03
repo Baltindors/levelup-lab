@@ -81,6 +81,32 @@ export const mockData = {
             },
           ],
         },
+        {
+          id: 'spelling-jutsu',
+          name: 'Language Arts — Spelling',
+          missionTitle: 'Scroll IV: Spelling Jutsu',
+          difficulty: 'B-Rank Mission',
+          status: 'Scroll Unlocked',
+          description: 'Hear the word, match the seal, and spell it until the streak holds.',
+          exercises: [
+            {
+              id: 'weekly-spelling-jutsu',
+              title: 'Weekly Spelling Jutsu',
+              exerciseType: 'spelling-jutsu',
+              content: 'Study the scrolls, match each seal, then spell the word from audio alone.',
+              words: [
+                { id: 'ancient', word: 'ancient', definition: 'very old' },
+                { id: 'courage', word: 'courage', definition: 'bravery when something is frightening' },
+                { id: 'journey', word: 'journey', definition: 'a long trip from one place to another' },
+                { id: 'mystery', word: 'mystery', definition: 'something that is hard to explain' },
+                { id: 'whisper', word: 'whisper', definition: 'to speak very softly' },
+                { id: 'glacier', word: 'glacier', definition: 'a large, slow-moving mass of ice' },
+                { id: 'shelter', word: 'shelter', definition: 'a place that gives protection' },
+                { id: 'rhythm', word: 'rhythm', definition: 'a strong, regular pattern of sounds or beats' },
+              ],
+            },
+          ],
+        },
       ],
     },
     {
