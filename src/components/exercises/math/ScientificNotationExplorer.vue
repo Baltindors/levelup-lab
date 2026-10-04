@@ -143,7 +143,7 @@ function selectPreset(index) {
       <input
         v-model="customValue"
         type="text"
-        class="mt-1 w-full rounded-[var(--radius-card)] border border-black/10 px-3 py-2 font-mono"
+        class="mt-1 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-panel)] px-3 py-2 font-mono text-[var(--color-text)]"
       />
     </label>
 

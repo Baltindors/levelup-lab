@@ -95,7 +95,7 @@ const steps = computed(() => {
         <input
           v-model="base"
           type="text"
-          class="mt-1 w-full rounded-[var(--radius-card)] border border-black/10 px-3 py-2 font-mono"
+          class="mt-1 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-panel)] px-3 py-2 font-mono text-[var(--color-text)]"
         />
       </label>
       <label class="block text-sm">
@@ -105,7 +105,7 @@ const steps = computed(() => {
         <input
           v-model.number="expA"
           type="number"
-          class="mt-1 w-full rounded-[var(--radius-card)] border border-black/10 px-3 py-2 font-mono"
+          class="mt-1 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-panel)] px-3 py-2 font-mono text-[var(--color-text)]"
         />
       </label>
       <label v-if="mode === 'product' || mode === 'quotient'" class="block text-sm">
@@ -113,7 +113,7 @@ const steps = computed(() => {
         <input
           v-model.number="expB"
           type="number"
-          class="mt-1 w-full rounded-[var(--radius-card)] border border-black/10 px-3 py-2 font-mono"
+          class="mt-1 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-panel)] px-3 py-2 font-mono text-[var(--color-text)]"
         />
       </label>
       <label v-if="mode === 'power'" class="block text-sm">
@@ -121,7 +121,7 @@ const steps = computed(() => {
         <input
           v-model.number="outer"
           type="number"
-          class="mt-1 w-full rounded-[var(--radius-card)] border border-black/10 px-3 py-2 font-mono"
+          class="mt-1 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-panel)] px-3 py-2 font-mono text-[var(--color-text)]"
         />
       </label>
     </div>

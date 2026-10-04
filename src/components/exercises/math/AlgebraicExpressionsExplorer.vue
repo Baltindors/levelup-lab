@@ -367,7 +367,7 @@ const model = computed(() => {
           v-model.number="mono"
           type="number"
           step="0.1"
-          class="mt-1 w-full rounded-[var(--radius-card)] border border-black/10 px-3 py-2 font-mono"
+          class="mt-1 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-panel)] px-3 py-2 font-mono text-[var(--color-text)]"
         />
       </label>
       <label class="block text-sm">
@@ -376,7 +376,7 @@ const model = computed(() => {
           v-model.number="termA"
           type="number"
           step="0.1"
-          class="mt-1 w-full rounded-[var(--radius-card)] border border-black/10 px-3 py-2 font-mono"
+          class="mt-1 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-panel)] px-3 py-2 font-mono text-[var(--color-text)]"
         />
       </label>
       <label class="block text-sm">
@@ -385,7 +385,7 @@ const model = computed(() => {
           v-model.number="termB"
           type="number"
           step="0.1"
-          class="mt-1 w-full rounded-[var(--radius-card)] border border-black/10 px-3 py-2 font-mono"
+          class="mt-1 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-panel)] px-3 py-2 font-mono text-[var(--color-text)]"
         />
       </label>
       <label class="block text-sm">
@@ -394,7 +394,7 @@ const model = computed(() => {
           v-model="varName"
           type="text"
           maxlength="3"
-          class="mt-1 w-full rounded-[var(--radius-card)] border border-black/10 px-3 py-2 font-mono"
+          class="mt-1 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-panel)] px-3 py-2 font-mono text-[var(--color-text)]"
         />
       </label>
     </div>
@@ -434,7 +434,7 @@ const model = computed(() => {
             v-model.number="cell1Coeff"
             type="number"
             step="1"
-            class="mt-1 w-full rounded-[var(--radius-card)] border border-black/10 px-3 py-2 font-mono"
+            class="mt-1 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-panel)] px-3 py-2 font-mono text-[var(--color-text)]"
           />
         </label>
         <label class="block text-sm">
@@ -444,7 +444,7 @@ const model = computed(() => {
             type="number"
             min="0"
             step="1"
-            class="mt-1 w-full rounded-[var(--radius-card)] border border-black/10 px-3 py-2 font-mono"
+            class="mt-1 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-panel)] px-3 py-2 font-mono text-[var(--color-text)]"
           />
         </label>
         <label class="block text-sm">
@@ -453,7 +453,7 @@ const model = computed(() => {
             v-model.number="cell2Coeff"
             type="number"
             step="1"
-            class="mt-1 w-full rounded-[var(--radius-card)] border border-black/10 px-3 py-2 font-mono"
+            class="mt-1 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-panel)] px-3 py-2 font-mono text-[var(--color-text)]"
           />
         </label>
         <label class="block text-sm">
@@ -463,7 +463,7 @@ const model = computed(() => {
             type="number"
             min="0"
             step="1"
-            class="mt-1 w-full rounded-[var(--radius-card)] border border-black/10 px-3 py-2 font-mono"
+            class="mt-1 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-panel)] px-3 py-2 font-mono text-[var(--color-text)]"
           />
         </label>
         <label class="block text-sm">
@@ -472,7 +472,7 @@ const model = computed(() => {
             v-model="varName"
             type="text"
             maxlength="3"
-            class="mt-1 w-full rounded-[var(--radius-card)] border border-black/10 px-3 py-2 font-mono"
+            class="mt-1 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-panel)] px-3 py-2 font-mono text-[var(--color-text)]"
           />
         </label>
       </div>
