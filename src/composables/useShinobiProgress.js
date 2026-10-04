@@ -18,6 +18,11 @@ const RANKS = [
   { level: 10, title: 'Grand Hokage' },
 ]
 
+export function getRankForLevel(level) {
+  const safe = Math.max(1, Math.min(10, Number(level) || 1))
+  return RANKS[safe - 1]
+}
+
 function loadScrolls() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)

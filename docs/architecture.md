@@ -123,11 +123,14 @@ The app stays zero-backend. User-authored and progress state live in browser `lo
 | Key | Purpose |
 |-----|---------|
 | `levelup_custom_spelling_words` | Custom Spelling Jutsu word/definition scroll |
-| `shinobi_academy_progress_v1` | Shinobi scroll / trial completion flags |
+| `shinobi_academy_progress_v1` | Shinobi scroll / trial completion flags (XP and rank are derived) |
+| `shinobi_academy_last_seen_v1` | Last animated `{ xp, level }` snapshot for GradeView XP bar / level-up celebration |
 | `shinobi_spelling_mastery_v2` | Per-scope mastered word IDs for spelling practices |
 | `levelup_math_exam_100526_progress` | Scroll 2 per-exercise scores/ranks (`bestScore`, `gradeRank`, `completed`) + one-time level-up guard; legacy boolean `true` normalizes to Rank B (70%) |
 
 Custom content and mastery survive refresh without a server. Private-mode or storage failures are ignored so sessions still work in-memory.
+
+On Shinobi grade overview ([`GradeView.vue`](../src/views/GradeView.vue)), returning after XP gains animates the rank meter from `shinobi_academy_last_seen_v1` to the current derived totals. Crossing a level threshold fills the bar to 100%, plays `sounds/level-up.mp3` (via `import.meta.env.BASE_URL`, failures ignored), and opens [`ShinobiLevelUpModal.vue`](../src/components/common/ShinobiLevelUpModal.vue). Claiming the rank writes last-seen so refresh does not replay the celebration.
 
 ## Standard Math Module Pattern
 

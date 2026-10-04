@@ -1,12 +1,14 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { getGrade } from '../data/mockData'
-import { SPELLING_ACTIVITY_KEYS, useShinobiProgress } from '../composables/useShinobiProgress'
+import { SPELLING_ACTIVITY_KEYS, getRankForLevel, useShinobiProgress } from '../composables/useShinobiProgress'
 import {
   MATH_EXAM_SUBJECT_ID,
   useMathExamProgress,
 } from '../composables/useMathExamProgress'
+import { meterFromXp, readLastSeen, writeLastSeen } from '../composables/useShinobiLastSeen'
+import ShinobiLevelUpModal from '../components/common/ShinobiLevelUpModal.vue'
 
 const route = useRoute()
 const grade = computed(() => getGrade(route.params.gradeId))
@@ -14,6 +16,32 @@ const isShinobi = computed(() => grade.value?.theme === 'theme-grade-5')
 
 const { getScrollProgress, overallXP, currentRank, nextRankMeter } = useShinobiProgress()
 const { getScrollProgress: getMathExamProgress } = useMathExamProgress()
+
+const pendingLastSeen = (() => {
+  if (!isShinobi.value) return null
+  const seen = readLastSeen()
+  if (!seen) return null
+  if (overallXP.value > seen.xp || currentRank.value.level > seen.level) return seen
+  return null
+})()
+
+const displayXp = ref(pendingLastSeen ? pendingLastSeen.xp : overallXP.value)
+const displayMeter = ref(
+  pendingLastSeen
+    ? meterFromXp(pendingLastSeen.xp, pendingLastSeen.level)
+    : nextRankMeter.value,
+)
+const displayRankTitle = ref(
+  pendingLastSeen ? getRankForLevel(pendingLastSeen.level).title : currentRank.value.title,
+)
+const displayRankLevel = ref(pendingLastSeen ? pendingLastSeen.level : currentRank.value.level)
+const meterTransition = ref(false)
+const showLevelUpModal = ref(false)
+const levelUpFromLevel = ref(null)
+const levelUpXpDelta = ref(100)
+
+const timers = []
+let xpRaf = null
 
 function scrollKeys(subject) {
   const spelling = subject.exercises?.some((exercise) => exercise.exerciseType === 'spelling-jutsu')
@@ -41,6 +69,119 @@ function scrollStatusClass(subject) {
   if (progress.percentage === 0) return 'text-[var(--color-muted)]'
   return 'text-[#00e5ff]'
 }
+
+function syncDisplayToLive() {
+  displayXp.value = overallXP.value
+  displayMeter.value = nextRankMeter.value
+  displayRankTitle.value = currentRank.value.title
+  displayRankLevel.value = currentRank.value.level
+}
+
+function persistCurrentSeen() {
+  writeLastSeen({ xp: overallXP.value, level: currentRank.value.level })
+}
+
+function tweenXp(from, to, durationMs, onDone) {
+  const start = performance.now()
+  const delta = to - from
+
+  function frame(now) {
+    const t = Math.min(1, (now - start) / durationMs)
+    const eased = 1 - (1 - t) ** 3
+    displayXp.value = Math.round(from + delta * eased)
+    if (t < 1) {
+      xpRaf = requestAnimationFrame(frame)
+    } else {
+      displayXp.value = to
+      xpRaf = null
+      onDone?.()
+    }
+  }
+
+  if (xpRaf) cancelAnimationFrame(xpRaf)
+  xpRaf = requestAnimationFrame(frame)
+}
+
+function playLevelUpSound() {
+  try {
+    const audio = new Audio(`${import.meta.env.BASE_URL}sounds/level-up.mp3`)
+    audio.preload = 'auto'
+    audio.volume = 0.9
+    const playPromise = audio.play()
+    if (playPromise && typeof playPromise.catch === 'function') {
+      playPromise.catch(() => {
+        // Autoplay blocked or missing asset — celebration still runs.
+      })
+    }
+  } catch {
+    // Audio unavailable.
+  }
+}
+
+function startXpGainSequence(lastSeen) {
+  const targetXp = overallXP.value
+  const targetLevel = currentRank.value.level
+  const didLevelUp = targetLevel > lastSeen.level
+  const fillDuration = 1000
+
+  timers.push(
+    setTimeout(() => {
+      meterTransition.value = true
+
+      if (didLevelUp) {
+        displayMeter.value = 100
+        tweenXp(lastSeen.xp, targetXp, fillDuration)
+
+        timers.push(
+          setTimeout(() => {
+            playLevelUpSound()
+            levelUpFromLevel.value = lastSeen.level
+            levelUpXpDelta.value = Math.max(0, targetXp - lastSeen.xp) || 100
+            showLevelUpModal.value = true
+          }, fillDuration + 400),
+        )
+      } else {
+        displayMeter.value = nextRankMeter.value
+        tweenXp(lastSeen.xp, targetXp, fillDuration, () => {
+          persistCurrentSeen()
+          syncDisplayToLive()
+        })
+      }
+    }, 300),
+  )
+}
+
+function onClaimRank() {
+  showLevelUpModal.value = false
+  meterTransition.value = false
+  persistCurrentSeen()
+  syncDisplayToLive()
+  // Re-enable transitions after settle so future visits still animate smoothly.
+  requestAnimationFrame(() => {
+    meterTransition.value = true
+  })
+}
+
+onMounted(() => {
+  if (!isShinobi.value) return
+
+  if (pendingLastSeen) {
+    startXpGainSequence(pendingLastSeen)
+    return
+  }
+
+  const lastSeen = readLastSeen()
+  if (!lastSeen) {
+    persistCurrentSeen()
+  }
+  syncDisplayToLive()
+})
+
+onUnmounted(() => {
+  timers.forEach((id) => clearTimeout(id))
+  timers.length = 0
+  if (xpRaf) cancelAnimationFrame(xpRaf)
+})
 </script>
 
 <template>
@@ -50,17 +191,22 @@ function scrollStatusClass(subject) {
       class="theme-card space-y-3 border border-[var(--color-border)] bg-[var(--color-panel)] p-4 sm:p-6"
     >
       <p class="display text-2xl tracking-wide text-[var(--color-primary)]">
-        {{ currentRank.title }} (LEVEL {{ currentRank.level }} • {{ overallXP }} XP)
+        {{ displayRankTitle || currentRank.title }} (LEVEL
+        {{ displayRankLevel || currentRank.level }} • {{ displayXp }} XP)
       </p>
       <div
-        class="h-3 overflow-hidden rounded-full bg-[var(--color-border)]"
+        class="h-3 overflow-hidden rounded-full bg-[var(--color-border)] shadow-[0_0_12px_rgba(0,229,255,0.25)]"
         role="meter"
-        :aria-valuenow="nextRankMeter"
+        :aria-valuenow="displayMeter"
         :aria-valuemin="0"
         :aria-valuemax="100"
-        :aria-label="`Progress toward next rank, ${nextRankMeter} percent`"
+        :aria-label="`Progress toward next rank, ${displayMeter} percent`"
       >
-        <div class="chakra-meter h-full" :style="{ width: `${nextRankMeter}%` }" />
+        <div
+          class="chakra-meter h-full ease-out"
+          :class="meterTransition ? 'transition-[width] duration-1000' : ''"
+          :style="{ width: `${displayMeter}%` }"
+        />
       </div>
     </div>
 
@@ -124,6 +270,15 @@ function scrollStatusClass(subject) {
         </p>
       </RouterLink>
     </div>
+
+    <ShinobiLevelUpModal
+      v-if="showLevelUpModal"
+      :rank-title="currentRank.title"
+      :level="currentRank.level"
+      :xp-delta="levelUpXpDelta"
+      :from-level="levelUpFromLevel"
+      @claim="onClaimRank"
+    />
   </section>
 
   <section v-else class="space-y-3">
