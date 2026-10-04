@@ -1,6 +1,8 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { renderKatex } from '../../../utils/mathKatex'
+import MathPresetChip from '../common/MathPresetChip.vue'
+import MathSegmentedControl from '../common/MathSegmentedControl.vue'
 
 const presets = [
   { label: 'Large Distance', value: 420000 },
@@ -129,6 +131,12 @@ const operators = [
   { id: 'add', symbol: '+', label: 'Add' },
   { id: 'sub', symbol: '−', label: 'Subtract' },
 ]
+
+const operatorOptions = operators.map((item) => ({
+  id: item.id,
+  label: item.symbol,
+  title: item.label,
+}))
 
 const opPresets = [
   {
@@ -382,20 +390,14 @@ const opsModel = computed(() => {
       </h3>
 
       <div class="flex flex-wrap gap-1.5">
-        <button
+        <MathPresetChip
           v-for="(preset, index) in presets"
           :key="preset.label"
-          type="button"
-          class="theme-pill px-2.5 py-1 text-xs font-semibold"
-          :class="
-            activePreset === index
-              ? 'bg-[var(--color-primary)] text-white'
-              : 'border border-[var(--color-border)] text-[var(--color-primary)]'
-          "
+          :selected="activePreset === index"
           @click="selectPreset(index)"
         >
           {{ preset.label }}
-        </button>
+        </MathPresetChip>
       </div>
 
       <label v-if="activePreset === 2" class="block text-sm">
@@ -464,20 +466,14 @@ const opsModel = computed(() => {
       </h3>
 
       <div class="flex flex-wrap gap-1.5">
-        <button
+        <MathPresetChip
           v-for="preset in opPresets"
           :key="preset.id"
-          type="button"
-          class="theme-pill border px-2.5 py-1 text-xs font-semibold"
-          :class="
-            activeOpPreset === preset.id
-              ? 'border-amber-400 bg-amber-500/20 text-amber-100'
-              : 'border-amber-500/40 bg-amber-950/20 text-amber-100'
-          "
+          :selected="activeOpPreset === preset.id"
           @click="loadOpPreset(preset)"
         >
           {{ preset.label }}
-        </button>
+        </MathPresetChip>
       </div>
 
       <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
@@ -504,22 +500,13 @@ const opsModel = computed(() => {
 
         <div class="block text-sm sm:col-span-2 lg:col-span-1">
           <span class="font-semibold text-[var(--color-muted)]">Operator</span>
-          <div class="mt-1 flex flex-wrap gap-1">
-            <button
-              v-for="item in operators"
-              :key="item.id"
-              type="button"
-              class="theme-pill min-w-10 px-3 py-1 text-xs font-semibold"
-              :class="
-                op === item.id
-                  ? 'bg-[var(--color-primary)] text-white'
-                  : 'border border-[var(--color-border)] text-[var(--color-primary)]'
-              "
-              :title="item.label"
-              @click="setOperator(item.id)"
-            >
-              {{ item.symbol }}
-            </button>
+          <div class="mt-1">
+            <MathSegmentedControl
+              :model-value="op"
+              :options="operatorOptions"
+              aria-label="Operation"
+              @update:model-value="setOperator"
+            />
           </div>
         </div>
 

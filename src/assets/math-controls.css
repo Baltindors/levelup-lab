@@ -1,0 +1,150 @@
+/**
+ * Unified 6th-grade / Scroll 2 control taxonomy.
+ * Use these roles only — do not invent one-off amber/orange pill variants for nav.
+ *
+ * 1. Phase Tab   (.math-phase-tabs)     — Explore vs Practice (shell / spelling only)
+ * 2. Segment     (.math-segment)        — tool modes (laws, Distribute/Factor, ×÷+−)
+ * 3. Preset Chip (.math-chip)           — load example inputs
+ * 4. Action Btn  (.math-btn)            — Submit / Next / Start Drill
+ */
+
+/* ----- Phase tabs (full-width, top-level only) ----- */
+.math-phase-tabs {
+  display: grid;
+  grid-template-columns: repeat(var(--math-phase-cols, 2), minmax(0, 1fr));
+  gap: 0.25rem;
+  padding: 0.375rem;
+  border-radius: 1rem;
+  border: 1px solid #1e293b;
+  background: rgb(15 23 42 / 0.9);
+}
+
+.math-phase-tabs__btn {
+  border-radius: var(--radius-pill);
+  padding: 0.625rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  border: none;
+  cursor: pointer;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+@media (min-width: 640px) {
+  .math-phase-tabs__btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+  }
+}
+
+.math-phase-tabs__btn--active {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.math-phase-tabs__btn:focus-visible {
+  outline: 2px solid var(--color-accent, var(--color-primary));
+  outline-offset: 2px;
+}
+
+/* ----- Segmented tool mode (inline track) ----- */
+.math-segment {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border-radius: 9999px;
+  border: 1px solid #1e293b;
+  background: rgb(15 23 42 / 0.6);
+}
+
+.math-segment__btn {
+  border-radius: var(--radius-pill);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-primary);
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.math-segment__btn--active {
+  border-color: transparent;
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.math-segment__btn:focus-visible {
+  outline: 2px solid var(--color-accent, var(--color-primary));
+  outline-offset: 2px;
+}
+
+/* ----- Preset chips (loose row, no outer track) ----- */
+.math-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  cursor: pointer;
+  border: 1px solid #334155;
+  background: rgb(15 23 42 / 0.4);
+  color: #e2e8f0;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.math-chip--active {
+  border-color: transparent;
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.math-chip:focus-visible {
+  outline: 2px solid var(--color-accent, var(--color-primary));
+  outline-offset: 2px;
+}
+
+/* ----- Action buttons (drill CTAs) ----- */
+.math-btn {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+
+.math-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.math-btn--primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.math-btn--ghost {
+  background: transparent;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.math-btn--muted {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-muted);
+}

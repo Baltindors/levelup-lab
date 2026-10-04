@@ -172,12 +172,22 @@ Modules must wrap `MathModuleShell` and provide:
 
 ### Mandatory UI rules
 
-- **Strict 1-Level Navigation** — The only allowed tab switcher is the top-level Phase bar in `MathModuleShell` (`Dojo Sandbox / Practice Kata` vs `10-Chakra Trial`, or Explore vs Practice). Do **not** nest secondary full-width tab bars inside the sandbox explorer.
+- **Strict 1-Level Navigation** — The only allowed full-width tab switcher is the top-level Phase bar (`Dojo Sandbox / Practice Kata` vs `10-Chakra Trial`, or Spelling Study/Match/Spell). Do **not** nest secondary full-width tab bars inside the sandbox explorer.
 - **Single-Scroll Sandbox Canvas** — All learning subtopics, tools, and examples for a module must live on one vertically scrollable page. Users scroll down for further examples; they never tab away within Explore.
-- **Presets as Input Chips** — Presets are small, compact action chips attached to their specific tool. Never style presets as primary or secondary navigation tabs.
-- **Mobile-Friendly Segmented Controls** — The top-level phase switcher must stay a compact side-by-side segmented control (`grid-cols-2`) on mobile viewports. Do not stack it into two tall full-width button blocks.
 - **KaTeX overflow** — Live Equality / Live Result / numbered step cards wrap formulas in `overflow-x-auto max-w-full py-1` so long expressions scroll inside the card on ~375px viewports instead of widening the page.
-- **Tool-mode exception** — When two inverse modes share one canvas (e.g. Distribute vs Factor on the same area grid), a compact in-tool segmented pill switch is allowed. It must use small chips (`text-xs py-1 px-3`), never full-width page-level tabs.
+
+#### Control taxonomy (required)
+
+All grade-5 / Scroll 2 explorers must use the shared styles in [`src/assets/math-controls.css`](../src/assets/math-controls.css) and helpers under [`src/components/exercises/common/`](../src/components/exercises/common/). Do **not** invent one-off amber/orange pill variants for navigation.
+
+| Role | Classes / component | Use for | Look |
+|------|---------------------|---------|------|
+| **Phase Tab** | `.math-phase-tabs` + `.math-phase-tabs__btn` | Explore vs Practice (shell); Spelling phases | Full-width grid track; active = solid primary |
+| **Segmented Tool Mode** | `MathSegmentedControl` (`.math-segment`) | Laws, Distribute/Factor, ×÷+−, ±GCF | Inline rounded track; active = solid primary |
+| **Preset Chip** | `MathPresetChip` (`.math-chip`) | Load example inputs | Loose chip row; active = solid primary; inactive = slate border — **never amber** |
+| **Action Button** | `.math-btn` / `--primary` / `--ghost` | Submit, Next, Start Drill | Large CTA (`min-h-11`) |
+
+Amber/emerald pills remain reserved for Scroll Master callouts and status badges (e.g. Valid Scientific Notation), not for presets or mode switches.
 
 ### Example skeleton (Scroll 2 exponents)
 

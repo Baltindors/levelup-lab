@@ -1,6 +1,8 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { renderKatex } from '../../../utils/mathKatex'
+import MathPresetChip from '../common/MathPresetChip.vue'
+import MathSegmentedControl from '../common/MathSegmentedControl.vue'
 
 const mode = ref('distribute')
 
@@ -17,6 +19,24 @@ const cell2Coeff = ref(-52)
 const cell2Power = ref(2)
 const gcfSign = ref(-1)
 const activeFactorPreset = ref('neg16')
+const activeDistributePreset = ref('d-47')
+
+const modeOptions = [
+  { id: 'distribute', label: 'Distribute' },
+  { id: 'factor', label: 'Factor GCF' },
+]
+
+const gcfSignOptions = [
+  { id: 'pos', label: '+ GCF' },
+  { id: 'neg', label: '− GCF' },
+]
+
+const gcfSignKey = computed({
+  get: () => (gcfSign.value === 1 ? 'pos' : 'neg'),
+  set: (next) => {
+    gcfSign.value = next === 'pos' ? 1 : -1
+  },
+})
 
 const distributePresets = [
   {
@@ -142,6 +162,7 @@ function setMode(next) {
 }
 
 function loadDistributePreset(preset) {
+  activeDistributePreset.value = preset.id
   mono.value = preset.mono
   termA.value = preset.termA
   termB.value = preset.termB
@@ -301,65 +322,34 @@ const model = computed(() => {
       Lesson 2-6 Distribute (outside → in) and Lesson 2-7 Factor GCF (inside → out). Use presets from the exam review scroll.
     </p>
 
-    <div
-      class="inline-flex gap-1 rounded-full border border-slate-800 bg-slate-900/60 p-1"
-      role="group"
+    <MathSegmentedControl
+      :model-value="mode"
+      :options="modeOptions"
       aria-label="Area model mode"
-    >
-      <button
-        type="button"
-        class="theme-pill px-3 py-1 text-xs font-semibold uppercase tracking-wide"
-        :class="
-          mode === 'distribute'
-            ? 'bg-[var(--color-primary)] text-white'
-            : 'border border-[var(--color-border)] text-[var(--color-primary)]'
-        "
-        @click="setMode('distribute')"
-      >
-        Distribute
-      </button>
-      <button
-        type="button"
-        class="theme-pill px-3 py-1 text-xs font-semibold uppercase tracking-wide"
-        :class="
-          mode === 'factor'
-            ? 'bg-[var(--color-primary)] text-white'
-            : 'border border-[var(--color-border)] text-[var(--color-primary)]'
-        "
-        @click="setMode('factor')"
-      >
-        Factor GCF
-      </button>
-    </div>
+      @update:model-value="setMode"
+    />
 
     <!-- Mode-scoped presets -->
-    <div class="flex flex-wrap gap-2">
+    <div class="flex flex-wrap gap-1.5">
       <template v-if="mode === 'distribute'">
-        <button
+        <MathPresetChip
           v-for="preset in distributePresets"
           :key="preset.id"
-          type="button"
-          class="theme-pill border border-amber-500/40 bg-amber-950/20 px-3 py-1.5 text-xs font-semibold text-amber-100"
+          :selected="activeDistributePreset === preset.id"
           @click="loadDistributePreset(preset)"
         >
           <span v-html="renderKatex(preset.label)" />
-        </button>
+        </MathPresetChip>
       </template>
       <template v-else>
-        <button
+        <MathPresetChip
           v-for="preset in factorPresets"
           :key="preset.id"
-          type="button"
-          class="theme-pill border px-3 py-1.5 text-xs font-semibold"
-          :class="
-            activeFactorPreset === preset.id
-              ? 'border-amber-400 bg-amber-500/20 text-amber-100'
-              : 'border-amber-500/40 bg-amber-950/20 text-amber-100'
-          "
+          :selected="activeFactorPreset === preset.id"
           @click="loadFactorPreset(preset)"
         >
           <span v-html="renderKatex(preset.label)" />
-        </button>
+        </MathPresetChip>
       </template>
     </div>
 
@@ -372,6 +362,7 @@ const model = computed(() => {
           type="number"
           step="0.1"
           class="mt-1 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-panel)] px-3 py-2 font-mono text-[var(--color-text)]"
+          @input="activeDistributePreset = null"
         />
       </label>
       <label class="block text-sm">
@@ -381,6 +372,7 @@ const model = computed(() => {
           type="number"
           step="0.1"
           class="mt-1 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-panel)] px-3 py-2 font-mono text-[var(--color-text)]"
+          @input="activeDistributePreset = null"
         />
       </label>
       <label class="block text-sm">
@@ -390,6 +382,7 @@ const model = computed(() => {
           type="number"
           step="0.1"
           class="mt-1 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-panel)] px-3 py-2 font-mono text-[var(--color-text)]"
+          @input="activeDistributePreset = null"
         />
       </label>
       <label class="block text-sm">
@@ -399,37 +392,17 @@ const model = computed(() => {
           type="text"
           maxlength="3"
           class="mt-1 w-full rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-panel)] px-3 py-2 font-mono text-[var(--color-text)]"
+          @input="activeDistributePreset = null"
         />
       </label>
     </div>
 
     <div v-else class="space-y-3">
-      <div class="flex flex-wrap gap-2">
-        <button
-          type="button"
-          class="theme-pill px-3 py-1.5 text-xs font-semibold uppercase tracking-wide"
-          :class="
-            gcfSign === 1
-              ? 'bg-emerald-600 text-white'
-              : 'border border-[var(--color-border)] text-[var(--color-muted)]'
-          "
-          @click="gcfSign = 1"
-        >
-          + GCF
-        </button>
-        <button
-          type="button"
-          class="theme-pill px-3 py-1.5 text-xs font-semibold uppercase tracking-wide"
-          :class="
-            gcfSign === -1
-              ? 'bg-rose-700 text-white'
-              : 'border border-[var(--color-border)] text-[var(--color-muted)]'
-          "
-          @click="gcfSign = -1"
-        >
-          − GCF
-        </button>
-      </div>
+      <MathSegmentedControl
+        v-model="gcfSignKey"
+        :options="gcfSignOptions"
+        aria-label="GCF sign"
+      />
 
       <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <label class="block text-sm">

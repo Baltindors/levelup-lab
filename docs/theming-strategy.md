@@ -70,6 +70,8 @@ Do **not** build class names as `theme-grade-${gradeId}` — IDs like `college-t
 
 Shared helpers: `.theme-card` uses `--radius-card`; `.theme-pill` uses `--radius-pill`.
 
+For grade-5 / Scroll 2 interactive controls (phase tabs, tool-mode segments, preset chips, action buttons), use [`src/assets/math-controls.css`](../src/assets/math-controls.css) — see **Control taxonomy** under Standard Math Module Pattern in [`architecture.md`](./architecture.md). Do not invent per-module amber/orange pill variants for navigation.
+
 ## Guidelines
 
 - Prefer CSS variables over hard-coded grade colors in components.

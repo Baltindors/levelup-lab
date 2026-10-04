@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { renderKatex } from '../../../utils/mathKatex'
+import MathSegmentedControl from '../common/MathSegmentedControl.vue'
 
 const mode = ref('product')
 const base = ref('r')
@@ -72,22 +73,7 @@ const steps = computed(() => {
       Enter a base and exponents to watch each integer-exponent law applied step by step.
     </p>
 
-    <div class="flex flex-wrap gap-2">
-      <button
-        v-for="item in modes"
-        :key="item.id"
-        type="button"
-        class="theme-pill px-3 py-1.5 text-xs font-semibold uppercase tracking-wide"
-        :class="
-          mode === item.id
-            ? 'bg-[var(--color-primary)] text-white'
-            : 'border border-[var(--color-border)] text-[var(--color-primary)]'
-        "
-        @click="mode = item.id"
-      >
-        {{ item.label }}
-      </button>
-    </div>
+    <MathSegmentedControl v-model="mode" :options="modes" aria-label="Exponent law" />
 
     <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       <label class="block text-sm">

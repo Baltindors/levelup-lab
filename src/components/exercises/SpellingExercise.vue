@@ -391,7 +391,8 @@ onUnmounted(() => {
     </div>
 
     <div
-      class="theme-card flex flex-col gap-2 border border-[var(--color-border)] bg-[var(--color-panel)] p-2 sm:flex-row"
+      class="math-phase-tabs"
+      style="--math-phase-cols: 3"
       role="tablist"
       aria-label="Spelling jutsu mode"
     >
@@ -400,12 +401,8 @@ onUnmounted(() => {
         :key="tab.id"
         type="button"
         role="tab"
-        class="theme-pill min-h-11 flex-1 px-4 py-2 text-sm font-semibold"
-        :class="
-          activeTab === tab.id
-            ? 'bg-[var(--color-primary)] text-white'
-            : 'bg-[var(--color-primary-soft)] text-[var(--color-primary)]'
-        "
+        class="math-phase-tabs__btn"
+        :class="{ 'math-phase-tabs__btn--active': activeTab === tab.id }"
         :aria-selected="activeTab === tab.id"
         @click="selectTab(tab.id)"
       >

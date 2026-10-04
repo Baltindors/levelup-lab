@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './assets/themes/grades.css';
+@import './assets/math-controls.css';
 
 html,
 body,
