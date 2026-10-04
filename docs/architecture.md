@@ -57,7 +57,7 @@ Mock data lives in `src/data/mockData.js` and follows this shape:
 {
   grades: [
     {
-      id: 'grade-5',
+      id: 'grade-6',
       name: '6th Grade',
       theme: 'theme-grade-5',
       subjects: [
@@ -110,11 +110,11 @@ Views resolve entities by route params (`gradeId`, `subjectId`, `exerciseId`) ag
 
 `trig-grapher` uses [`src/utils/trigSolver.js`](../src/utils/trigSolver.js) to parse `y = A f(B(x-C))+D`, compute period/phase/key points, and plot multi-segment SVG paths that break at asymptotes. The parser accepts fractional/parenthesized coefficients (e.g. `(1/2)csc(x)`, `-3/2tan(x)`), bare signs (`-sin(x)`), `x/k` arguments, and fractional midlines (`+1/2`). Formulas render with KaTeX. It is the first module built on the **Standard Math Module Pattern** below.
 
-`math-exponents`, `math-scientific-notation`, and `math-algebraic-expressions` are the 6th Grade Scroll 2 exam modules. Each wraps `MathModuleShell`, uses `useMathDrill` with `stratifyBy: 'topic'`, and draws from practice pools in [`src/data/mathExam100526Pools.js`](../src/data/mathExam100526Pools.js). Completing all three passed drills awards +1 Shinobi level via [`useMathExamProgress.js`](../src/composables/useMathExamProgress.js).
+`math-exponents`, `math-scientific-notation`, and `math-algebraic-expressions` are the 6th Grade Scroll 2 exam modules. Each wraps `MathModuleShell`, uses `useMathDrill` with `stratifyBy: 'topic'`, and draws from practice pools in [`src/data/mathExam100526Pools.js`](../src/data/mathExam100526Pools.js). Trial scores flow through [`useMathExamProgress.js`](../src/composables/useMathExamProgress.js): each attempt stores peak `bestScore`, letter rank (S/A/B/C/F), and a sealed `completed` flag (≥70%). Best score never downgrades on retake. Completing all three sealed trials awards +1 Shinobi level once. [`SubjectView.vue`](../src/views/SubjectView.vue) shows a Chakra progress bar plus topic badges and anime rank stamps when the subject is `math-exam-100526`.
 
 `custom-spelling` wraps the spelling drill with a local scroll builder. Once sealed, it remounts `SpellingExercise` with the student’s word list and an isolated mastery scope so weekly jutsu progress is not overwritten.
 
-Components emit `answered` with `{ correct: boolean }`. The view keeps the exercise mounted (inputs disabled) and shows a completion banner below with **Try Again** (on incorrect), **Next Exercise**, and **Back to Subject**.
+Components emit `answered` with `{ correct: boolean }`. Scroll 2 math modules also include `{ score, total, passed }`; `ExerciseView` calls `recordExerciseScore` on every finished trial. The view keeps the exercise mounted (inputs disabled) and shows a completion banner below with **Try Again** (on incorrect), **Next Exercise**, and **Back to Subject**.
 
 ## Client Storage
 
@@ -125,7 +125,7 @@ The app stays zero-backend. User-authored and progress state live in browser `lo
 | `levelup_custom_spelling_words` | Custom Spelling Jutsu word/definition scroll |
 | `shinobi_academy_progress_v1` | Shinobi scroll / trial completion flags |
 | `shinobi_spelling_mastery_v2` | Per-scope mastered word IDs for spelling practices |
-| `levelup_math_exam_100526_progress` | Scroll 2 exam trial flags + one-time level-up guard |
+| `levelup_math_exam_100526_progress` | Scroll 2 per-exercise scores/ranks (`bestScore`, `gradeRank`, `completed`) + one-time level-up guard; legacy boolean `true` normalizes to Rank B (70%) |
 
 Custom content and mastery survive refresh without a server. Private-mode or storage failures are ignored so sessions still work in-memory.
 
@@ -164,7 +164,7 @@ Modules must wrap `MathModuleShell` and provide:
 
 - Question cards must remount per item (`:key="currentQuestion.id"` in the shell) so form state does not bleed.
 - Record the answer on **Submit**; advance only when the student clicks **Next Card →**.
-- Emit `answered({ correct: passed })` when a full drill session completes.
+- Emit `answered({ correct: passed, score, total, passed })` when a full drill session completes (Scroll 2 modules include score fields for `recordExerciseScore`).
 - Put a `practicePool` (15+ items recommended) on the exercise object in `src/data/mockData.js` (or an imported pool file under `src/data/`).
 - For multi-lesson pools, pass `stratifyBy: 'topic'` to `useMathDrill` so 10-card drills round-robin across subtopics instead of clustering.
 - Double-escape LaTeX backslashes in JS pool strings (`\\frac`, `\\times`). Render with [`src/utils/mathKatex.js`](../src/utils/mathKatex.js): undelimited text stays plain prose; `$...$` / `$$...$$` segments render as KaTeX.

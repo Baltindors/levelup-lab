@@ -28,7 +28,7 @@ const exerciseComponent = computed(() =>
 const isShinobi = computed(() => grade.value?.theme === 'theme-grade-5')
 const isMathExamScroll = computed(() => subject.value?.id === MATH_EXAM_SUBJECT_ID)
 
-const { markExerciseComplete, completedCount } = useMathExamProgress()
+const { recordExerciseScore, completedCount } = useMathExamProgress()
 const { currentRank, overallXP } = useShinobiProgress()
 
 const completion = ref(null)
@@ -51,10 +51,14 @@ watch(
 
 function onAnswered(result) {
   completion.value = result
-  if (!result?.correct || !isMathExamScroll.value || !exercise.value?.id) return
+  if (!isMathExamScroll.value || !exercise.value?.id) return
 
-  const { leveledUpNow } = markExerciseComplete(exercise.value.id)
-  showLevelUp.value = leveledUpNow
+  const { leveledUpNow } = recordExerciseScore(exercise.value.id, {
+    score: result?.score ?? 0,
+    total: result?.total ?? 10,
+    passed: result?.passed ?? result?.correct,
+  })
+  showLevelUp.value = Boolean(result?.correct) && leveledUpNow
 }
 
 function tryAgain() {

@@ -7,7 +7,7 @@ import {
 export const mockData = {
   grades: [
     {
-      id: 'grade-5',
+      id: 'grade-6',
       name: '6th Grade',
       theme: 'theme-grade-5',
       cardTitle: '6TH GRADE: SHINOBI ACADEMY',
