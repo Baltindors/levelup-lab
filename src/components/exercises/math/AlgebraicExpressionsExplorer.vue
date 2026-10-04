@@ -301,10 +301,14 @@ const model = computed(() => {
       Lesson 2-6 Distribute (outside → in) and Lesson 2-7 Factor GCF (inside → out). Use presets from the exam review scroll.
     </p>
 
-    <div class="flex flex-wrap gap-2">
+    <div
+      class="inline-flex gap-1 rounded-full border border-slate-800 bg-slate-900/60 p-1"
+      role="group"
+      aria-label="Area model mode"
+    >
       <button
         type="button"
-        class="theme-pill px-3 py-1.5 text-xs font-semibold uppercase tracking-wide"
+        class="theme-pill px-3 py-1 text-xs font-semibold uppercase tracking-wide"
         :class="
           mode === 'distribute'
             ? 'bg-[var(--color-primary)] text-white'
@@ -316,7 +320,7 @@ const model = computed(() => {
       </button>
       <button
         type="button"
-        class="theme-pill px-3 py-1.5 text-xs font-semibold uppercase tracking-wide"
+        class="theme-pill px-3 py-1 text-xs font-semibold uppercase tracking-wide"
         :class="
           mode === 'factor'
             ? 'bg-[var(--color-primary)] text-white'

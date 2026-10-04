@@ -170,6 +170,15 @@ Modules must wrap `MathModuleShell` and provide:
 - Double-escape LaTeX backslashes in JS pool strings (`\\frac`, `\\times`). Render with [`src/utils/mathKatex.js`](../src/utils/mathKatex.js): undelimited text stays plain prose; `$...$` / `$$...$$` segments render as KaTeX.
 - Scroll 2 MC pool items may include optional `rule` (string) and `steps` (string[]) for the **Scroll Master's Breakdown** review UI in `MathMcDrillExplanation`. If `steps` is missing, the UI falls back to `explanation`. Inline math in steps/explanations must use `$...$` delimiters.
 
+### Mandatory UI rules
+
+- **Strict 1-Level Navigation** — The only allowed tab switcher is the top-level Phase bar in `MathModuleShell` (`Dojo Sandbox / Practice Kata` vs `10-Chakra Trial`, or Explore vs Practice). Do **not** nest secondary full-width tab bars inside the sandbox explorer.
+- **Single-Scroll Sandbox Canvas** — All learning subtopics, tools, and examples for a module must live on one vertically scrollable page. Users scroll down for further examples; they never tab away within Explore.
+- **Presets as Input Chips** — Presets are small, compact action chips attached to their specific tool. Never style presets as primary or secondary navigation tabs.
+- **Mobile-Friendly Segmented Controls** — The top-level phase switcher must stay a compact side-by-side segmented control (`grid-cols-2`) on mobile viewports. Do not stack it into two tall full-width button blocks.
+- **KaTeX overflow** — Live Equality / Live Result / numbered step cards wrap formulas in `overflow-x-auto max-w-full py-1` so long expressions scroll inside the card on ~375px viewports instead of widening the page.
+- **Tool-mode exception** — When two inverse modes share one canvas (e.g. Distribute vs Factor on the same area grid), a compact in-tool segmented pill switch is allowed. It must use small chips (`text-xs py-1 px-3`), never full-width page-level tabs.
+
 ### Example skeleton (Scroll 2 exponents)
 
 ```vue

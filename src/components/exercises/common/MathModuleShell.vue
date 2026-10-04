@@ -112,14 +112,14 @@ function toggleResult(id) {
 <template>
   <div class="space-y-5">
     <div
-      class="theme-card flex flex-col gap-2 border border-[var(--color-border)] bg-[var(--color-panel)] p-2 shadow-sm sm:flex-row"
+      class="grid grid-cols-2 gap-1 rounded-2xl border border-slate-800 bg-slate-900/90 p-1.5"
       role="tablist"
       aria-label="Math module mode"
     >
       <button
         type="button"
         role="tab"
-        class="theme-pill min-h-11 flex-1 px-4 py-2 text-sm font-semibold"
+        class="theme-pill px-2 py-2.5 text-xs font-semibold sm:px-4 sm:py-3 sm:text-sm"
         :class="
           tab === 'explore'
             ? 'bg-[var(--color-primary)] text-white'
@@ -133,7 +133,7 @@ function toggleResult(id) {
       <button
         type="button"
         role="tab"
-        class="theme-pill min-h-11 flex-1 px-4 py-2 text-sm font-semibold"
+        class="theme-pill px-2 py-2.5 text-xs font-semibold sm:px-4 sm:py-3 sm:text-sm"
         :class="
           tab === 'practice'
             ? 'bg-[var(--color-primary)] text-white'
