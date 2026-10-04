@@ -2,6 +2,8 @@
 import { computed } from 'vue'
 import { renderKatex } from '../../../utils/mathKatex'
 
+const DISPLAY_LETTERS = ['A', 'B', 'C', 'D']
+
 const props = defineProps({
   item: { type: Object, required: true },
 })
@@ -27,6 +29,10 @@ function stepHtml(step) {
   return renderKatex(step ?? '')
 }
 
+function displayLetter(index) {
+  return DISPLAY_LETTERS[index] ?? String(index + 1)
+}
+
 function optionClass(optionId) {
   if (optionId === correctId.value) {
     return 'border-emerald-500 bg-emerald-950/40'
@@ -44,13 +50,13 @@ function optionClass(optionId) {
 
     <ul class="space-y-2">
       <li
-        v-for="option in question.options || []"
+        v-for="(option, index) in question.options || []"
         :key="option.id"
         class="flex flex-wrap items-center gap-2 rounded-[var(--radius-card)] border px-3 py-3"
         :class="optionClass(option.id)"
       >
         <span class="text-xs font-bold uppercase text-[var(--color-muted)]">
-          {{ option.id }}.
+          {{ displayLetter(index) }}.
         </span>
         <span class="min-w-0 leading-normal text-[var(--color-text)]" v-html="optionHtml(option.label)" />
         <span

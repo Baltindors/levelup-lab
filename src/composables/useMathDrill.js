@@ -91,7 +91,12 @@ export function useMathDrill(
       ? [...customList]
       : pickFromPool()
 
-    session.value = source
+    // Clone each card and shuffle choices so correctAnswer id stays stable
+    // while display position varies across A/B/C/D.
+    session.value = source.map((q) => ({
+      ...q,
+      options: shuffle(Array.isArray(q.options) ? q.options : []),
+    }))
     currentIndex.value = 0
     results.value = []
     isComplete.value = false

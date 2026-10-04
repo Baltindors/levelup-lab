@@ -2,6 +2,8 @@
 import { computed, ref, watch } from 'vue'
 import { renderKatex } from '../../../utils/mathKatex'
 
+const DISPLAY_LETTERS = ['A', 'B', 'C', 'D']
+
 const props = defineProps({
   question: { type: Object, required: true },
   submit: { type: Function, required: true },
@@ -24,6 +26,10 @@ function optionHtml(label) {
   return renderKatex(label ?? '')
 }
 
+function displayLetter(index) {
+  return DISPLAY_LETTERS[index] ?? String(index + 1)
+}
+
 function onSubmit() {
   if (locked.value || !selectedId.value) return
   props.submit({ selectedId: selectedId.value })
@@ -36,7 +42,7 @@ function onSubmit() {
 
     <div class="grid gap-2" role="radiogroup" aria-label="Answer choices">
       <button
-        v-for="option in question.options || []"
+        v-for="(option, index) in question.options || []"
         :key="option.id"
         type="button"
         role="radio"
@@ -58,7 +64,7 @@ function onSubmit() {
               : 'border-black/20 text-[var(--color-muted)]'
           "
         >
-          {{ option.id }}
+          {{ displayLetter(index) }}
         </span>
         <span
           class="min-w-0 flex-1 leading-normal [&>.katex]:whitespace-normal"
