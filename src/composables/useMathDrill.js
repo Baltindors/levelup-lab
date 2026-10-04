@@ -10,11 +10,48 @@ function shuffle(list) {
 }
 
 /**
+ * Round-robin sample across buckets so drills cover every subtopic.
+ * @param {Array} list
+ * @param {number} count
+ * @param {string} key
+ */
+function sampleStratified(list, count, key) {
+  const buckets = new Map()
+  for (const item of list) {
+    const bucketKey = item?.[key] ?? '__default__'
+    if (!buckets.has(bucketKey)) buckets.set(bucketKey, [])
+    buckets.get(bucketKey).push(item)
+  }
+
+  const queues = [...buckets.values()].map((bucket) => shuffle(bucket))
+  if (!queues.length) return []
+
+  const picked = []
+  let guard = 0
+  while (picked.length < count && guard < count * 20) {
+    guard += 1
+    let progressed = false
+    for (const queue of queues) {
+      if (picked.length >= count) break
+      if (!queue.length) continue
+      picked.push(queue.shift())
+      progressed = true
+    }
+    if (!progressed) break
+  }
+
+  return shuffle(picked)
+}
+
+/**
  * Reusable quiz session manager for math modules.
  * @param {import('vue').MaybeRefOrGetter<Array>} questionPool
- * @param {{ drillSize?: number, passingScore?: number }} config
+ * @param {{ drillSize?: number, passingScore?: number, stratifyBy?: string|null }} config
  */
-export function useMathDrill(questionPool, { drillSize = 10, passingScore = 0.7 } = {}) {
+export function useMathDrill(
+  questionPool,
+  { drillSize = 10, passingScore = 0.7, stratifyBy = null } = {},
+) {
   const session = ref([])
   const currentIndex = ref(0)
   const results = ref([])
@@ -42,10 +79,17 @@ export function useMathDrill(questionPool, { drillSize = 10, passingScore = 0.7 
 
   const size = computed(() => session.value.length || drillSize)
 
+  function pickFromPool() {
+    const source = pool()
+    const limit = Math.min(drillSize, source.length)
+    if (stratifyBy) return sampleStratified(source, limit, stratifyBy)
+    return shuffle(source).slice(0, limit)
+  }
+
   function startDrill(customList) {
     const source = Array.isArray(customList) && customList.length
       ? [...customList]
-      : shuffle(pool()).slice(0, Math.min(drillSize, pool().length))
+      : pickFromPool()
 
     session.value = source
     currentIndex.value = 0

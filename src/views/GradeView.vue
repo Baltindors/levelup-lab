@@ -3,12 +3,17 @@ import { computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { getGrade } from '../data/mockData'
 import { SPELLING_ACTIVITY_KEYS, useShinobiProgress } from '../composables/useShinobiProgress'
+import {
+  MATH_EXAM_SUBJECT_ID,
+  useMathExamProgress,
+} from '../composables/useMathExamProgress'
 
 const route = useRoute()
 const grade = computed(() => getGrade(route.params.gradeId))
 const isShinobi = computed(() => grade.value?.theme === 'theme-grade-5')
 
 const { getScrollProgress, overallXP, currentRank, nextRankMeter } = useShinobiProgress()
+const { getScrollProgress: getMathExamProgress } = useMathExamProgress()
 
 function scrollKeys(subject) {
   const spelling = subject.exercises?.some((exercise) => exercise.exerciseType === 'spelling-jutsu')
@@ -16,6 +21,7 @@ function scrollKeys(subject) {
 }
 
 function scrollProgress(subject) {
+  if (subject.id === MATH_EXAM_SUBJECT_ID) return getMathExamProgress()
   return getScrollProgress(subject.id, scrollKeys(subject))
 }
 

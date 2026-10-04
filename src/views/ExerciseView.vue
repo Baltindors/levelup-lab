@@ -4,6 +4,11 @@ import { useRoute, RouterLink } from 'vue-router'
 import { getExercise, getGrade, getNextExercise, getSubject } from '../data/mockData'
 import { resolveExerciseComponent } from '../components/exercises'
 import ShinobiVersusIntro from '../components/common/ShinobiVersusIntro.vue'
+import {
+  MATH_EXAM_SUBJECT_ID,
+  useMathExamProgress,
+} from '../composables/useMathExamProgress'
+import { useShinobiProgress } from '../composables/useShinobiProgress'
 
 const route = useRoute()
 
@@ -21,10 +26,15 @@ const exerciseComponent = computed(() =>
 )
 
 const isShinobi = computed(() => grade.value?.theme === 'theme-grade-5')
+const isMathExamScroll = computed(() => subject.value?.id === MATH_EXAM_SUBJECT_ID)
+
+const { markExerciseComplete, completedCount } = useMathExamProgress()
+const { currentRank, overallXP } = useShinobiProgress()
 
 const completion = ref(null)
 const attemptKey = ref(0)
 const showIntro = ref(true)
+const showLevelUp = ref(false)
 const showVictory = computed(
   () => isShinobi.value && completion.value?.correct && grade.value?.victoryTitle
 )
@@ -35,16 +45,22 @@ watch(
     completion.value = null
     attemptKey.value = 0
     showIntro.value = isShinobi.value
+    showLevelUp.value = false
   }
 )
 
 function onAnswered(result) {
   completion.value = result
+  if (!result?.correct || !isMathExamScroll.value || !exercise.value?.id) return
+
+  const { leveledUpNow } = markExerciseComplete(exercise.value.id)
+  showLevelUp.value = leveledUpNow
 }
 
 function tryAgain() {
   completion.value = null
   attemptKey.value += 1
+  showLevelUp.value = false
 }
 </script>
 
@@ -60,7 +76,7 @@ function tryAgain() {
     <div>
       <h1 class="display text-4xl font-bold">{{ exercise.title }}</h1>
       <p class="mt-2 text-sm uppercase tracking-wide text-[var(--color-muted)]">
-        {{ exercise.exerciseType }} · {{ grade.name }}
+        {{ exercise.badge || exercise.exerciseType }} · {{ grade.name }}
       </p>
     </div>
 
@@ -70,6 +86,22 @@ function tryAgain() {
       :exercise="exercise"
       @answered="onAnswered"
     />
+
+    <div
+      v-if="showLevelUp"
+      class="theme-card speedlines border border-[var(--color-primary)] p-4 shadow-sm sm:p-6"
+      role="status"
+    >
+      <p class="display text-2xl font-bold tracking-wide text-[var(--color-primary)] sm:text-4xl">
+        LEVEL UP!
+      </p>
+      <p class="mt-2 text-sm text-[var(--color-muted)]">
+        Scroll 2 mastered ({{ completedCount }}/3 trials). You reached
+        <span class="font-semibold text-[var(--color-text)]">
+          {{ currentRank.title }} (LEVEL {{ currentRank.level }} • {{ overallXP }} XP)
+        </span>.
+      </p>
+    </div>
 
     <div
       v-if="completion"
@@ -96,7 +128,9 @@ function tryAgain() {
       <p class="mt-1 text-sm text-[var(--color-muted)]">
         {{
           completion.correct
-            ? 'You completed this exercise. Keep going when you are ready.'
+            ? isMathExamScroll
+              ? `Trial cleared. Scroll progress: ${completedCount}/3.`
+              : 'You completed this exercise. Keep going when you are ready.'
             : 'Look back at your answer above, then retry or return to the subject.'
         }}
       </p>

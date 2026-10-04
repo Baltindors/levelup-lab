@@ -101,11 +101,33 @@ Views resolve entities by route params (`gradeId`, `subjectId`, `exerciseId`) ag
 | `multiple-choice` | `MultipleChoiceExercise.vue` |
 | `flashcard` | `FlashcardExercise.vue` |
 | `trig-grapher` | `TrigGrapherExercise.vue` |
+| `spelling-jutsu` | `SpellingExercise.vue` |
+| `custom-spelling` | `CustomSpellingExercise.vue` |
+| `math-exponents` | `math/ExponentsModule.vue` |
+| `math-scientific-notation` | `math/ScientificNotationModule.vue` |
+| `math-algebraic-expressions` | `math/AlgebraicExpressionsModule.vue` |
 | anything else (e.g. `graph-interactive`) | `ExerciseFallback.vue` |
 
 `trig-grapher` uses [`src/utils/trigSolver.js`](../src/utils/trigSolver.js) to parse `y = A f(B(x-C))+D`, compute period/phase/key points, and plot multi-segment SVG paths that break at asymptotes. The parser accepts fractional/parenthesized coefficients (e.g. `(1/2)csc(x)`, `-3/2tan(x)`), bare signs (`-sin(x)`), `x/k` arguments, and fractional midlines (`+1/2`). Formulas render with KaTeX. It is the first module built on the **Standard Math Module Pattern** below.
 
+`math-exponents`, `math-scientific-notation`, and `math-algebraic-expressions` are the 6th Grade Scroll 2 exam modules. Each wraps `MathModuleShell`, uses `useMathDrill` with `stratifyBy: 'topic'`, and draws from practice pools in [`src/data/mathExam100526Pools.js`](../src/data/mathExam100526Pools.js). Completing all three passed drills awards +1 Shinobi level via [`useMathExamProgress.js`](../src/composables/useMathExamProgress.js).
+
+`custom-spelling` wraps the spelling drill with a local scroll builder. Once sealed, it remounts `SpellingExercise` with the student’s word list and an isolated mastery scope so weekly jutsu progress is not overwritten.
+
 Components emit `answered` with `{ correct: boolean }`. The view keeps the exercise mounted (inputs disabled) and shows a completion banner below with **Try Again** (on incorrect), **Next Exercise**, and **Back to Subject**.
+
+## Client Storage
+
+The app stays zero-backend. User-authored and progress state live in browser `localStorage`:
+
+| Key | Purpose |
+|-----|---------|
+| `levelup_custom_spelling_words` | Custom Spelling Jutsu word/definition scroll |
+| `shinobi_academy_progress_v1` | Shinobi scroll / trial completion flags |
+| `shinobi_spelling_mastery_v2` | Per-scope mastered word IDs for spelling practices |
+| `levelup_math_exam_100526_progress` | Scroll 2 exam trial flags + one-time level-up guard |
+
+Custom content and mastery survive refresh without a server. Private-mode or storage failures are ignored so sessions still work in-memory.
 
 ## Standard Math Module Pattern
 
@@ -123,25 +145,38 @@ Every math topic should follow the same two-phase UX:
 
 ### Required slots
 
-Future modules (e.g. 6th Grade Fractions) must wrap `MathModuleShell` and provide:
+Modules must wrap `MathModuleShell` and provide:
 
 - `#explorer` — sandbox tool for the topic
 - `#question` — props/bindings: `question`, `submit(studentAnswers)`, `feedback`
 - `#explanation` — binding: `item` (`{ question, studentAnswers, isCorrect }`) for missed review
+
+### Canonical examples
+
+| `exerciseType` | Module |
+|----------------|--------|
+| `trig-grapher` | College Trig grapher + typed drill |
+| `math-exponents` | Integer exponent laws (explorer + MC drill) |
+| `math-scientific-notation` | Decimal-shift visualizer + MC drill |
+| `math-algebraic-expressions` | Area-model distribute/factor + MC drill |
 
 ### Conventions
 
 - Question cards must remount per item (`:key="currentQuestion.id"` in the shell) so form state does not bleed.
 - Record the answer on **Submit**; advance only when the student clicks **Next Card →**.
 - Emit `answered({ correct: passed })` when a full drill session completes.
-- Put a `practicePool` (15+ items recommended) on the exercise object in `src/data/mockData.js`.
+- Put a `practicePool` (15+ items recommended) on the exercise object in `src/data/mockData.js` (or an imported pool file under `src/data/`).
+- For multi-lesson pools, pass `stratifyBy: 'topic'` to `useMathDrill` so 10-card drills round-robin across subtopics instead of clustering.
+- Double-escape LaTeX backslashes in JS pool strings (`\\frac`, `\\times`). Render with [`src/utils/mathKatex.js`](../src/utils/mathKatex.js): undelimited text stays plain prose; `$...$` / `$$...$$` segments render as KaTeX.
+- Scroll 2 MC pool items may include optional `rule` (string) and `steps` (string[]) for the **Scroll Master's Breakdown** review UI in `MathMcDrillExplanation`. If `steps` is missing, the UI falls back to `explanation`. Inline math in steps/explanations must use `$...$` delimiters.
 
-### Example skeleton (Fractions)
+### Example skeleton (Scroll 2 exponents)
 
 ```vue
-<MathModuleShell :grade-answer="gradeFractions" ...>
-  <template #explorer><FractionExplorer /></template>
-  <template #question="ctx"><FractionDrillQuestion v-bind="ctx" /></template>
-  <template #explanation="{ item }"><FractionDrillExplanation :item="item" /></template>
+<MathModuleShell :grade-answer="gradeMc" ...>
+  <template #explorer><ExponentsExplorer /></template>
+  <template #question="ctx"><MathMcDrillQuestion v-bind="ctx" /></template>
+  <template #explanation="{ item }"><MathMcDrillExplanation :item="item" /></template>
 </MathModuleShell>
 ```
+

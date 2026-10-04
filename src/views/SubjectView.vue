@@ -47,11 +47,21 @@ const isShinobi = computed(() => grade.value?.theme === 'theme-grade-5')
           <div class="flex flex-wrap items-center justify-between gap-3">
             <h2 class="display text-xl font-bold text-[var(--color-primary)]">{{ exercise.title }}</h2>
             <span
-              class="theme-pill bg-[var(--color-primary-soft)] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[var(--color-primary)]"
+              :class="
+                isShinobi
+                  ? 'ninja-tag display bg-[var(--color-primary)] px-3 py-1 text-sm tracking-wide text-white'
+                  : 'theme-pill bg-[var(--color-primary-soft)] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[var(--color-primary)]'
+              "
             >
-              {{ exercise.exerciseType }}
+              {{ exercise.badge ?? exercise.exerciseType }}
             </span>
           </div>
+          <p
+            v-if="exercise.description || exercise.content"
+            class="mt-2 text-sm text-[var(--color-muted)]"
+          >
+            {{ exercise.description || exercise.content }}
+          </p>
         </RouterLink>
       </li>
     </ul>

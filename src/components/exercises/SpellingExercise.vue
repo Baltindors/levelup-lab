@@ -14,12 +14,21 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  masteryScope: {
+    type: String,
+    default: '',
+  },
+  awardScrollXp: {
+    type: Boolean,
+    default: true,
+  },
 })
 
 const emit = defineEmits(['answered'])
 
 const route = useRoute()
 const subjectId = computed(() => String(route.params.subjectId ?? ''))
+const progressKey = computed(() => props.masteryScope || subjectId.value)
 const words = props.exercise.words ?? []
 const { scrolls, recordSubActivityComplete } = useShinobiProgress()
 
@@ -64,9 +73,15 @@ const activeTab = computed(() => {
 
 const meterPracticeKey = computed(() => practiceKey.value || 'seal-matching')
 
+function allWordsMastered(practice) {
+  if (!progressKey.value || !words.length) return false
+  const ids = new Set(getPracticeMasteredIds(progressKey.value, practice))
+  return words.every((item) => ids.has(item.id))
+}
+
 const masteredIds = computed(() => {
   masteryVersion.value
-  return getPracticeMasteredIds(subjectId.value, meterPracticeKey.value)
+  return getPracticeMasteredIds(progressKey.value, meterPracticeKey.value)
 })
 
 const progressStats = computed(() => {
@@ -79,27 +94,35 @@ const progressPct = computed(() => {
   return Math.round((progressStats.value.mastered / progressStats.value.total) * 100)
 })
 
-const sealConquered = computed(() =>
-  Boolean(subjectId.value && scrolls.value[subjectId.value]?.['seal-matching']),
-)
-const blindConquered = computed(() =>
-  Boolean(subjectId.value && scrolls.value[subjectId.value]?.['blindfold-training']),
-)
+const sealConquered = computed(() => {
+  masteryVersion.value
+  if (props.awardScrollXp) {
+    return Boolean(subjectId.value && scrolls.value[subjectId.value]?.['seal-matching'])
+  }
+  return allWordsMastered('seal-matching')
+})
+const blindConquered = computed(() => {
+  masteryVersion.value
+  if (props.awardScrollXp) {
+    return Boolean(subjectId.value && scrolls.value[subjectId.value]?.['blindfold-training'])
+  }
+  return allWordsMastered('blindfold-training')
+})
 const scrollMastered = computed(() => sealConquered.value && blindConquered.value)
 
 function readMastered() {
-  return getPracticeMasteredIds(subjectId.value, practiceKey.value)
+  return getPracticeMasteredIds(progressKey.value, practiceKey.value)
 }
 
 function writeMastered(ids) {
-  setPracticeMasteredIds(subjectId.value, practiceKey.value, ids)
+  setPracticeMasteredIds(progressKey.value, practiceKey.value, ids)
   masteryVersion.value += 1
 }
 
 function isWordMasteredAnywhere(itemId) {
   masteryVersion.value
-  const seal = new Set(getPracticeMasteredIds(subjectId.value, 'seal-matching'))
-  const blind = new Set(getPracticeMasteredIds(subjectId.value, 'blindfold-training'))
+  const seal = new Set(getPracticeMasteredIds(progressKey.value, 'seal-matching'))
+  const blind = new Set(getPracticeMasteredIds(progressKey.value, 'blindfold-training'))
   return seal.has(itemId) || blind.has(itemId)
 }
 
@@ -151,7 +174,7 @@ function beginPractice(key, { freeDrill = false } = {}) {
   resetEngine()
 
   if (!freeDrill) {
-    const ids = new Set(getPracticeMasteredIds(subjectId.value, key))
+    const ids = new Set(getPracticeMasteredIds(progressKey.value, key))
     if (words.length && words.every((item) => ids.has(item.id))) {
       phase.value = 'PRACTICE_CONQUERED'
       return
@@ -159,7 +182,7 @@ function beginPractice(key, { freeDrill = false } = {}) {
   }
 
   const result = startRound({
-    masteredIds: getPracticeMasteredIds(subjectId.value, key),
+    masteredIds: getPracticeMasteredIds(progressKey.value, key),
     freeDrill,
   })
   if (!result.started || result.complete) {
@@ -246,7 +269,7 @@ function handleAdvance() {
       return
     }
     if (result.debrief.allMastered) {
-      if (practiceKey.value && subjectId.value) {
+      if (props.awardScrollXp && practiceKey.value && subjectId.value) {
         recordSubActivityComplete(subjectId.value, practiceKey.value)
       }
       phase.value = 'PRACTICE_CONQUERED'
@@ -288,21 +311,25 @@ function onFreeDrillDone() {
 }
 
 function completeMission() {
-  if (!words.length || !subjectId.value) return
-  const flags = scrolls.value[subjectId.value]
-  if (!flags?.['seal-matching'] || !flags?.['blindfold-training']) return
+  if (!words.length || !progressKey.value) return
+  if (props.awardScrollXp) {
+    const flags = scrolls.value[subjectId.value]
+    if (!flags?.['seal-matching'] || !flags?.['blindfold-training']) return
+  } else if (!scrollMastered.value) {
+    return
+  }
   emit('answered', { correct: true })
 }
 
 function onReset() {
   clearTransitionTimer()
   if (practiceKey.value) {
-    clearPracticeMastery(subjectId.value, practiceKey.value)
+    clearPracticeMastery(progressKey.value, practiceKey.value)
     masteryVersion.value += 1
     beginPractice(practiceKey.value)
     return
   }
-  clearPracticeMastery(subjectId.value)
+  clearPracticeMastery(progressKey.value)
   masteryVersion.value += 1
   debrief.value = null
   isFreeDrill.value = false

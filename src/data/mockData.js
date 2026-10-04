@@ -1,3 +1,9 @@
+import {
+  algebraicExpressionsPracticePool,
+  exponentsPracticePool,
+  scientificNotationPracticePool,
+} from './mathExam100526Pools'
+
 export const mockData = {
   grades: [
     {
@@ -24,9 +30,19 @@ export const mockData = {
           description: 'Hear the word, match the seal, and spell it until the streak holds.',
           exercises: [
             {
+              id: 'custom-spelling-jutsu',
+              title: 'CUSTOM SPELLING JUTSU',
+              exerciseType: 'custom-spelling',
+              badge: 'CUSTOM-SPELLING',
+              description:
+                'Forge your own secret scroll. Enter custom words and definitions, then master the jutsu.',
+              words: [],
+            },
+            {
               id: 'weekly-spelling-jutsu',
               title: 'Weekly Spelling Jutsu',
               exerciseType: 'spelling-jutsu',
+              badge: 'SPELLING-JUTSU',
               content: 'Study the scrolls, match each seal, then spell the word from audio alone.',
               words: [
                 { id: 'ancient', word: 'ancient', definition: 'very old' },
@@ -38,6 +54,44 @@ export const mockData = {
                 { id: 'shelter', word: 'shelter', definition: 'a place that gives protection' },
                 { id: 'rhythm', word: 'rhythm', definition: 'a strong, regular pattern of sounds or beats' },
               ],
+            },
+          ],
+        },
+        {
+          id: 'math-exam-100526',
+          name: 'Scroll 2: Math Mastery (10/05 Exam)',
+          missionTitle: 'Scroll 2: Math Mastery (10/05 Exam)',
+          difficulty: 'A-Rank Mission',
+          status: 'Scroll Unlocked',
+          description:
+            'Master integer exponents, scientific notation, and algebraic multiply/factor skills for the 10/05 exam.',
+          exercises: [
+            {
+              id: 'exponents-laws',
+              title: 'Laws of Integer Exponents',
+              exerciseType: 'math-exponents',
+              badge: 'EXPONENTS',
+              description:
+                'Explore product, quotient, power, and negative-exponent laws, then pass a 10-card trial.',
+              practicePool: exponentsPracticePool,
+            },
+            {
+              id: 'scientific-notation',
+              title: 'Scientific Notation & Orders of Magnitude',
+              exerciseType: 'math-scientific-notation',
+              badge: 'SCI-NOTATION',
+              description:
+                'Slide decimals between large and microscopic scales, then drill convert, multiply, and add.',
+              practicePool: scientificNotationPracticePool,
+            },
+            {
+              id: 'algebraic-expressions',
+              title: 'Algebraic Expressions (Multiply & Factor)',
+              exerciseType: 'math-algebraic-expressions',
+              badge: 'ALGEBRA',
+              description:
+                'Use the area model to distribute and factor (including negative GCFs), then prove mastery.',
+              practicePool: algebraicExpressionsPracticePool,
             },
           ],
         },
