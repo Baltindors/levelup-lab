@@ -174,19 +174,19 @@ function onSlider(e) {
           <circle cx="278" cy="316" r="3" fill="#64748b" />
         </g>
 
-        <!-- Stratosphere ozone shield -->
+        <!-- Stratosphere ozone shield (below layer label to avoid overlap) -->
         <g v-if="activeLayer === 'stratosphere'" class="pointer-events-none">
           <rect
-            x="95"
-            y="228"
-            width="230"
-            height="28"
+            x="120"
+            y="248"
+            width="180"
+            height="22"
             rx="10"
             fill="#34d399"
-            opacity="0.35"
+            opacity="0.4"
             class="ozone-pulse"
           />
-          <text x="210" y="247" text-anchor="middle" fill="#a7f3d0" font-size="13" font-weight="800">
+          <text x="210" y="263" text-anchor="middle" fill="#a7f3d0" font-size="12" font-weight="800">
             Ozone Layer Shield
           </text>
         </g>

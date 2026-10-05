@@ -86,58 +86,147 @@ function ringPath(cx, cy, outerR, innerR) {
       Tap a layer in Earth’s cross-section to read depth telemetry — temperature and pressure rise as you go deeper.
     </p>
 
-    <div class="overflow-x-auto max-w-full">
-      <svg
-        viewBox="0 0 360 360"
-        class="w-full h-auto select-none rounded-[var(--radius-card)] border border-[var(--color-border)] bg-slate-950/60"
-        role="img"
-        aria-label="Earth layers concentric cross-section"
+    <div
+      class="relative w-full overflow-x-auto rounded-[var(--radius-card)] border border-[var(--color-border)] bg-slate-950/60"
+    >
+      <!-- Top-left label -->
+      <p
+        class="pointer-events-none absolute left-3 top-3 z-10 text-xs font-semibold text-slate-400 md:left-4 md:top-4"
       >
-        <circle cx="180" cy="180" r="155" fill="#0f172a" stroke="#334155" stroke-width="2" />
+        Outside → Center
+      </p>
 
-        <g v-for="layer in layers" :key="layer.id">
-          <path
-            :d="ringPath(180, 180, layer.outerR, layer.innerR)"
-            :fill="layer.color"
-            :opacity="activeLayer === layer.id ? 1 : 0.72"
-            :stroke="activeLayer === layer.id ? '#6ee7b7' : '#1e293b'"
-            :stroke-width="activeLayer === layer.id ? 3 : 1"
-            fill-rule="evenodd"
-            class="cursor-pointer transition-all duration-200"
-            @click="selectLayer(layer.id)"
-          />
-          <!-- Generous transparent hit ring (slightly padded) -->
-          <path
-            :d="ringPath(180, 180, layer.outerR + 4, Math.max(0, layer.innerR - 4))"
-            fill="transparent"
-            fill-rule="evenodd"
-            class="cursor-pointer"
-            @click="selectLayer(layer.id)"
-          >
-            <title>{{ layer.label }}</title>
-          </path>
-        </g>
-
-        <text x="180" y="28" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="600">
-          Outside → Center
-        </text>
-        <text
-          x="180"
-          y="185"
-          text-anchor="middle"
-          dominant-baseline="middle"
-          fill="#422006"
-          font-size="10"
-          font-weight="800"
-          class="pointer-events-none"
+      <!-- Earth stays centered; outer blue box keeps full width -->
+      <div class="flex justify-center px-2 py-2 md:px-4 md:py-3">
+        <svg
+          viewBox="0 0 360 360"
+          class="h-auto w-full max-w-md select-none md:max-w-xl"
+          role="img"
+          aria-label="Earth layers concentric cross-section"
         >
-          Core
-        </text>
-      </svg>
+          <circle cx="180" cy="180" r="155" fill="#0f172a" stroke="#334155" stroke-width="2" />
+
+          <g v-for="layer in layers" :key="layer.id">
+            <path
+              :d="ringPath(180, 180, layer.outerR, layer.innerR)"
+              :fill="layer.color"
+              :opacity="activeLayer === layer.id ? 1 : 0.72"
+              :stroke="activeLayer === layer.id ? '#6ee7b7' : '#1e293b'"
+              :stroke-width="activeLayer === layer.id ? 3 : 1"
+              fill-rule="evenodd"
+              class="cursor-pointer transition-all duration-200"
+              @click="selectLayer(layer.id)"
+            />
+            <path
+              :d="ringPath(180, 180, layer.outerR + 4, Math.max(0, layer.innerR - 4))"
+              fill="transparent"
+              fill-rule="evenodd"
+              class="cursor-pointer"
+              @click="selectLayer(layer.id)"
+            >
+              <title>{{ layer.label }}</title>
+            </path>
+          </g>
+
+          <!-- Selected layer name in the center -->
+          <rect
+            x="118"
+            y="168"
+            width="124"
+            height="24"
+            rx="8"
+            fill="#0f172a"
+            opacity="0.72"
+            class="pointer-events-none"
+          />
+          <text
+            x="180"
+            y="185"
+            text-anchor="middle"
+            dominant-baseline="middle"
+            fill="#f8fafc"
+            font-size="12"
+            font-weight="800"
+            class="pointer-events-none"
+          >
+            {{ active.label }}
+          </text>
+        </svg>
+      </div>
+
+      <!-- Desktop: telemetry overlay top-right (a bit wider) -->
+      <div
+        class="pointer-events-none absolute right-3 top-3 z-10 hidden w-72 md:block lg:w-80"
+        aria-live="polite"
+      >
+        <div
+          class="space-y-2.5 rounded-[var(--radius-card)] border border-[var(--color-border)] bg-slate-950/95 p-3 shadow-lg"
+        >
+          <div class="flex flex-wrap items-center gap-1.5">
+            <p class="display text-base tracking-wide text-[var(--color-text)]">
+              {{ active.label }}
+            </p>
+            <span
+              v-if="active.thickest"
+              class="inline-flex rounded-full border border-emerald-500/40 bg-emerald-950/40 px-2 py-0.5 text-[0.65rem] font-semibold text-emerald-300"
+            >
+              Thickest
+            </span>
+            <span
+              class="inline-flex rounded-full border px-2 py-0.5 text-[0.65rem] font-semibold"
+              :class="
+                active.state === 'Liquid'
+                  ? 'border-sky-400/50 bg-sky-950/40 text-sky-200'
+                  : 'border-amber-500/40 bg-amber-950/30 text-amber-200'
+              "
+            >
+              {{ active.state === 'Liquid' ? 'Liquid' : 'Solid' }}
+            </span>
+          </div>
+
+          <p class="text-xs leading-snug text-[var(--color-muted)]">{{ active.blurb }}</p>
+          <p class="text-[0.65rem] font-semibold text-[var(--color-muted)]">
+            {{ active.thickness }}
+          </p>
+
+          <div class="space-y-2">
+            <div>
+              <div class="mb-0.5 flex justify-between text-[0.65rem] font-semibold text-[var(--color-muted)]">
+                <span>Temperature</span>
+                <span>{{ active.tempPct }}%</span>
+              </div>
+              <div class="h-2 overflow-hidden rounded-full border border-[var(--color-border)] bg-slate-900">
+                <div
+                  class="h-full rounded-full bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-500"
+                  :style="{ width: `${active.tempPct}%` }"
+                />
+              </div>
+            </div>
+            <div>
+              <div class="mb-0.5 flex justify-between text-[0.65rem] font-semibold text-[var(--color-muted)]">
+                <span>Pressure</span>
+                <span>{{ active.pressurePct }}%</span>
+              </div>
+              <div class="h-2 overflow-hidden rounded-full border border-[var(--color-border)] bg-slate-900">
+                <div
+                  class="h-full rounded-full bg-gradient-to-r from-emerald-600 to-teal-400 transition-all duration-500"
+                  :style="{ width: `${active.pressurePct}%` }"
+                />
+              </div>
+            </div>
+          </div>
+
+          <p class="text-[0.65rem] text-amber-200/80">
+            Memory: Temperature and pressure both increase with depth.
+          </p>
+        </div>
+      </div>
     </div>
 
+    <!-- Mobile: telemetry under the diagram -->
     <div
-      class="space-y-4 rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-panel)] p-4"
+      class="space-y-4 rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-panel)] p-4 md:hidden"
+      aria-live="polite"
     >
       <div class="flex flex-wrap items-center gap-2">
         <p class="display text-xl tracking-wide text-[var(--color-text)]">
