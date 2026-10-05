@@ -1,3 +1,4 @@
+import { defineAsyncComponent } from 'vue'
 import MultipleChoiceExercise from './MultipleChoiceExercise.vue'
 import FlashcardExercise from './FlashcardExercise.vue'
 import TrigGrapherExercise from './TrigGrapherExercise.vue'
@@ -17,6 +18,9 @@ export const exerciseRegistry = {
   'math-exponents': ExponentsModule,
   'math-scientific-notation': ScientificNotationModule,
   'math-algebraic-expressions': AlgebraicExpressionsModule,
+  'science-earth-systems': defineAsyncComponent(() =>
+    import('./science/EarthSystemsMission.vue'),
+  ),
 }
 
 export function resolveExerciseComponent(exerciseType) {

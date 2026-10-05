@@ -95,6 +95,25 @@ export const mockData = {
             },
           ],
         },
+        {
+          id: 'earth-systems',
+          name: 'Science - Earth Systems',
+          missionTitle: 'Earth Systems & Cycles Master Scroll',
+          difficulty: 'A-Rank Mission',
+          status: 'Scroll Unlocked',
+          description:
+            'Master the Water Cycle, Rock Cycle, Atmosphere, Earth Layers, and Heat Transfer with interactive models and a 2-streak mastery trial.',
+          exercises: [
+            {
+              id: 'earth-systems-mastery',
+              title: 'Earth Systems & Cycles Master Scroll',
+              exerciseType: 'science-earth-systems',
+              badge: 'EARTH-SYSTEMS',
+              description:
+                'Master the Water Cycle, Rock Cycle, Atmosphere, Earth Layers, and Heat Transfer with interactive models and a 2-streak mastery trial.',
+            },
+          ],
+        },
       ],
     },
     {
