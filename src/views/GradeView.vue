@@ -2,7 +2,11 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { getGrade } from '../data/mockData'
-import { SPELLING_ACTIVITY_KEYS, getRankForLevel, useShinobiProgress } from '../composables/useShinobiProgress'
+import {
+  getRankForLevel,
+  spellingActivityKeysForExercises,
+  useShinobiProgress,
+} from '../composables/useShinobiProgress'
 import {
   MATH_EXAM_SUBJECT_ID,
   useMathExamProgress,
@@ -21,6 +25,11 @@ const pendingLastSeen = (() => {
   if (!isShinobi.value) return null
   const seen = readLastSeen()
   if (!seen) return null
+  // After XP rebalance (e.g. spelling 50→25 per practice), clamp stale last_seen.
+  if (seen.xp > overallXP.value || seen.level > currentRank.value.level) {
+    writeLastSeen({ xp: overallXP.value, level: currentRank.value.level })
+    return null
+  }
   if (overallXP.value > seen.xp || currentRank.value.level > seen.level) return seen
   return null
 })()
@@ -44,8 +53,8 @@ const timers = []
 let xpRaf = null
 
 function scrollKeys(subject) {
-  const spelling = subject.exercises?.some((exercise) => exercise.exerciseType === 'spelling-jutsu')
-  return spelling ? SPELLING_ACTIVITY_KEYS : ['complete']
+  const spellingKeys = spellingActivityKeysForExercises(subject.exercises)
+  return spellingKeys.length ? spellingKeys : ['complete']
 }
 
 function scrollProgress(subject) {

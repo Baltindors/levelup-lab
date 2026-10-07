@@ -1,6 +1,17 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 import { mockData } from '../data/mockData'
+import { useShinobiProgress } from '../composables/useShinobiProgress'
+
+const { currentRank } = useShinobiProgress()
+
+function gradeBadgeText(grade) {
+  if (!grade.rankBadge) return ''
+  // Guard undefined before/while progress hydrates from localStorage.
+  const title = currentRank.value?.title?.toUpperCase() || 'GENIN'
+  const level = currentRank.value?.level || 1
+  return `${title} • LEVEL ${level}`
+}
 </script>
 
 <template>
@@ -33,7 +44,7 @@ import { mockData } from '../data/mockData'
             <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
               <path d="M12 1.5l2.1 7.2 7.4.2-5.9 4.5 2.1 7.1L12 16.6 6.3 20.5l2.1-7.1L2.5 8.9l7.4-.2L12 1.5z" />
             </svg>
-            {{ grade.rankBadge }}
+            {{ gradeBadgeText(grade) }}
           </span>
           <h2
             class="display text-2xl font-bold text-[var(--color-primary)]"

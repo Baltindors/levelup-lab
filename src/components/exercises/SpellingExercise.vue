@@ -1,7 +1,10 @@
 <script setup>
 import { computed, nextTick, onUnmounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { useShinobiProgress } from '../../composables/useShinobiProgress'
+import {
+  spellingXpActivityKey,
+  useShinobiProgress,
+} from '../../composables/useShinobiProgress'
 import {
   clearPracticeMastery,
   getPracticeMasteredIds,
@@ -29,8 +32,15 @@ const emit = defineEmits(['answered'])
 const route = useRoute()
 const subjectId = computed(() => String(route.params.subjectId ?? ''))
 const progressKey = computed(() => props.masteryScope || subjectId.value)
+/** XP flags use exercise.id; word mastery may use a different legacy scope. */
+const xpExerciseId = computed(() => String(props.exercise?.id ?? ''))
 const words = props.exercise.words ?? []
+const roots = computed(() => (Array.isArray(props.exercise?.roots) ? props.exercise.roots : []))
 const { scrolls, recordSubActivityComplete } = useShinobiProgress()
+
+function xpFlagKey(practice) {
+  return spellingXpActivityKey(xpExerciseId.value, practice)
+}
 
 const phase = ref('STUDY')
 const practiceKey = ref(null)
@@ -97,14 +107,16 @@ const progressPct = computed(() => {
 const sealConquered = computed(() => {
   masteryVersion.value
   if (props.awardScrollXp) {
-    return Boolean(subjectId.value && scrolls.value[subjectId.value]?.['seal-matching'])
+    const key = xpFlagKey('seal-matching')
+    return Boolean(subjectId.value && key && scrolls.value[subjectId.value]?.[key])
   }
   return allWordsMastered('seal-matching')
 })
 const blindConquered = computed(() => {
   masteryVersion.value
   if (props.awardScrollXp) {
-    return Boolean(subjectId.value && scrolls.value[subjectId.value]?.['blindfold-training'])
+    const key = xpFlagKey('blindfold-training')
+    return Boolean(subjectId.value && key && scrolls.value[subjectId.value]?.[key])
   }
   return allWordsMastered('blindfold-training')
 })
@@ -269,8 +281,8 @@ function handleAdvance() {
       return
     }
     if (result.debrief.allMastered) {
-      if (props.awardScrollXp && practiceKey.value && subjectId.value) {
-        recordSubActivityComplete(subjectId.value, practiceKey.value)
+      if (props.awardScrollXp && practiceKey.value && subjectId.value && xpExerciseId.value) {
+        recordSubActivityComplete(subjectId.value, xpFlagKey(practiceKey.value))
       }
       phase.value = 'PRACTICE_CONQUERED'
       return
@@ -314,7 +326,9 @@ function completeMission() {
   if (!words.length || !progressKey.value) return
   if (props.awardScrollXp) {
     const flags = scrolls.value[subjectId.value]
-    if (!flags?.['seal-matching'] || !flags?.['blindfold-training']) return
+    const sealKey = xpFlagKey('seal-matching')
+    const blindKey = xpFlagKey('blindfold-training')
+    if (!flags?.[sealKey] || !flags?.[blindKey]) return
   } else if (!scrollMastered.value) {
     return
   }
@@ -414,24 +428,62 @@ onUnmounted(() => {
       Audio is unavailable in this browser.
     </p>
 
-    <div v-if="phase === 'STUDY'" class="space-y-3">
+    <div v-if="phase === 'STUDY'" class="space-y-4">
+      <div
+        v-if="roots.length"
+        class="theme-card space-y-3 border border-[var(--color-border)] bg-[var(--color-panel)] p-4 sm:p-5"
+      >
+        <p class="text-xs font-semibold uppercase tracking-wide text-[#00e5ff]">
+          Roots of the Week
+        </p>
+        <ul class="grid gap-3 sm:grid-cols-3">
+          <li
+            v-for="entry in roots"
+            :key="entry.root"
+            class="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2"
+          >
+            <p class="font-semibold text-[var(--color-text)]">{{ entry.root }}</p>
+            <p class="mt-1 text-sm text-[var(--color-muted)]">{{ entry.meaning }}</p>
+            <p v-if="entry.origin" class="mt-0.5 text-xs uppercase tracking-wide text-[var(--color-muted)]">
+              {{ entry.origin }}
+            </p>
+          </li>
+        </ul>
+      </div>
+
       <ul class="space-y-3">
         <li
           v-for="item in words"
           :key="item.id"
           class="theme-card border border-[var(--color-border)] bg-[var(--color-panel)] p-4 sm:p-5"
         >
-          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div>
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div class="min-w-0 flex-1">
               <p class="text-lg font-semibold text-[var(--color-text)]">
                 {{ item.word }}
+                <span
+                  v-if="item.pos"
+                  class="ml-2 text-sm font-normal uppercase tracking-wide text-[var(--color-muted)]"
+                >{{ item.pos }}</span>
                 <span v-if="isWordMasteredAnywhere(item.id)" class="ml-2 text-[#ffaa00]">⭐ Mastered</span>
               </p>
+              <p
+                v-if="item.root"
+                class="mt-1 text-xs font-semibold uppercase tracking-wide text-[#00e5ff]"
+              >
+                Root: {{ item.root }}
+              </p>
               <p class="mt-1 text-sm text-[var(--color-muted)]">{{ item.definition }}</p>
+              <p
+                v-if="item.sentence"
+                class="mt-2 text-sm italic leading-relaxed text-[var(--color-text)]"
+              >
+                {{ item.sentence }}
+              </p>
             </div>
             <button
               type="button"
-              class="theme-pill inline-flex min-h-11 items-center justify-center bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white"
+              class="theme-pill inline-flex min-h-11 shrink-0 items-center justify-center bg-[var(--color-primary)] px-4 py-2 text-sm font-semibold text-white"
               @click="speak(item.word)"
             >
               Listen
@@ -615,13 +667,13 @@ onUnmounted(() => {
           v-if="practiceKey === 'seal-matching'"
           class="text-sm font-bold tracking-wide text-[#00e5ff]"
         >
-          SEAL MATCHING TRIAL CONQUERED! (+50% Scroll Chakra)
+          SEAL MATCHING TRIAL CONQUERED!{{ awardScrollXp ? ' (+25 XP)' : '' }}
         </p>
         <p
           v-else-if="practiceKey === 'blindfold-training'"
           class="text-sm font-bold tracking-wide text-[#00e5ff]"
         >
-          BLINDFOLD SPELLING TRIAL CONQUERED! (+50% Scroll Chakra)
+          BLINDFOLD SPELLING TRIAL CONQUERED!{{ awardScrollXp ? ' (+25 XP)' : '' }}
         </p>
 
         <div class="flex flex-wrap gap-3">
@@ -649,7 +701,11 @@ onUnmounted(() => {
         role="status"
       >
         <p class="display text-xl tracking-wide text-[#ffaa00] sm:text-2xl">
-          SCROLL I FULLY MASTERED • RANK LEVEL UP UNLOCKED!
+          {{
+            awardScrollXp
+              ? 'WEEKLY SCROLL MASTERED • +50 XP EARNED!'
+              : 'SCROLL FULLY MASTERED!'
+          }}
         </p>
         <button
           type="button"

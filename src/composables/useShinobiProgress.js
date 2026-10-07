@@ -1,7 +1,10 @@
 import { computed, ref } from 'vue'
 import { clearAllSpellingMastery, SPELLING_MASTERY_KEY } from './useTwoPassRound'
 
+export const SPELLING_SUBJECT_ID = 'spelling-jutsu'
 export const SPELLING_ACTIVITY_KEYS = ['seal-matching', 'blindfold-training']
+export const LEGACY_WEEKLY_SPELLING_ID = 'weekly-spelling-jutsu'
+export const SPELLING_XP_PER_PRACTICE = 25
 
 const STORAGE_KEY = 'shinobi_academy_progress_v1'
 
@@ -23,16 +26,66 @@ export function getRankForLevel(level) {
   return RANKS[safe - 1]
 }
 
+/** Build XP activity keys for weekly spelling exercises. */
+export function spellingActivityKeysForExercises(exercises) {
+  if (!Array.isArray(exercises)) return []
+  return exercises
+    .filter((exercise) => exercise?.exerciseType === 'spelling-jutsu' && exercise?.id)
+    .flatMap((exercise) =>
+      SPELLING_ACTIVITY_KEYS.map((practice) => `${exercise.id}:${practice}`),
+    )
+}
+
+export function spellingXpActivityKey(exerciseId, practiceKey) {
+  if (!exerciseId || !practiceKey) return ''
+  return `${exerciseId}:${practiceKey}`
+}
+
+function isScopedSpellingKey(key) {
+  if (typeof key !== 'string') return false
+  return SPELLING_ACTIVITY_KEYS.some((practice) => key.endsWith(`:${practice}`))
+}
+
 function loadScrolls() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return {}
     const parsed = JSON.parse(raw)
     if (!parsed || typeof parsed.scrolls !== 'object' || parsed.scrolls === null) return {}
-    return parsed.scrolls
+    return migrateSpellingFlags(parsed.scrolls)
   } catch {
     return {}
   }
+}
+
+/**
+ * Map legacy flat seal/blindfold flags onto weekly-spelling-jutsu:* keys.
+ * Persists once when a migration actually changes data.
+ */
+function migrateSpellingFlags(rawScrolls) {
+  const spelling = rawScrolls[SPELLING_SUBJECT_ID]
+  if (!spelling || typeof spelling !== 'object') return rawScrolls
+
+  let changed = false
+  const next = { ...spelling }
+
+  for (const practice of SPELLING_ACTIVITY_KEYS) {
+    if (next[practice]) {
+      const scoped = spellingXpActivityKey(LEGACY_WEEKLY_SPELLING_ID, practice)
+      if (!next[scoped]) {
+        next[scoped] = true
+        changed = true
+      }
+      delete next[practice]
+      changed = true
+    }
+  }
+
+  if (!changed) return rawScrolls
+
+  const migrated = { ...rawScrolls, [SPELLING_SUBJECT_ID]: next }
+  persistScrolls(migrated)
+  return migrated
 }
 
 function persistScrolls(value) {
@@ -51,14 +104,15 @@ function flagsFor(subjectId) {
   return flags
 }
 
-function isSpellingFlags(flags) {
-  return SPELLING_ACTIVITY_KEYS.some((key) => flags[key])
+function countSpellingPracticeFlags(flags) {
+  return Object.keys(flags).filter((key) => flags[key] && isScopedSpellingKey(key)).length
 }
 
 function xpForSubject(subjectId) {
   const flags = flagsFor(subjectId)
-  if (isSpellingFlags(flags)) {
-    return SPELLING_ACTIVITY_KEYS.filter((key) => flags[key]).length * 50
+  // Spelling XP is exclusively practice-flag based (25 XP each). Never use `complete`.
+  if (subjectId === SPELLING_SUBJECT_ID) {
+    return countSpellingPracticeFlags(flags) * SPELLING_XP_PER_PRACTICE
   }
   return flags.complete ? 100 : 0
 }
@@ -80,8 +134,13 @@ export function useShinobiProgress() {
   function getScrollProgress(subjectId, activityKeys) {
     const flags = flagsFor(subjectId)
     let keys = ['complete']
-    if (Array.isArray(activityKeys) && activityKeys.length) keys = activityKeys
-    else if (isSpellingFlags(flags)) keys = SPELLING_ACTIVITY_KEYS
+    if (Array.isArray(activityKeys) && activityKeys.length) {
+      keys = activityKeys
+    } else if (subjectId === SPELLING_SUBJECT_ID) {
+      keys = spellingActivityKeysForExercises([
+        { id: LEGACY_WEEKLY_SPELLING_ID, exerciseType: 'spelling-jutsu' },
+      ])
+    }
 
     const completedCount = keys.filter((key) => flags[key]).length
     const totalCount = keys.length

@@ -27,6 +27,17 @@ const exerciseComponent = computed(() =>
 
 const isShinobi = computed(() => grade.value?.theme === 'theme-grade-5')
 const isMathExamScroll = computed(() => subject.value?.id === MATH_EXAM_SUBJECT_ID)
+const isSpellingJutsu = computed(() => exercise.value?.exerciseType === 'spelling-jutsu')
+
+/**
+ * Legacy weekly stores mastery under subject id `spelling-jutsu`.
+ * Newer weeklies use their own exercise id so progress does not collide.
+ */
+const spellingMasteryScope = computed(() => {
+  if (!isSpellingJutsu.value || !exercise.value?.id) return undefined
+  if (exercise.value.id === 'weekly-spelling-jutsu') return 'spelling-jutsu'
+  return exercise.value.id
+})
 
 const { recordExerciseScore, completedCount } = useMathExamProgress()
 const { currentRank, overallXP } = useShinobiProgress()
@@ -79,6 +90,12 @@ function tryAgain() {
 
     <div>
       <h1 class="display text-4xl font-bold">{{ exercise.title }}</h1>
+      <p
+        v-if="exercise.subtitle"
+        class="mt-1 text-base font-semibold text-[var(--color-text)]"
+      >
+        {{ exercise.subtitle }}
+      </p>
       <p class="mt-2 text-sm uppercase tracking-wide text-[var(--color-muted)]">
         {{ exercise.badge || exercise.exerciseType }} · {{ grade.name }}
       </p>
@@ -88,6 +105,7 @@ function tryAgain() {
       :is="exerciseComponent"
       :key="`${exercise.id}-${attemptKey}`"
       :exercise="exercise"
+      v-bind="isSpellingJutsu ? { masteryScope: spellingMasteryScope } : {}"
       @answered="onAnswered"
     />
 

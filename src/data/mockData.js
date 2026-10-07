@@ -55,6 +55,113 @@ export const mockData = {
                 { id: 'rhythm', word: 'rhythm', definition: 'a strong, regular pattern of sounds or beats' },
               ],
             },
+            {
+              id: 'weekly-spelling-100926',
+              title: 'Weekly Spelling Jutsu — 10/09/26',
+              subtitle: 'Unit 2: We Are Family',
+              exerciseType: 'spelling-jutsu',
+              badge: 'SPELLING-JUTSU',
+              description:
+                'Study the scrolls, match each seal, then spell the word from audio alone.',
+              roots: [
+                { root: 'pater/patri', meaning: 'father', origin: 'Latin' },
+                { root: 'mater/matri', meaning: 'mother', origin: 'Latin' },
+                { root: 'gen', meaning: 'birth, race, kind', origin: 'Greek' },
+              ],
+              words: [
+                {
+                  id: 'patriarch',
+                  word: 'patriarch',
+                  pos: 'n',
+                  definition: 'a man who controls a family, group, or government',
+                  sentence:
+                    "My grandfather is our family's patriarch, so we always seek his approval regarding family matters.",
+                  root: 'patri',
+                },
+                {
+                  id: 'patriarchal',
+                  word: 'patriarchal',
+                  pos: 'adj',
+                  definition:
+                    'a characteristic of a system of society or government controlled by men',
+                  sentence:
+                    "Ancient Rome's patriarchal senate prohibited women from participating.",
+                  root: 'patri',
+                },
+                {
+                  id: 'patrician',
+                  word: 'patrician',
+                  pos: 'n',
+                  definition: 'a person who is a member of the highest social class',
+                  sentence:
+                    'The patricians of Ancient Rome forbid their children to marry the lower-class plebeians.',
+                  root: 'patri',
+                },
+                {
+                  id: 'maternal',
+                  word: 'maternal',
+                  pos: 'adj',
+                  definition: 'of or relating to a mother; motherly',
+                  sentence:
+                    "As soon as her cubs were born, the bear's maternal instincts made her fiercely protective of them.",
+                  root: 'mater',
+                },
+                {
+                  id: 'matron',
+                  word: 'matron',
+                  pos: 'n',
+                  definition:
+                    'an older married woman who usually has a high social position',
+                  sentence:
+                    'Maiden Boleyn dreamed of marrying King Henry VIII and becoming the most powerful matron of England.',
+                  root: 'matron',
+                },
+                {
+                  id: 'matriarchy',
+                  word: 'matriarchy',
+                  pos: 'n',
+                  definition:
+                    'a family, group, or government controlled by a woman or a group of women and/or females',
+                  sentence:
+                    'Elephant herds are a matriarchy, consisting of a head cow who leads the other female members of the herd.',
+                  root: 'matri',
+                },
+                {
+                  id: 'generate',
+                  word: 'generate',
+                  pos: 'v',
+                  definition: 'to produce something or cause something to be produced',
+                  sentence: 'Windmills are used to generate electricity.',
+                  root: 'gen',
+                },
+                {
+                  id: 'congenial',
+                  word: 'congenial',
+                  pos: 'adj',
+                  definition: 'pleasant, enjoyable, or friendly',
+                  sentence:
+                    'My dad describes me as congenial because I can get along with just about anyone.',
+                  root: 'gen',
+                },
+                {
+                  id: 'generation',
+                  word: 'generation',
+                  pos: 'n',
+                  definition: 'a group of people born and living during the same time',
+                  sentence: 'We need to protect our natural resources for future generations.',
+                  root: 'gen',
+                },
+                {
+                  id: 'genetic',
+                  word: 'genetic',
+                  pos: 'adj',
+                  definition:
+                    'of, relating to, or involving genes, which is the part of a cell that controls or influences the appearance, growth, etc., of a living thing',
+                  sentence: 'Your eye and hair color are genetic factors.',
+                  root: 'gen',
+                },
+              ],
+            },
           ],
         },
         {
