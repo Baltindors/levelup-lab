@@ -6,7 +6,14 @@ import {
   MATH_EXAM_SUBJECT_ID,
   useMathExamProgress,
 } from '../composables/useMathExamProgress'
+import {
+  SPELLING_ACTIVITY_KEYS,
+  SPELLING_SUBJECT_ID,
+  spellingXpActivityKey,
+  useShinobiProgress,
+} from '../composables/useShinobiProgress'
 import AnimeRankSeal from '../components/common/AnimeRankSeal.vue'
+import AnimeMasterySeal from '../components/common/AnimeMasterySeal.vue'
 
 const route = useRoute()
 const grade = computed(() => getGrade(route.params.gradeId))
@@ -15,8 +22,45 @@ const isShinobi = computed(() => grade.value?.theme === 'theme-grade-5')
 const isMathExamScroll = computed(() => subject.value?.id === MATH_EXAM_SUBJECT_ID)
 
 const { getExerciseProgress, subjectStats } = useMathExamProgress()
+const { scrolls } = useShinobiProgress()
 
 const stats = computed(() => subjectStats.value)
+
+function spellingPracticeCount(exerciseId) {
+  const flags = scrolls.value[SPELLING_SUBJECT_ID] || {}
+  return SPELLING_ACTIVITY_KEYS.filter(
+    (practice) => flags[spellingXpActivityKey(exerciseId, practice)],
+  ).length
+}
+
+/** @returns {'unstarted'|'training'|'mastered'} */
+function spellingCardState(exerciseId) {
+  const n = spellingPracticeCount(exerciseId)
+  if (n >= 2) return 'mastered'
+  if (n === 1) return 'training'
+  return 'unstarted'
+}
+
+function spellingScorePill(exerciseId) {
+  const state = spellingCardState(exerciseId)
+  if (state === 'mastered') return 'SEAL MASTERED: 2/2 (100%)'
+  if (state === 'training') return 'IN TRAINING: 1/2 (50%)'
+  return ''
+}
+
+function spellingCtaLabel(exerciseId) {
+  const state = spellingCardState(exerciseId)
+  if (state === 'mastered') return 'Re-challenge Kata →'
+  if (state === 'training') return 'Continue Jutsu →'
+  return 'Begin Jutsu →'
+}
+
+function spellingCardBorderClass(exerciseId) {
+  if (spellingCardState(exerciseId) === 'mastered') {
+    return 'border-emerald-500/50 shadow-[0_0_16px_rgba(16,185,129,0.25)]'
+  }
+  return 'border-[var(--color-border)]'
+}
 
 function cardState(exerciseId) {
   const progress = getExerciseProgress(exerciseId)
@@ -125,10 +169,14 @@ function sealRank(exerciseId) {
           :class="[
             isMathExamScroll
               ? cardBorderClass(exercise.id)
-              : isShinobi
-                ? 'border-[var(--color-border)]'
-                : 'border-black/5',
-            isMathExamScroll ? 'relative overflow-hidden' : '',
+              : exercise.exerciseType === 'spelling-jutsu'
+                ? spellingCardBorderClass(exercise.id)
+                : isShinobi
+                  ? 'border-[var(--color-border)]'
+                  : 'border-black/5',
+            isMathExamScroll || exercise.exerciseType === 'spelling-jutsu'
+              ? 'relative overflow-hidden'
+              : '',
           ]"
         >
           <!-- Math exam: left content + oversized rank seal -->
@@ -177,7 +225,60 @@ function sealRank(exerciseId) {
             </div>
           </template>
 
-          <!-- Non-math subjects: original layout -->
+          <!-- Weekly spelling jutsu: progress pill + mastery seal -->
+          <template v-else-if="exercise.exerciseType === 'spelling-jutsu'">
+            <div
+              class="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center"
+            >
+              <div class="min-w-0 flex-1">
+                <h2 class="display text-xl font-bold text-[var(--color-primary)]">
+                  {{ exercise.title }}
+                </h2>
+                <p
+                  v-if="exercise.subtitle"
+                  class="mt-1 text-sm font-semibold text-[var(--color-text)]"
+                >
+                  {{ exercise.subtitle }}
+                </p>
+                <p
+                  v-if="exercise.description || exercise.content"
+                  class="mt-2 text-sm text-[var(--color-muted)]"
+                >
+                  {{ exercise.description || exercise.content }}
+                </p>
+                <p
+                  v-if="spellingScorePill(exercise.id)"
+                  class="mt-3 inline-flex rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wide"
+                  :class="
+                    spellingCardState(exercise.id) === 'mastered'
+                      ? 'border-emerald-700/60 text-emerald-300'
+                      : 'border-cyan-700/50 text-cyan-300'
+                  "
+                >
+                  {{ spellingScorePill(exercise.id) }}
+                </p>
+                <div
+                  class="mt-3 text-sm font-semibold tracking-wide text-[var(--color-accent)]"
+                >
+                  {{ spellingCtaLabel(exercise.id) }}
+                </div>
+              </div>
+
+              <div
+                class="flex h-32 w-36 flex-shrink-0 items-center justify-center pt-1 md:h-36 md:w-44"
+              >
+                <AnimeMasterySeal
+                  v-if="spellingCardState(exercise.id) !== 'unstarted'"
+                  :state="
+                    spellingCardState(exercise.id) === 'mastered' ? 'mastered' : 'training'
+                  "
+                  :topic="exercise.badge ?? 'SPELLING-JUTSU'"
+                />
+              </div>
+            </div>
+          </template>
+
+          <!-- Other subjects (custom spelling, etc.): original layout -->
           <template v-else>
             <div class="flex flex-wrap items-start justify-between gap-3">
               <h2 class="display text-xl font-bold text-[var(--color-primary)]">
