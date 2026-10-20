@@ -431,9 +431,9 @@ const borrowBar = computed(() => {
         <h3 class="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">
           {{ item.title }}
         </h3>
-        <div class="overflow-x-auto max-w-full py-1" v-html="formula(item.mixed + ' = ' + item.improper, true)" />
+        <div class="mixed-formula" v-html="formula(item.mixed + ' = ' + item.improper, true)" />
         <p class="text-xs font-semibold uppercase tracking-wide text-[var(--color-muted)]">Wholes and fractional pieces</p>
-        <div class="mt-2 flex items-center gap-2 overflow-x-auto max-w-full py-1" :aria-label="`${item.whole} wholes and ${item.num} of ${item.den}`">
+        <div class="mt-2 flex items-center gap-2 overflow-x-auto overflow-y-hidden max-w-full py-1" :aria-label="`${item.whole} wholes and ${item.num} of ${item.den}`">
           <div
             v-for="tile in item.whole"
             :key="`${item.title}-whole-${tile}`"
@@ -457,7 +457,7 @@ const borrowBar = computed(() => {
         <p class="mt-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-muted)]">
           Improper slices ({{ item.imp }})
         </p>
-        <div class="mt-2 flex gap-0.5 overflow-x-auto max-w-full py-1" :aria-label="`${item.imp} slices`">
+        <div class="mt-2 flex gap-0.5 overflow-x-auto overflow-y-hidden max-w-full py-1" :aria-label="`${item.imp} slices`">
           <div
             v-for="slice in item.imp"
             :key="`${item.title}-slice-${slice}`"
@@ -482,7 +482,7 @@ const borrowBar = computed(() => {
           class="rounded-[var(--radius-card)] border border-[var(--color-border)] p-4"
         >
           <h3 class="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">{{ item.title }}</h3>
-          <div class="mt-2 flex items-center gap-2 overflow-x-auto max-w-full py-1">
+          <div class="mt-2 flex items-center gap-2 overflow-x-auto overflow-y-hidden max-w-full py-1">
             <div
               v-for="tile in item.whole"
               :key="`${item.title}-${tile}`"
@@ -531,7 +531,7 @@ const borrowBar = computed(() => {
         <h3 class="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">
           Minuend
         </h3>
-        <div class="mt-2 flex items-center gap-2 overflow-x-auto max-w-full py-1">
+        <div class="mt-2 flex items-center gap-2 overflow-x-auto overflow-y-hidden max-w-full py-1">
           <div
             v-for="tile in model.a"
             :key="`minuend-${tile}`"
@@ -570,7 +570,7 @@ const borrowBar = computed(() => {
         </p>
         <div
           v-if="model.canBorrow"
-          class="overflow-x-auto max-w-full py-1"
+          class="mixed-formula"
           v-html="formula('1 = ' + fracLatex(model.lcd, model.lcd), true)"
         />
         <div class="mt-2 flex h-10 max-w-full overflow-hidden rounded-[var(--radius-card)] border border-slate-600">
@@ -587,23 +587,23 @@ const borrowBar = computed(() => {
     <section v-else class="grid gap-3 sm:grid-cols-2">
       <article class="rounded-[var(--radius-card)] border border-[var(--color-border)] p-4">
         <p class="text-xs font-semibold uppercase tracking-wide text-[var(--color-muted)]">1 · Mixed</p>
-        <div class="overflow-x-auto max-w-full py-1" v-html="formula(model.mixed1 + ' , ' + model.mixed2, true)" />
+        <div class="mixed-formula" v-html="formula(model.mixed1 + ' , ' + model.mixed2, true)" />
       </article>
       <article class="rounded-[var(--radius-card)] border border-[var(--color-border)] p-4">
         <p class="text-xs font-semibold uppercase tracking-wide text-[var(--color-muted)]">2 · Improper</p>
-        <div class="overflow-x-auto max-w-full py-1" v-html="formula(model.improper1 + ' , ' + model.improper2, true)" />
+        <div class="mixed-formula" v-html="formula(model.improper1 + ' , ' + model.improper2, true)" />
       </article>
       <article class="rounded-[var(--radius-card)] border border-[var(--color-border)] p-4">
         <p class="text-xs font-semibold uppercase tracking-wide text-[var(--color-muted)]">3 · Operation</p>
         <div
           v-if="model.divideByZero"
-          class="overflow-x-auto max-w-full py-1 text-sm text-amber-200"
+          class="mixed-formula text-sm text-amber-200"
         >
           The divisor is 0. Step the second number off zero.
         </div>
         <div
           v-else
-          class="overflow-x-auto max-w-full py-1"
+          class="mixed-formula"
           v-html="formula(model.multiply
             ? model.improper1 + ' \\times ' + model.improper2 + ' = ' + fracLatex(model.rawNum, model.rawDen)
             : model.improper1 + ' \\times ' + fracLatex(model.f, model.imp2) + ' = ' + fracLatex(model.rawNum, model.rawDen), true)"
@@ -611,7 +611,7 @@ const borrowBar = computed(() => {
       </article>
       <article class="rounded-[var(--radius-card)] border border-[var(--color-border)] p-4">
         <p class="text-xs font-semibold uppercase tracking-wide text-[var(--color-muted)]">4 · Reduced mixed</p>
-        <div class="overflow-x-auto max-w-full py-1" v-html="formula(model.finalLatex, true)" />
+        <div class="mixed-formula" v-html="formula(model.finalLatex, true)" />
       </article>
     </section>
 
@@ -619,17 +619,47 @@ const borrowBar = computed(() => {
       <h3 class="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">
         Live Equality
       </h3>
-      <div class="overflow-x-auto max-w-full py-1 text-lg" v-html="formula(model.problem, true)" />
+      <div class="mixed-formula text-lg" v-html="formula(model.problem, true)" />
       <ol class="mt-2 space-y-2">
         <li v-for="(step, index) in model.steps" :key="`eq-${index}`" class="flex gap-2 text-sm text-[var(--color-text)]">
           <span class="font-semibold text-[var(--color-muted)]">{{ index + 1 }}.</span>
-          <div class="min-w-0 flex-1 overflow-x-auto max-w-full py-1" v-html="renderKatex(step)" />
+          <div class="mixed-formula min-w-0 flex-1" v-html="renderKatex(step)" />
         </li>
       </ol>
       <p class="mt-3 text-xs font-semibold uppercase tracking-wide text-[var(--color-muted)]">
         Reduced mixed number
       </p>
-      <div class="overflow-x-auto max-w-full py-1 text-lg" v-html="formula(model.finalLatex, true)" />
+      <div class="mixed-formula text-lg" v-html="formula(model.finalLatex, true)" />
     </section>
   </div>
 </template>
+
+<style scoped>
+.mixed-formula {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-top: 0.45rem;
+  padding-bottom: 0.6rem;
+  line-height: 2;
+  scrollbar-width: none;
+}
+
+.mixed-formula::-webkit-scrollbar {
+  display: none;
+}
+
+.mixed-formula :deep(.katex) {
+  white-space: nowrap;
+}
+
+.mixed-formula :deep(.katex-display) {
+  margin: 0;
+  overflow: visible;
+}
+
+.mixed-formula :deep(.katex-display > .katex) {
+  max-width: none;
+  overflow: visible;
+}
+</style>
