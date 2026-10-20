@@ -8,6 +8,7 @@ import ExponentsModule from './math/ExponentsModule.vue'
 import ScientificNotationModule from './math/ScientificNotationModule.vue'
 import AlgebraicExpressionsModule from './math/AlgebraicExpressionsModule.vue'
 import FractionsBasicsModule from './math/FractionsBasicsModule.vue'
+import MixedNumbersModule from './math/MixedNumbersModule.vue'
 import ExerciseFallback from './ExerciseFallback.vue'
 
 export const exerciseRegistry = {
@@ -20,6 +21,7 @@ export const exerciseRegistry = {
   'math-scientific-notation': ScientificNotationModule,
   'math-algebraic-expressions': AlgebraicExpressionsModule,
   'math-fractions-basics': FractionsBasicsModule,
+  'math-mixed-numbers': MixedNumbersModule,
   'science-earth-systems': defineAsyncComponent(() =>
     import('./science/EarthSystemsMission.vue'),
   ),
@@ -39,5 +41,6 @@ export {
   ScientificNotationModule,
   AlgebraicExpressionsModule,
   FractionsBasicsModule,
+  MixedNumbersModule,
   ExerciseFallback,
 }

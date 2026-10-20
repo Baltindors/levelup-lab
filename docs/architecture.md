@@ -65,7 +65,7 @@ Mock data lives in `src/data/mockData.js` and follows this shape:
       theme: 'theme-grade-5', // dark shinobi academy theme
       subjects: [
         { id: 'spelling-jutsu', /* spelling-jutsu + custom-spelling exercises */ },
-        { id: 'fractions-decimals', /* math-fractions-basics */ },
+        { id: 'fractions-decimals', /* math-fractions-basics, math-mixed-numbers */ },
         { id: 'math-exam-100526', /* Scroll 2: three math exam modules */ },
         { id: 'earth-systems', /* science-earth-systems */ },
       ],
@@ -101,6 +101,7 @@ Views resolve entities by route params (`gradeId`, `subjectId`, `exerciseId`) ag
 | `math-scientific-notation` | `math/ScientificNotationModule.vue` |
 | `math-algebraic-expressions` | `math/AlgebraicExpressionsModule.vue` |
 | `math-fractions-basics` | `math/FractionsBasicsModule.vue` |
+| `math-mixed-numbers` | `math/MixedNumbersModule.vue` |
 | `science-earth-systems` | `science/EarthSystemsMission.vue` (async) |
 | anything else (e.g. `graph-interactive`) | `ExerciseFallback.vue` |
 
@@ -109,6 +110,8 @@ Views resolve entities by route params (`gradeId`, `subjectId`, `exerciseId`) ag
 `math-exponents`, `math-scientific-notation`, and `math-algebraic-expressions` are the 6th Grade Scroll 2 exam modules (`math-exam-100526`). Each wraps `MathModuleShell`, uses `useMathDrill` with `stratifyBy: 'topic'`, and draws from practice pools in [`src/data/mathExam100526Pools.js`](../src/data/mathExam100526Pools.js). Trial scores flow through [`useExerciseProgress.js`](../src/composables/useExerciseProgress.js) along with every other score-based trial.
 
 `math-fractions-basics` is the Rank C fractions mission. Its 20-card pool is generated once per visit by [`src/utils/fractionGenerator.js`](../src/utils/fractionGenerator.js) (`generateFractionDrillPool`), then a 10-card drill is stratified by `topic` (`add`, `subtract`, `multiply`, `divide`). The same array stays mounted so Retry Missed Only keeps those question ids. Refreshing the page deals a new set. The finished drill emits `{ correct, score, total, passed }` and is graded like any other score-based trial.
+
+`math-mixed-numbers` is the Rank B mixed-numbers mission on the same `fractions-decimals` subject. [`src/utils/mixedNumberGenerator.js`](../src/utils/mixedNumberGenerator.js) (`generateMixedNumberDrillPool`) deals 5 cards each for `convert`, `add-regroup`, `sub-borrow`, and `mult-div` (20 candidates). The 10-card drill is stratified by `topic`. Cards use `correctAnswer` with `$...$` choice labels so the shared multiple-choice question and breakdown components grade them. Refreshing the page deals a new set. The finished drill emits `{ correct, score, total, passed }`. A seal at ≥70% stores the letter rank and awards +25 academy XP once, the same path as the Rank C trial. The subject meter counts both exercises (`Y/2 TRIALS SEALED`).
 
 `science-earth-systems` is the Earth Systems mission. It does **not** use `MathModuleShell` or `useMathDrill`. See **Science module pattern** below.
 
@@ -187,6 +190,7 @@ Modules must wrap `MathModuleShell` and provide:
 | `math-scientific-notation` | Decimal-shift visualizer + MC drill |
 | `math-algebraic-expressions` | Area-model distribute/factor + MC drill |
 | `math-fractions-basics` | Rank C four-operation fractions explorer + evergreen MC drill |
+| `math-mixed-numbers` | Rank B mixed-number convert, regroup, borrow, and multiply/divide explorer + evergreen MC drill |
 
 ### Conventions
 

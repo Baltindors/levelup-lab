@@ -13,6 +13,7 @@ export const SCORE_EXERCISE_TYPES = [
   'math-scientific-notation',
   'math-algebraic-expressions',
   'math-fractions-basics',
+  'math-mixed-numbers',
   'science-earth-systems',
   'trig-grapher',
 ]

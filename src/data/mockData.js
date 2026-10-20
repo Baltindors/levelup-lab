@@ -182,6 +182,15 @@ export const mockData = {
               description:
                 'Master addition, subtraction, multiplication, and division across like and unlike denominators.',
             },
+            {
+              id: 'scroll-mixed-numbers',
+              title: 'Scroll of Mixed Numbers & Regrouping',
+              missionRank: 'Rank B',
+              exerciseType: 'math-mixed-numbers',
+              badge: 'MIXED NUMBERS',
+              description:
+                'Master mixed-to-improper transmutation, regrouping across whole numbers, and borrowing techniques.',
+            },
           ],
         },
         {
