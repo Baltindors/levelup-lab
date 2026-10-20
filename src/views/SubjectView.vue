@@ -2,11 +2,9 @@
 import { computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { getGrade, getSubject } from '../data/mockData'
+import { isScoreExercise, useExerciseProgress } from '../composables/useExerciseProgress'
 import {
-  MATH_EXAM_SUBJECT_ID,
-  useMathExamProgress,
-} from '../composables/useMathExamProgress'
-import {
+  SHINOBI_THEME,
   SPELLING_ACTIVITY_KEYS,
   SPELLING_SUBJECT_ID,
   spellingXpActivityKey,
@@ -18,13 +16,30 @@ import AnimeMasterySeal from '../components/common/AnimeMasterySeal.vue'
 const route = useRoute()
 const grade = computed(() => getGrade(route.params.gradeId))
 const subject = computed(() => getSubject(route.params.gradeId, route.params.subjectId))
-const isShinobi = computed(() => grade.value?.theme === 'theme-grade-5')
-const isMathExamScroll = computed(() => subject.value?.id === MATH_EXAM_SUBJECT_ID)
+const isShinobi = computed(() => grade.value?.theme === SHINOBI_THEME)
 
-const { getExerciseProgress, subjectStats } = useMathExamProgress()
+const { getExerciseProgress, getSubjectProgress } = useExerciseProgress()
 const { scrolls } = useShinobiProgress()
 
-const stats = computed(() => subjectStats.value)
+const scoreExercises = computed(() =>
+  (subject.value?.exercises ?? []).filter((exercise) => isScoreExercise(exercise)),
+)
+
+const stats = computed(() =>
+  getSubjectProgress(scoreExercises.value.map((exercise) => exercise.id)),
+)
+
+const progressLabel = computed(() => {
+  const done = stats.value.completedCount
+  const total = stats.value.totalCount
+  const percent = stats.value.chakraPercent
+  if (isShinobi.value) return `${percent}% CHAKRA • ${done}/${total} TRIALS SEALED`
+  return `${percent}% PROGRESS • ${done}/${total} MODULES COMPLETED`
+})
+
+const allSealedLabel = computed(() =>
+  isShinobi.value ? 'ALL TRIALS SEALED' : 'ALL MODULES COMPLETED',
+)
 
 function spellingPracticeCount(exerciseId) {
   const flags = scrolls.value[SPELLING_SUBJECT_ID] || {}
@@ -77,29 +92,42 @@ function cardBorderClass(exerciseId) {
     return 'border-emerald-500/50 shadow-[0_0_16px_rgba(16,185,129,0.25)]'
   }
   if (state === 'failed') {
-    return 'border-rose-900/60 bg-rose-950/10'
+    return isShinobi.value
+      ? 'border-amber-400/70 bg-amber-950/20'
+      : 'border-amber-600/60 bg-amber-50'
   }
-  return 'border-slate-800'
+  return isShinobi.value ? 'border-[var(--color-border)]' : 'border-black/5'
 }
 
 function scorePill(exerciseId) {
   const progress = getExerciseProgress(exerciseId)
+  if (cardState(exerciseId) === 'untested') return 'NOT ATTEMPTED'
+  return `RANK ${progress.gradeRank} • ${progress.bestScore}/${progress.total} (${progress.percent}%)`
+}
+
+function scorePillClass(exerciseId) {
   const state = cardState(exerciseId)
-  if (state === 'untested') return 'Not Attempted'
-  const base = `Best Trial: ${progress.bestScore}/${progress.total} (${progress.percentage}%)`
-  if (state === 'failed') return `${base} • Needs 70% to pass`
-  return base
+  if (state === 'passed') {
+    return isShinobi.value
+      ? 'border-emerald-700/60 text-emerald-300'
+      : 'border-emerald-700/60 text-emerald-800'
+  }
+  if (state === 'failed') {
+    return isShinobi.value
+      ? 'border-amber-400/70 text-amber-200'
+      : 'border-amber-600/70 text-amber-800'
+  }
+  return 'text-[var(--color-muted)]'
 }
 
 function ctaLabel(exerciseId) {
-  const state = cardState(exerciseId)
-  if (state === 'passed') return 'Re-challenge Kata →'
-  if (state === 'failed') return 'Retake Trial →'
-  return 'Begin Trial →'
+  const attempted = cardState(exerciseId) !== 'untested'
+  if (isShinobi.value) return attempted ? 'Retake Trial →' : 'Begin Trial →'
+  return attempted ? 'Retake Module →' : 'Begin Module →'
 }
 
 function sealRank(exerciseId) {
-  return getExerciseProgress(exerciseId).gradeRank || 'F'
+  return getExerciseProgress(exerciseId).gradeRank || ''
 }
 </script>
 
@@ -123,28 +151,27 @@ function sealRank(exerciseId) {
       <h1 class="display text-4xl font-bold">{{ subject.missionTitle ?? subject.name }}</h1>
       <p class="mt-2 text-[var(--color-muted)]">{{ subject.description }}</p>
 
-      <div v-if="isMathExamScroll" class="mt-5 space-y-3">
+      <div v-if="scoreExercises.length" class="mt-5 space-y-3">
         <p
           class="display text-sm font-bold uppercase tracking-[0.18em] text-[var(--color-accent)] sm:text-base"
         >
-          {{ stats.chakraPercent }}% CHAKRA • {{ stats.completedCount }}/{{ stats.totalCount }} TRIALS
-          SEALED
+          {{ progressLabel }}
         </p>
 
         <div
           v-if="stats.allComplete"
-          class="animate-pulse rounded-md border border-amber-400/60 bg-gradient-to-r from-amber-700 via-amber-500 to-yellow-400 px-3 py-2 text-center text-sm font-black uppercase tracking-wide text-slate-950 shadow-[0_0_18px_rgba(251,191,36,0.45)]"
+          class="rounded-md border border-[var(--color-primary)] bg-[var(--color-primary-soft)] px-3 py-2 text-center text-sm font-black uppercase tracking-wide text-[var(--color-primary)]"
         >
-          ✦ SCROLL 2 FULLY SEALED • +100 XP LEVEL UP CLAIMED ✦
+          {{ allSealedLabel }}
         </div>
 
         <div
-          class="h-3 overflow-hidden rounded-full border border-[var(--color-border)] bg-[var(--color-border)] shadow-[0_0_12px_rgba(0,229,255,0.4)]"
+          class="h-3 overflow-hidden rounded-full border border-[var(--color-border)] bg-[var(--color-border)]"
           role="meter"
           :aria-valuenow="stats.chakraPercent"
           aria-valuemin="0"
           aria-valuemax="100"
-          aria-label="Scroll 2 chakra progress"
+          :aria-label="progressLabel"
         >
           <div
             class="chakra-meter h-full transition-[width] duration-700 ease-out"
@@ -167,20 +194,19 @@ function sealRank(exerciseId) {
           }"
           class="theme-card block border bg-[var(--color-panel)] p-4 no-underline shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:p-5"
           :class="[
-            isMathExamScroll
+            isScoreExercise(exercise)
               ? cardBorderClass(exercise.id)
               : exercise.exerciseType === 'spelling-jutsu'
                 ? spellingCardBorderClass(exercise.id)
                 : isShinobi
                   ? 'border-[var(--color-border)]'
                   : 'border-black/5',
-            isMathExamScroll || exercise.exerciseType === 'spelling-jutsu'
+            isScoreExercise(exercise) || exercise.exerciseType === 'spelling-jutsu'
               ? 'relative overflow-hidden'
               : '',
           ]"
         >
-          <!-- Math exam: left content + oversized rank seal -->
-          <template v-if="isMathExamScroll">
+          <template v-if="isScoreExercise(exercise)">
             <div
               class="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center"
             >
@@ -196,13 +222,7 @@ function sealRank(exerciseId) {
                 </p>
                 <p
                   class="mt-3 inline-flex rounded-full border border-[var(--color-border)] px-3 py-1 text-xs font-semibold uppercase tracking-wide"
-                  :class="
-                    cardState(exercise.id) === 'failed'
-                      ? 'border-rose-800/70 text-rose-300'
-                      : cardState(exercise.id) === 'passed'
-                        ? 'border-emerald-700/60 text-emerald-300'
-                        : 'text-[var(--color-muted)]'
-                  "
+                  :class="scorePillClass(exercise.id)"
                 >
                   {{ scorePill(exercise.id) }}
                 </p>

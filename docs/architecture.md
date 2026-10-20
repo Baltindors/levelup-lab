@@ -106,15 +106,15 @@ Views resolve entities by route params (`gradeId`, `subjectId`, `exerciseId`) ag
 
 `trig-grapher` uses [`src/utils/trigSolver.js`](../src/utils/trigSolver.js) to parse `y = A f(B(x-C))+D`, compute period/phase/key points, and plot multi-segment SVG paths that break at asymptotes. The parser accepts fractional/parenthesized coefficients (e.g. `(1/2)csc(x)`, `-3/2tan(x)`), bare signs (`-sin(x)`), `x/k` arguments, and fractional midlines (`+1/2`). Formulas render with KaTeX. It is the first module built on the **Standard Math Module Pattern** below.
 
-`math-exponents`, `math-scientific-notation`, and `math-algebraic-expressions` are the 6th Grade Scroll 2 exam modules (`math-exam-100526`). Each wraps `MathModuleShell`, uses `useMathDrill` with `stratifyBy: 'topic'`, and draws from practice pools in [`src/data/mathExam100526Pools.js`](../src/data/mathExam100526Pools.js). Trial scores flow through [`useMathExamProgress.js`](../src/composables/useMathExamProgress.js): each attempt stores peak `bestScore`, letter rank (S/A/B/C/F), and a sealed `completed` flag (≥70%). Best score never downgrades on retake. Sealing all three trials awards **+100 XP once** (see Academy XP). [`SubjectView.vue`](../src/views/SubjectView.vue) shows a Chakra progress bar, best-trial pills, and anime rank stamps only when the subject is `math-exam-100526`.
+`math-exponents`, `math-scientific-notation`, and `math-algebraic-expressions` are the 6th Grade Scroll 2 exam modules (`math-exam-100526`). Each wraps `MathModuleShell`, uses `useMathDrill` with `stratifyBy: 'topic'`, and draws from practice pools in [`src/data/mathExam100526Pools.js`](../src/data/mathExam100526Pools.js). Trial scores flow through [`useExerciseProgress.js`](../src/composables/useExerciseProgress.js) along with every other score-based trial.
 
-`math-fractions-basics` is the Rank C fractions mission. Its 20-card pool is generated once per visit by [`src/utils/fractionGenerator.js`](../src/utils/fractionGenerator.js) (`generateFractionDrillPool`), then a 10-card drill is stratified by `topic` (`add`, `subtract`, `multiply`, `divide`). The same array stays mounted so Retry Missed Only keeps those question ids. Refreshing the page deals a new set. Fractions do not persist a letter grade and do not award academy XP.
+`math-fractions-basics` is the Rank C fractions mission. Its 20-card pool is generated once per visit by [`src/utils/fractionGenerator.js`](../src/utils/fractionGenerator.js) (`generateFractionDrillPool`), then a 10-card drill is stratified by `topic` (`add`, `subtract`, `multiply`, `divide`). The same array stays mounted so Retry Missed Only keeps those question ids. Refreshing the page deals a new set. The finished drill emits `{ correct, score, total, passed }` and is graded like any other score-based trial.
 
 `science-earth-systems` is the Earth Systems mission. It does **not** use `MathModuleShell` or `useMathDrill`. See **Science module pattern** below.
 
 `spelling-jutsu` and `custom-spelling` are the language modules. See **Language module pattern** below.
 
-Components emit `answered`. Scroll 2 math modules include `{ correct, score, total, passed }`. `ExerciseView` calls `recordExerciseScore` only when the subject id is `math-exam-100526`. Other subjects may emit a score (Earth Systems emits `{ correct: true, score: 25, total: 25, passed: true }` when the mission is mastered) and that payload is ignored for grades and XP. The view keeps the exercise mounted and shows a completion banner below with **Try Again** (on incorrect), **Next Exercise**, and **Back to Subject**.
+Components emit `answered`. Score-based trials (Scroll 2, fractions, Earth Systems, and college trig) include numeric `{ score, total }` plus `{ correct, passed }`. `ExerciseView` calls `recordExerciseScore` for every payload that has those numbers, on every subject. Spelling emits `{ correct: true }` only, so it is not graded here. The view keeps the exercise mounted and shows a completion banner below with **Try Again** (on incorrect), **Next Exercise**, and **Back to Subject**. A first shinobi seal also shows **Trial sealed • +25 XP**. College completions do not.
 
 ## Client Storage
 
@@ -123,10 +123,11 @@ The app stays zero-backend. User-authored and progress state live in browser `lo
 | Key | Purpose |
 |-----|---------|
 | `levelup_custom_spelling_words` | Custom Spelling Jutsu word/definition scroll |
-| `shinobi_academy_progress_v1` | Shinobi scroll / trial completion flags (XP and rank are derived) |
+| `shinobi_academy_progress_v1` | Shinobi XP flags. Spelling uses `{exerciseId}:{practice}`. Score trials on the shinobi theme use `xp:{exerciseId}` (+25 once). A legacy subject `complete` flag is still worth +100 and is not granted again. |
 | `shinobi_academy_last_seen_v1` | Last animated `{ xp, level }` snapshot for GradeView XP bar / level-up celebration |
 | `shinobi_spelling_mastery_v2` | Per-scope mastered word IDs for spelling practices |
-| `levelup_math_exam_100526_progress` | Scroll 2 per-exercise scores/ranks (`bestScore`, `gradeRank`, `completed`) + one-time level-up guard; legacy boolean `true` normalizes to Rank B (70%) |
+| `levelup_exercise_progress_v1` | Universal score store, keyed by `exerciseId`: `{ bestScore, total, percent, gradeRank, completed, attempts, xpAwarded }` |
+| `levelup_math_exam_100526_progress` | Legacy Scroll 2 store. Read once into `levelup_exercise_progress_v1` when the new key is absent, then left in place. Boolean `true` becomes Rank B (7/10). |
 | `shinobi_science_mastery_earth_systems_v1` | Earth Systems per-question `{ correctStreak, attempts, mastered }` |
 
 Full progress reset also deletes any leftover keys prefixed `shinobi_mastery_` or `shinobi_trial_`. Nothing in the current modules writes those prefixes.
@@ -137,18 +138,23 @@ On Shinobi grade overview ([`GradeView.vue`](../src/views/GradeView.vue)), retur
 
 ## Academy XP and grades
 
-Rank is derived in [`useShinobiProgress.js`](../src/composables/useShinobiProgress.js). Level is `min(10, floor(totalXp / 100) + 1)`. Only two sources add XP:
+Rank is derived in [`useShinobiProgress.js`](../src/composables/useShinobiProgress.js). Level is `min(10, floor(totalXp / 100) + 1)`. Academy XP comes from:
 
 | Source | When | Amount |
 |--------|------|--------|
 | Language Arts — Spelling (`spelling-jutsu`) | A weekly jutsu seals **Seal Matching** or **Blindfold Training** (all words correct on both passes) | **+25 XP once** per practice, flag key `{exerciseId}:{practice}` |
-| Scroll 2 (`math-exam-100526`) | All three trials are sealed at ≥70% | **+100 XP once**, via the subject `complete` flag |
+| Score-based trials on `theme-grade-5` | A trial's percent first reaches ≥70% (Rank B or above) | **+25 XP once**, flag key `xp:{exerciseId}` |
+| Legacy Scroll 2 lump | All three Scroll 2 trials were sealed before this store existed (`leveledUp`) | **+100 XP once**, subject `complete` flag. Migrated exercises are marked `xpAwarded` so they do not also take +25. |
 
-Custom spelling sets `award-scroll-xp` to false, so forging a personal scroll does not add XP. Fractions, Earth Systems, and college trig do not set `complete` and do not add XP.
+Custom spelling sets `award-scroll-xp` to false, so forging a personal scroll does not add XP. College Trig (`theme-college-trig`) records a letter grade and never writes `shinobi_academy_progress_v1`.
 
-Letter ranks (S ≥100%, A ≥90%, B ≥70%, C ≥50%, otherwise F) exist only on Scroll 2. Spelling shows mastery seals (`1/2` in training, `2/2` mastered), not letter grades.
+Letter ranks apply to every score-based trial: S = 100%, A = 90–99%, B = 70–89% (seal), C = 50–69%, F = below 50%. Attempts are compared by percent, so a 25-question result cannot replace a 10-card best just because the raw score is larger. A retake updates `bestScore`, `percent`, and `gradeRank` only when the new percent is greater than or equal to the stored best. `completed` stays true after the first seal. `attempts` increments on every recorded finish.
 
-Any new XP or grade source must update this section and the storage table in the same change. Do not award academy XP from a drill emit alone; `ExerciseView` only persists scores for `math-exam-100526`.
+[`useExerciseProgress.js`](../src/composables/useExerciseProgress.js) keeps that record in a module-level `ref`, so navigating back to the subject updates the stamp and meter without a reload.
+
+Subject pages for score-based exercises show the meter, a rank pill (`NOT ATTEMPTED` or `RANK {rank} • {score}/{total} ({percent}%)`), and a stamp. Grade 6 copy is `X% CHAKRA • Y/Z TRIALS SEALED`. College copy is `X% PROGRESS • Y/Z MODULES COMPLETED`. Spelling keeps mastery seals (`1/2` in training, `2/2` mastered), not letter grades.
+
+Any new XP or grade source must update this section and the storage table in the same change. Do not award academy XP unless the grade theme is `theme-grade-5`.
 
 ## Standard Math Module Pattern
 
@@ -186,7 +192,7 @@ Modules must wrap `MathModuleShell` and provide:
 
 - Question cards must remount per item (`:key="currentQuestion.id"` in the shell) so form state does not bleed.
 - Record the answer on **Submit**; advance only when the student clicks **Next Card →**.
-- Emit `answered({ correct: passed, score, total, passed })` when a full drill session completes (Scroll 2 modules include score fields for `recordExerciseScore`).
+- Emit `answered({ correct: passed, score, total, passed })` when a full drill session completes so `ExerciseView` can record the letter rank.
 - Put a `practicePool` (15+ items recommended) on the exercise object in `src/data/mockData.js` (or an imported pool file under `src/data/`).
 - For multi-lesson pools, pass `stratifyBy: 'topic'` to `useMathDrill` so 10-card drills round-robin across subtopics instead of clustering.
 - Double-escape LaTeX backslashes in JS pool strings (`\\frac`, `\\times`). Render with [`src/utils/mathKatex.js`](../src/utils/mathKatex.js): undelimited text stays plain prose; `$...$` / `$$...$$` segments render as KaTeX.
@@ -240,7 +246,7 @@ Explorers stacked on the sandbox page: Water Cycle, Rock Cycle, Atmosphere, Eart
 - Two phases only, using `.math-phase-tabs`: **Dojo Sandbox** and the trial. Leaving an in-progress round asks for confirmation. Mastery already saved is kept; the round ends.
 - A question is mastered only after **2 correct answers in a row**. A miss resets `correctStreak` to 0 and clears `mastered`.
 - Each round draws up to **10 unmastered** questions, stratified by `topic`, and locks that snapshot so a card is not removed mid-round when it becomes mastered.
-- The mission is complete when every pool question is mastered. That emits `answered` and plays the level-up sound. It does **not** write a letter grade or academy XP.
+- The mission is complete when every pool question is mastered. Only then does it emit `{ correct: true, score: 25, total: 25, passed: true }`, which records Rank S and, on the shinobi theme, +25 XP once. Until that emit, the subject card stays `NOT ATTEMPTED`. Do not grade individual rounds; this is a 2-streak mastery engine, not a fixed-card quiz. The in-mission streak stays in `shinobi_science_mastery_earth_systems_v1`.
 - Persist mastery under a dedicated `localStorage` key (`shinobi_science_mastery_earth_systems_v1` for this mission). Add the key to the storage table when a new science mission gets its own store.
 - Pool items need `id`, `topic`, `question`, `options` (`{ id, label }`), `correctOptionId`, and `explanation`. `hint` and `topicLabel` are used by the review UI.
 

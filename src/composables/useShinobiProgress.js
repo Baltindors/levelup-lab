@@ -5,6 +5,8 @@ export const SPELLING_SUBJECT_ID = 'spelling-jutsu'
 export const SPELLING_ACTIVITY_KEYS = ['seal-matching', 'blindfold-training']
 export const LEGACY_WEEKLY_SPELLING_ID = 'weekly-spelling-jutsu'
 export const SPELLING_XP_PER_PRACTICE = 25
+export const TRIAL_XP = 25
+export const SHINOBI_THEME = 'theme-grade-5'
 
 const STORAGE_KEY = 'shinobi_academy_progress_v1'
 
@@ -39,6 +41,11 @@ export function spellingActivityKeysForExercises(exercises) {
 export function spellingXpActivityKey(exerciseId, practiceKey) {
   if (!exerciseId || !practiceKey) return ''
   return `${exerciseId}:${practiceKey}`
+}
+
+export function trialXpActivityKey(exerciseId) {
+  if (!exerciseId) return ''
+  return `xp:${exerciseId}`
 }
 
 function isScopedSpellingKey(key) {
@@ -108,13 +115,18 @@ function countSpellingPracticeFlags(flags) {
   return Object.keys(flags).filter((key) => flags[key] && isScopedSpellingKey(key)).length
 }
 
+function countTrialXpFlags(flags) {
+  return Object.keys(flags).filter((key) => flags[key] && key.startsWith('xp:')).length
+}
+
 function xpForSubject(subjectId) {
   const flags = flagsFor(subjectId)
   // Spelling XP is exclusively practice-flag based (25 XP each). Never use `complete`.
   if (subjectId === SPELLING_SUBJECT_ID) {
     return countSpellingPracticeFlags(flags) * SPELLING_XP_PER_PRACTICE
   }
-  return flags.complete ? 100 : 0
+  const legacyScrollLump = flags.complete ? 100 : 0
+  return legacyScrollLump + countTrialXpFlags(flags) * TRIAL_XP
 }
 
 export function useShinobiProgress() {

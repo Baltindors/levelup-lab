@@ -39,27 +39,37 @@ const RANK_STOPS = {
   ],
 }
 
-const isActive = computed(() => props.sealed && Boolean(props.rank) && RANK_STOPS[props.rank])
+const hasRank = computed(() => Boolean(props.rank) && Boolean(RANK_STOPS[props.rank]))
 
-const displayRank = computed(() => {
-  if (!isActive.value) return '—'
-  return props.rank
+const isActive = computed(() => props.sealed && hasRank.value)
+
+const displayRank = computed(() => (hasRank.value ? props.rank : 'SEAL'))
+
+function readThemeToken(name) {
+  if (typeof document === 'undefined') return ''
+  const root = document.querySelector('.app-shell') || document.documentElement
+  return getComputedStyle(root).getPropertyValue(name).trim()
+}
+
+const accentColor = computed(() => {
+  void props.rank
+  return readThemeToken('--color-accent') || readThemeToken('--color-primary') || '#4338ca'
 })
 
+const mutedStroke = computed(() => readThemeToken('--color-border') || '#64748b')
+
 const rankStops = computed(() => {
-  if (!isActive.value) {
-    return [
-      { offset: '0%', color: '#94a3b8' },
-      { offset: '50%', color: '#64748b' },
-      { offset: '100%', color: '#475569' },
-    ]
-  }
-  return RANK_STOPS[props.rank]
+  if (hasRank.value) return RANK_STOPS[props.rank]
+  return [
+    { offset: '0%', color: '#94a3b8' },
+    { offset: '50%', color: '#64748b' },
+    { offset: '100%', color: '#475569' },
+  ]
 })
 
 const topicLabel = computed(() => (props.topic || 'TRIAL').toUpperCase())
 
-const bracketStroke = computed(() => (isActive.value ? '#22d3ee' : '#64748b'))
+const bracketStroke = computed(() => (isActive.value ? accentColor.value : mutedStroke.value))
 const letterStroke = computed(() => (isActive.value ? '#78350f' : '#334155'))
 </script>
 
@@ -68,15 +78,19 @@ const letterStroke = computed(() => (isActive.value ? '#78350f' : '#334155'))
     class="relative h-full w-full select-none"
     role="img"
     :aria-label="
-      isActive ? `Rank ${displayRank} seal for ${topicLabel}` : `Locked trial seal for ${topicLabel}`
+      hasRank
+        ? `Rank ${displayRank} seal for ${topicLabel}`
+        : `Unattempted seal for ${topicLabel}`
     "
   >
     <span
       class="absolute -top-1 right-2 z-20 rounded-sm px-2.5 py-0.5 text-[10px] font-black uppercase italic tracking-wider shadow-md md:text-xs"
       :class="
         isActive
-          ? 'bg-gradient-to-r from-orange-600 to-amber-500 text-white -skew-x-12'
-          : 'bg-slate-700/90 text-slate-400 -skew-x-12'
+          ? 'bg-[var(--color-primary)] text-white -skew-x-12'
+          : hasRank
+            ? 'border border-[var(--color-border)] text-[var(--color-primary)] -skew-x-12'
+            : 'border border-dashed border-[var(--color-border)] text-[var(--color-muted)] -skew-x-12'
       "
     >
       {{ topicLabel }}
@@ -94,7 +108,7 @@ const letterStroke = computed(() => (isActive.value ? '#78350f' : '#334155'))
             dx="0"
             dy="0"
             stdDeviation="4"
-            flood-color="#00e5ff"
+            :flood-color="accentColor"
             flood-opacity="0.8"
           />
         </filter>
@@ -118,7 +132,7 @@ const letterStroke = computed(() => (isActive.value ? '#78350f' : '#334155'))
           stroke-width="10"
           stroke-linejoin="round"
           stroke-linecap="round"
-          v-bind="isActive ? {} : { 'stroke-dasharray': '8 10' }"
+          v-bind="hasRank ? {} : { 'stroke-dasharray': '8 10' }"
           :filter="isActive ? `url(#${glowId})` : null"
           :opacity="isActive ? 1 : 0.55"
         />
@@ -131,7 +145,7 @@ const letterStroke = computed(() => (isActive.value ? '#78350f' : '#334155'))
           stroke-width="10"
           stroke-linejoin="round"
           stroke-linecap="round"
-          v-bind="isActive ? {} : { 'stroke-dasharray': '8 10' }"
+          v-bind="hasRank ? {} : { 'stroke-dasharray': '8 10' }"
           :filter="isActive ? `url(#${glowId})` : null"
           :opacity="isActive ? 1 : 0.55"
         />
@@ -147,7 +161,7 @@ const letterStroke = computed(() => (isActive.value ? '#78350f' : '#334155'))
           :fill="`url(#${rankGoldId})`"
           :stroke="letterStroke"
           stroke-width="2"
-          :opacity="isActive ? 1 : 0.45"
+          :opacity="hasRank ? 1 : 0.45"
         >
           {{ displayRank }}
         </text>

@@ -7,10 +7,7 @@ import {
   spellingActivityKeysForExercises,
   useShinobiProgress,
 } from '../composables/useShinobiProgress'
-import {
-  MATH_EXAM_SUBJECT_ID,
-  useMathExamProgress,
-} from '../composables/useMathExamProgress'
+import { useExerciseProgress } from '../composables/useExerciseProgress'
 import { meterFromXp, readLastSeen, writeLastSeen } from '../composables/useShinobiLastSeen'
 import ShinobiLevelUpModal from '../components/common/ShinobiLevelUpModal.vue'
 
@@ -19,7 +16,7 @@ const grade = computed(() => getGrade(route.params.gradeId))
 const isShinobi = computed(() => grade.value?.theme === 'theme-grade-5')
 
 const { getScrollProgress, overallXP, currentRank, nextRankMeter } = useShinobiProgress()
-const { getScrollProgress: getMathExamProgress } = useMathExamProgress()
+const { getSubjectProgress } = useExerciseProgress()
 
 const pendingLastSeen = (() => {
   if (!isShinobi.value) return null
@@ -52,14 +49,16 @@ const levelUpXpDelta = ref(100)
 const timers = []
 let xpRaf = null
 
-function scrollKeys(subject) {
-  const spellingKeys = spellingActivityKeysForExercises(subject.exercises)
-  return spellingKeys.length ? spellingKeys : ['complete']
-}
-
 function scrollProgress(subject) {
-  if (subject.id === MATH_EXAM_SUBJECT_ID) return getMathExamProgress()
-  return getScrollProgress(subject.id, scrollKeys(subject))
+  const spellingKeys = spellingActivityKeysForExercises(subject.exercises)
+  if (spellingKeys.length) return getScrollProgress(subject.id, spellingKeys)
+  const stats = getSubjectProgress((subject.exercises ?? []).map((exercise) => exercise.id))
+  return {
+    percentage: stats.chakraPercent,
+    isMastered: stats.allComplete,
+    completedCount: stats.completedCount,
+    totalCount: stats.totalCount,
+  }
 }
 
 function scrollStatusLabel(subject) {

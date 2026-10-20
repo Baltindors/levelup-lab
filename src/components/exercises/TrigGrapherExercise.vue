@@ -45,7 +45,12 @@ function gradeAnswer(question, studentAnswers) {
 
 watch(isComplete, (done) => {
   if (done) {
-    emit('answered', { correct: passed.value })
+    emit('answered', {
+      correct: passed.value,
+      score: correctCount.value,
+      total: size.value,
+      passed: passed.value,
+    })
   }
 })
 </script>
