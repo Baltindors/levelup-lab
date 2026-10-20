@@ -67,6 +67,7 @@ Mock data lives in `src/data/mockData.js` and follows this shape:
         { id: 'spelling-jutsu', /* spelling-jutsu + custom-spelling exercises */ },
         { id: 'fractions-decimals', /* math-fractions-basics, math-mixed-numbers */ },
         { id: 'math-exam-100526', /* Scroll 2: three math exam modules */ },
+        { id: 'linear-equations', /* Scroll 3: three linear-equation modules */ },
         { id: 'earth-systems', /* science-earth-systems */ },
       ],
     },
@@ -100,6 +101,9 @@ Views resolve entities by route params (`gradeId`, `subjectId`, `exerciseId`) ag
 | `math-exponents` | `math/ExponentsModule.vue` |
 | `math-scientific-notation` | `math/ScientificNotationModule.vue` |
 | `math-algebraic-expressions` | `math/AlgebraicExpressionsModule.vue` |
+| `math-linear-eq-like-terms` | `math/LikeTermsModule.vue` |
+| `math-linear-eq-distributive` | `math/DistributiveEquationsModule.vue` |
+| `math-linear-eq-fractions` | `math/FractionEquationsModule.vue` |
 | `math-fractions-basics` | `math/FractionsBasicsModule.vue` |
 | `math-mixed-numbers` | `math/MixedNumbersModule.vue` |
 | `science-earth-systems` | `science/EarthSystemsMission.vue` (async) |
@@ -108,6 +112,8 @@ Views resolve entities by route params (`gradeId`, `subjectId`, `exerciseId`) ag
 `trig-grapher` uses [`src/utils/trigSolver.js`](../src/utils/trigSolver.js) to parse `y = A f(B(x-C))+D`, compute period/phase/key points, and plot multi-segment SVG paths that break at asymptotes. The parser accepts fractional/parenthesized coefficients (e.g. `(1/2)csc(x)`, `-3/2tan(x)`), bare signs (`-sin(x)`), `x/k` arguments, and fractional midlines (`+1/2`). Formulas render with KaTeX. It is the first module built on the **Standard Math Module Pattern** below.
 
 `math-exponents`, `math-scientific-notation`, and `math-algebraic-expressions` are the 6th Grade Scroll 2 exam modules (`math-exam-100526`). Each wraps `MathModuleShell`, uses `useMathDrill` with `stratifyBy: 'topic'`, and draws from practice pools in [`src/data/mathExam100526Pools.js`](../src/data/mathExam100526Pools.js). Trial scores flow through [`useExerciseProgress.js`](../src/composables/useExerciseProgress.js) along with every other score-based trial.
+
+`math-linear-eq-like-terms`, `math-linear-eq-distributive`, and `math-linear-eq-fractions` are the 6th Grade Scroll 3 mission (`linear-equations`). Each wraps `MathModuleShell`, uses `useMathDrill` with `stratifyBy: 'topic'`, and draws a 10-card trial from a 15-card static pool (3 topics × 5) in [`src/data/linearEquationsPools.js`](../src/data/linearEquationsPools.js). A seal at ≥70% stores the letter rank and awards +25 academy XP once. The subject meter counts all three trials (`Y/3 TRIALS SEALED`).
 
 `math-fractions-basics` is the Rank C fractions mission. Its 20-card pool is generated once per visit by [`src/utils/fractionGenerator.js`](../src/utils/fractionGenerator.js) (`generateFractionDrillPool`), then a 10-card drill is stratified by `topic` (`add`, `subtract`, `multiply`, `divide`). The same array stays mounted so Retry Missed Only keeps those question ids. Refreshing the page deals a new set. The finished drill emits `{ correct, score, total, passed }` and is graded like any other score-based trial.
 
@@ -189,6 +195,9 @@ Modules must wrap `MathModuleShell` and provide:
 | `math-exponents` | Integer exponent laws (explorer + MC drill) |
 | `math-scientific-notation` | Decimal-shift visualizer + MC drill |
 | `math-algebraic-expressions` | Area-model distribute/factor + MC drill |
+| `math-linear-eq-like-terms` | Like-terms balance visualizer + MC drill |
+| `math-linear-eq-distributive` | Signed distributive explorer + MC drill |
+| `math-linear-eq-fractions` | LCD vaporize explorer + MC drill |
 | `math-fractions-basics` | Rank C four-operation fractions explorer + evergreen MC drill |
 | `math-mixed-numbers` | Rank B mixed-number convert, regroup, borrow, and multiply/divide explorer + evergreen MC drill |
 

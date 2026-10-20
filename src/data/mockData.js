@@ -3,6 +3,11 @@ import {
   exponentsPracticePool,
   scientificNotationPracticePool,
 } from './mathExam100526Pools'
+import {
+  distributiveEquationsPracticePool,
+  fractionEquationsPracticePool,
+  likeTermsPracticePool,
+} from './linearEquationsPools'
 
 export const mockData = {
   grades: [
@@ -228,6 +233,44 @@ export const mockData = {
               description:
                 'Use the area model to distribute and factor (including negative GCFs), then prove mastery.',
               practicePool: algebraicExpressionsPracticePool,
+            },
+          ],
+        },
+        {
+          id: 'linear-equations',
+          name: 'Scroll 3: Multi-Step Linear Equations',
+          missionTitle: 'Scroll 3: Multi-Step Linear Equations',
+          difficulty: 'A-Rank Mission',
+          status: 'Scroll Unlocked',
+          description:
+            'Combine like terms, distribute signed factors, and clear denominators to isolate the variable.',
+          exercises: [
+            {
+              id: 'linear-eq-like-terms',
+              title: 'Combining Like Terms & Variable Isolation',
+              exerciseType: 'math-linear-eq-like-terms',
+              badge: 'LIKE TERMS',
+              description:
+                'Collapse like terms, balance variables across the equals sign, and gather constants.',
+              practicePool: likeTermsPracticePool,
+            },
+            {
+              id: 'linear-eq-distributive',
+              title: 'Shadow Distributive Property',
+              exerciseType: 'math-linear-eq-distributive',
+              badge: 'DISTRIBUTE',
+              description:
+                'Expand positive and negative factors, including the sign flip in -5(x - 2), then solve.',
+              practicePool: distributiveEquationsPracticePool,
+            },
+            {
+              id: 'linear-eq-fractions',
+              title: 'Rational Coefficients & Denominator Clearing',
+              exerciseType: 'math-linear-eq-fractions',
+              badge: 'LCD CLEAR',
+              description:
+                'Scale by the LCD, keep both sides equivalent, and isolate the variable.',
+              practicePool: fractionEquationsPracticePool,
             },
           ],
         },
