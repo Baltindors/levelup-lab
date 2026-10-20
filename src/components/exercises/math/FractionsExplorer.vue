@@ -381,16 +381,16 @@ function segmentClass(segment, bar, groupSize) {
           <div v-for="strip in model.inputStrips" :key="strip.id">
             <p class="text-sm font-semibold text-[var(--color-text)]">{{ strip.title }}</p>
             <div
-              class="mt-1 max-w-full overflow-x-auto py-1"
+              class="frac-formula mt-1"
               v-html="renderKatex('$' + strip.latex + '$')"
             />
-            <div class="overflow-x-auto" :aria-label="`${strip.title}: ${strip.bars.length} bars`">
-              <div class="flex w-max min-w-full gap-2">
+            <div class="frac-bars" :aria-label="`${strip.title}: ${strip.bars.length} bars`">
+              <div class="flex min-w-full gap-2">
                 <div
                   v-for="(bar, barIndex) in strip.bars"
                   :key="`${strip.id}-${barIndex}`"
-                  class="flex h-10 overflow-hidden rounded-[var(--radius-card)] border border-slate-600"
-                  :style="{ minWidth: `${Math.max(bar.segments * 14, 112)}px` }"
+                  class="flex h-10 flex-1 overflow-hidden rounded-[var(--radius-card)] border border-slate-600"
+                  :style="strip.bars.length > 1 ? { minWidth: `${Math.max(bar.segments * 8, 72)}px` } : null"
                 >
                   <div
                     v-for="segment in bar.segments"
@@ -411,7 +411,7 @@ function segmentClass(segment, bar, groupSize) {
           Common denominator
         </h3>
         <p
-          class="mt-2 max-w-full overflow-x-auto py-1 text-sm text-[var(--color-text)]"
+          class="frac-formula mt-2 text-sm text-[var(--color-text)]"
           v-html="renderKatex(model.sameDenominators
             ? 'Denominators already match, so the common grid is the original strips.'
             : `Rewrite $${fracLatex(model.a, model.b)} = ${fracLatex(model.n1Scaled, model.lcd)}$ and $${fracLatex(model.c, model.d)} = ${fracLatex(model.n2Scaled, model.lcd)}$.`)"
@@ -420,16 +420,16 @@ function segmentClass(segment, bar, groupSize) {
           <div v-for="strip in model.lcdStrips" :key="strip.id">
             <p class="text-sm font-semibold text-[var(--color-text)]">{{ strip.title }}</p>
             <div
-              class="mt-1 max-w-full overflow-x-auto py-1"
+              class="frac-formula mt-1"
               v-html="renderKatex('$' + strip.latex + '$')"
             />
-            <div class="overflow-x-auto">
-              <div class="flex w-max min-w-full gap-2">
+            <div class="frac-bars">
+              <div class="flex min-w-full gap-2">
                 <div
                   v-for="(bar, barIndex) in strip.bars"
                   :key="`${strip.id}-${barIndex}`"
-                  class="flex h-10 overflow-hidden rounded-[var(--radius-card)] border border-slate-600"
-                  :style="{ minWidth: `${Math.max(bar.segments * 12, 112)}px` }"
+                  class="flex h-10 flex-1 overflow-hidden rounded-[var(--radius-card)] border border-slate-600"
+                  :style="strip.bars.length > 1 ? { minWidth: `${Math.max(bar.segments * 8, 72)}px` } : null"
                 >
                   <div
                     v-for="segment in bar.segments"
@@ -460,7 +460,7 @@ function segmentClass(segment, bar, groupSize) {
           </p>
         </div>
         <div
-          class="mt-3 max-w-full overflow-x-auto py-1 text-[var(--color-text)]"
+          class="mt-3 max-w-full frac-formula text-[var(--color-text)]"
           v-html="renderKatex('$' + model.butterflyLatex + '$', true)"
         />
         <p class="mt-2 text-sm text-[var(--color-muted)]">
@@ -484,10 +484,10 @@ function segmentClass(segment, bar, groupSize) {
           </p>
           <div v-if="model.improper1">
             <div
-              class="max-w-full overflow-x-auto py-1 text-sm"
+              class="max-w-full frac-formula text-sm"
               v-html="renderKatex('$' + model.decompose1 + '$')"
             />
-            <div class="mt-1 flex gap-1 overflow-x-auto">
+            <div class="mt-1 flex gap-1 overflow-x-auto overflow-y-hidden">
               <div
                 v-for="tile in model.wholes1"
                 :key="`whole-1-${tile}`"
@@ -498,10 +498,10 @@ function segmentClass(segment, bar, groupSize) {
           </div>
           <div v-if="model.improper2">
             <div
-              class="max-w-full overflow-x-auto py-1 text-sm"
+              class="max-w-full frac-formula text-sm"
               v-html="renderKatex('$' + model.decompose2 + '$')"
             />
-            <div class="mt-1 flex gap-1 overflow-x-auto">
+            <div class="mt-1 flex gap-1 overflow-x-auto overflow-y-hidden">
               <div
                 v-for="tile in model.wholes2"
                 :key="`whole-2-${tile}`"
@@ -548,7 +548,7 @@ function segmentClass(segment, bar, groupSize) {
           </li>
         </ul>
         <div
-          class="mt-3 max-w-full overflow-x-auto py-1"
+          class="mt-3 max-w-full frac-formula"
           v-html="renderKatex('$' + model.directLatex + '$', true)"
         />
       </div>
@@ -560,7 +560,7 @@ function segmentClass(segment, bar, groupSize) {
           <p class="text-xs font-semibold uppercase tracking-wide text-[var(--color-muted)]">Card 1 · Keep</p>
           <p class="mt-2 text-sm text-[var(--color-text)]">Keep the first fraction.</p>
           <div
-            class="mt-2 max-w-full overflow-x-auto py-1"
+            class="mt-2 max-w-full frac-formula"
             v-html="renderKatex('$' + fracLatex(model.a, model.b) + '$', true)"
           />
         </article>
@@ -568,7 +568,7 @@ function segmentClass(segment, bar, groupSize) {
           <p class="text-xs font-semibold uppercase tracking-wide text-[var(--color-muted)]">Card 2 · Change</p>
           <p class="mt-2 text-sm text-[var(--color-text)]">Change division to multiplication.</p>
           <div
-            class="mt-2 max-w-full overflow-x-auto py-1"
+            class="mt-2 max-w-full frac-formula"
             v-html="renderKatex('$\\div \\rightarrow \\times$', true)"
           />
         </article>
@@ -576,19 +576,19 @@ function segmentClass(segment, bar, groupSize) {
           <p class="text-xs font-semibold uppercase tracking-wide text-[var(--color-muted)]">Card 3 · Flip</p>
           <p class="mt-2 text-sm text-[var(--color-text)]">Flip the second fraction to its reciprocal.</p>
           <div
-            class="mt-2 max-w-full overflow-x-auto py-1 text-[var(--color-muted)] line-through decoration-slate-500"
+            class="mt-2 max-w-full frac-formula text-[var(--color-muted)] line-through decoration-slate-500"
             v-html="renderKatex('$' + fracLatex(model.c, model.d) + '$')"
           />
           <div
             :key="`${model.d}-${model.c}`"
-            class="flip-recip max-w-full overflow-x-auto py-1"
+            class="flip-recip max-w-full frac-formula"
             v-html="renderKatex('$' + fracLatex(model.d, model.c) + '$', true)"
           />
         </article>
       </div>
       <p class="inline-flex max-w-full items-center rounded-full border border-emerald-500/40 bg-emerald-950/40 px-3 py-1 text-xs font-semibold text-emerald-300">
         <span
-          class="max-w-full overflow-x-auto py-1"
+          class="max-w-full frac-formula"
           v-html="renderKatex(`Dividing by $${fracLatex(model.c, model.d)}$ is the same as multiplying by the reciprocal $${fracLatex(model.d, model.c)}$.`)"
         />
       </p>
@@ -599,7 +599,7 @@ function segmentClass(segment, bar, groupSize) {
         Live equality
       </p>
       <div
-        class="mt-2 max-w-full overflow-x-auto py-1 text-lg"
+        class="mt-2 max-w-full frac-formula text-lg"
         v-html="renderKatex('$' + model.equationLatex + '$', true)"
       />
       <ol class="mt-3 space-y-3">
@@ -608,7 +608,7 @@ function segmentClass(segment, bar, groupSize) {
             {{ index + 1 }}
           </span>
           <div
-            class="min-w-0 max-w-full flex-1 overflow-x-auto py-1 text-sm leading-relaxed text-slate-100"
+            class="min-w-0 max-w-full flex-1 frac-formula text-sm text-slate-100"
             v-html="renderKatex(step)"
           />
         </li>
@@ -617,7 +617,7 @@ function segmentClass(segment, bar, groupSize) {
         Reduced fraction
       </p>
       <div
-        class="mt-1 max-w-full overflow-x-auto py-1 text-lg"
+        class="mt-1 max-w-full frac-formula text-lg"
         v-html="renderKatex('$' + model.finalLatex + '$', true)"
       />
       <p
@@ -625,7 +625,7 @@ function segmentClass(segment, bar, groupSize) {
         class="mt-3 inline-flex max-w-full items-center rounded-full border border-amber-500/40 bg-amber-950/30 px-3 py-1 text-xs font-semibold text-amber-200"
       >
         <span
-          class="max-w-full overflow-x-auto py-1"
+          class="max-w-full frac-formula"
           v-html="renderKatex(`This difference is negative: $${model.finalLatex}$.`)"
         />
       </p>
@@ -634,6 +634,24 @@ function segmentClass(segment, bar, groupSize) {
 </template>
 
 <style scoped>
+.frac-formula {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-top: 0.45rem;
+  padding-bottom: 0.6rem;
+  line-height: 2;
+}
+
+.frac-formula :deep(.katex) {
+  white-space: nowrap;
+}
+
+.frac-bars {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
 .flip-recip {
   animation: fraction-flip 0.45s ease;
   transform-origin: center;
