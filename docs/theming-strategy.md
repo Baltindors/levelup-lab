@@ -52,11 +52,17 @@ Do **not** build class names as `theme-grade-${gradeId}` — IDs like `college-t
 }
 
 .theme-grade-5 {
-  --color-primary: #059669;
-  --color-primary-soft: #fef3c7;
-  --color-surface: #ecfdf5;
-  --radius-card: 1.25rem;
-  /* playful emerald/amber palette */
+  --color-primary: #ff5e1e;
+  --color-primary-soft: #3a1d0e;
+  --color-accent: #00e5ff;
+  --color-surface: #111217;
+  --color-panel: #1a1c24;
+  --color-text: #f3f4f6;
+  --color-muted: #9ca3af;
+  --color-border: #2e3344;
+  --radius-card: 0.75rem;
+  --font-display: 'Bangers', Impact, sans-serif;
+  /* dark shinobi academy palette — intentional for 6th grade */
 }
 
 .theme-college-trig {
@@ -70,11 +76,12 @@ Do **not** build class names as `theme-grade-${gradeId}` — IDs like `college-t
 
 Shared helpers: `.theme-card` uses `--radius-card`; `.theme-pill` uses `--radius-pill`.
 
-For grade-5 / Scroll 2 interactive controls (phase tabs, tool-mode segments, preset chips, action buttons), use [`src/assets/math-controls.css`](../src/assets/math-controls.css) — see **Control taxonomy** under Standard Math Module Pattern in [`architecture.md`](./architecture.md). Do not invent per-module amber/orange pill variants for navigation.
+For shinobi-grade controls (math, science, and spelling phase bars: phase tabs, tool-mode segments, preset chips, action buttons), use [`src/assets/math-controls.css`](../src/assets/math-controls.css) — see **Control taxonomy** in [`architecture.md`](./architecture.md). Do not invent per-module amber/orange pill variants for navigation.
 
 ## Guidelines
 
 - Prefer CSS variables over hard-coded grade colors in components.
 - Keep one theme class active at a time on the layout root.
 - Add a new grade theme by: (1) mock data entry with a `theme` class name, (2) matching CSS variable block, (3) optional font import.
-- Avoid dark-mode-first or purple-gradient defaults unless a specific grade theme intentionally calls for them.
+- `theme-grade-5` is intentionally a dark shinobi theme. New grades should not copy that palette unless the grade is meant to share it.
+- Avoid purple-gradient defaults unless a specific grade theme intentionally calls for them.

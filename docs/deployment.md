@@ -4,26 +4,26 @@ This project is a static Vite + Vue site deployed with GitHub Actions to GitHub 
 
 ## Prerequisites
 
-1. Push the repo to GitHub (repository name expected: `levelup-lab` for the default base path).
+1. Push the repo to GitHub. The current Vite `base` is `'/'`, so the site must be served from the domain root unless you change `base` to match a project-Pages subpath.
 2. In **Settings → Pages**, set **Source** to **GitHub Actions**.
 
 ## Vite Base Path
 
-`vite.config.js` uses:
+`vite.config.js` currently uses:
 
 ```js
-base: '/levelup-lab/'
+base: '/'
 ```
 
-That matches project Pages URLs like `https://<user>.github.io/levelup-lab/`.
+That matches a site served at the domain root (a custom domain, a user Pages site, or local preview).
 
-### Custom domain
+### GitHub project Pages
 
-If you later attach a custom domain at the site root, change `base` to `'/'` and redeploy. Keep the router on `createWebHistory(import.meta.env.BASE_URL)` so it continues to follow Vite’s base automatically.
+If the site is published at `https://<user>.github.io/levelup-lab/`, change `base` to `'/levelup-lab/'` and redeploy. Keep the router on `createWebHistory(import.meta.env.BASE_URL)` so it follows Vite’s base automatically. Update this page in the same change.
 
 ## SPA Refresh Fix (Required)
 
-Vue Router uses **HTML5 history mode** (`createWebHistory`). GitHub Pages does not rewrite unknown paths to `index.html`, so refreshing a nested URL such as `/levelup-lab/grade/1` would normally 404.
+Vue Router uses **HTML5 history mode** (`createWebHistory`). GitHub Pages does not rewrite unknown paths to `index.html`, so refreshing a nested URL such as `/grade/grade-6` would normally 404.
 
 **Fix used by this project:** after `vite build`, copy `dist/index.html` to `dist/404.html`. GitHub Pages serves `404.html` for missing paths, which loads the Vue app; the client router then resolves the correct route.
 

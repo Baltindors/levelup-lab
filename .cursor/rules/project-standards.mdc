@@ -32,3 +32,22 @@ Prefer this path → current → new format over opaque diffs unless the user as
 
 - Vue Router must use `createWebHistory(import.meta.env.BASE_URL)` so history mode matches Vite `base`.
 - GitHub Pages SPA refreshes are handled by copying `dist/index.html` to `dist/404.html` after build — do not switch to hash history unless explicitly requested.
+- Vite `base` is `'/'` today. If it changes, update `docs/deployment.md` and the router section of `docs/architecture.md` in the same change.
+
+## Module construction
+
+Follow the patterns in `docs/architecture.md`. Do not invent a parallel drill, grade, or XP path.
+
+- **Math** — `MathModuleShell` + `useMathDrill`. Two phases only (explore, then a 10-card drill). One scrolling sandbox, no nested full-width tab bars. Use `src/assets/math-controls.css` (`MathSegmentedControl`, `MathPresetChip`, `.math-btn`). Stratify multi-topic pools with `stratifyBy: 'topic'`. Letter grades and the +100 XP scroll reward belong only to subject `math-exam-100526`.
+- **Science** — Follow the Earth Systems pattern: stacked explorers on one page, `.math-phase-tabs` for sandbox vs trial, `useScienceMasteryDrill` (2-correct streak, 10-card stratified rounds). Mastery stays in its own `localStorage` key. Do not award academy XP or a letter grade unless the Academy XP section is updated first.
+- **Language** — `SpellingExercise` phases are Study Scrolls, Seal Matching, and Blindfold Training, driven by `useTwoPassRound`. A word is mastered only when it is correct on both passes. Weekly jutsu awards +25 XP once per sealed practice (`{exerciseId}:seal-matching` or `{exerciseId}:blindfold-training`). Custom spelling uses an isolated mastery scope and `award-scroll-xp` false.
+- Register every new `exerciseType` in `src/components/exercises/index.js` and in the exercise table in `docs/architecture.md`.
+
+## Keep documentation current
+
+`docs/architecture.md` is the source of truth for how modules, XP, grades, and storage work. Update it in the same change whenever behavior changes. Do not leave docs describing a previous module.
+
+- New or changed exercise type, drill rule, mastery rule, or phase bar → the matching pattern section and the exercise table in `docs/architecture.md`.
+- New or changed XP, letter grade, or `localStorage` key → the Academy XP section and the Client Storage table.
+- Theme tokens or control classes → `docs/theming-strategy.md` and the control taxonomy in `docs/architecture.md`.
+- Vite `base`, history mode, or the GitHub Pages workflow → `docs/deployment.md`.
