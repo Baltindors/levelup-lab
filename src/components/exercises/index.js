@@ -7,6 +7,7 @@ import CustomSpellingExercise from './CustomSpellingExercise.vue'
 import ExponentsModule from './math/ExponentsModule.vue'
 import ScientificNotationModule from './math/ScientificNotationModule.vue'
 import AlgebraicExpressionsModule from './math/AlgebraicExpressionsModule.vue'
+import FractionsBasicsModule from './math/FractionsBasicsModule.vue'
 import ExerciseFallback from './ExerciseFallback.vue'
 
 export const exerciseRegistry = {
@@ -18,6 +19,7 @@ export const exerciseRegistry = {
   'math-exponents': ExponentsModule,
   'math-scientific-notation': ScientificNotationModule,
   'math-algebraic-expressions': AlgebraicExpressionsModule,
+  'math-fractions-basics': FractionsBasicsModule,
   'science-earth-systems': defineAsyncComponent(() =>
     import('./science/EarthSystemsMission.vue'),
   ),
@@ -36,5 +38,6 @@ export {
   ExponentsModule,
   ScientificNotationModule,
   AlgebraicExpressionsModule,
+  FractionsBasicsModule,
   ExerciseFallback,
 }

@@ -165,6 +165,26 @@ export const mockData = {
           ],
         },
         {
+          id: 'fractions-decimals',
+          name: 'Math — Fractions & Decimals',
+          missionTitle: 'Rank C: Scroll of Four Operations',
+          difficulty: 'C-Rank Mission',
+          status: 'Scroll Unlocked',
+          description:
+            'Master addition, subtraction, multiplication, and division across like and unlike denominators.',
+          exercises: [
+            {
+              id: 'scroll-fractions-mastery',
+              title: 'Scroll of Four Operations: Fractions Mastery',
+              missionRank: 'Rank C',
+              exerciseType: 'math-fractions-basics',
+              badge: 'FRACTIONS',
+              description:
+                'Master addition, subtraction, multiplication, and division across like and unlike denominators.',
+            },
+          ],
+        },
+        {
           id: 'math-exam-100526',
           name: 'Scroll 2: Math Mastery (10/05 Exam)',
           missionTitle: 'Scroll 2: Math Mastery (10/05 Exam)',

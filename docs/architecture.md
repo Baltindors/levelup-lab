@@ -106,11 +106,14 @@ Views resolve entities by route params (`gradeId`, `subjectId`, `exerciseId`) ag
 | `math-exponents` | `math/ExponentsModule.vue` |
 | `math-scientific-notation` | `math/ScientificNotationModule.vue` |
 | `math-algebraic-expressions` | `math/AlgebraicExpressionsModule.vue` |
+| `math-fractions-basics` | `math/FractionsBasicsModule.vue` |
 | anything else (e.g. `graph-interactive`) | `ExerciseFallback.vue` |
 
 `trig-grapher` uses [`src/utils/trigSolver.js`](../src/utils/trigSolver.js) to parse `y = A f(B(x-C))+D`, compute period/phase/key points, and plot multi-segment SVG paths that break at asymptotes. The parser accepts fractional/parenthesized coefficients (e.g. `(1/2)csc(x)`, `-3/2tan(x)`), bare signs (`-sin(x)`), `x/k` arguments, and fractional midlines (`+1/2`). Formulas render with KaTeX. It is the first module built on the **Standard Math Module Pattern** below.
 
 `math-exponents`, `math-scientific-notation`, and `math-algebraic-expressions` are the 6th Grade Scroll 2 exam modules. Each wraps `MathModuleShell`, uses `useMathDrill` with `stratifyBy: 'topic'`, and draws from practice pools in [`src/data/mathExam100526Pools.js`](../src/data/mathExam100526Pools.js). Trial scores flow through [`useMathExamProgress.js`](../src/composables/useMathExamProgress.js): each attempt stores peak `bestScore`, letter rank (S/A/B/C/F), and a sealed `completed` flag (≥70%). Best score never downgrades on retake. Completing all three sealed trials awards +1 Shinobi level once. [`SubjectView.vue`](../src/views/SubjectView.vue) shows a Chakra progress bar plus topic badges and anime rank stamps when the subject is `math-exam-100526`.
+
+`math-fractions-basics` is the Rank C fractions mission. Its 20-card pool is generated once per visit by [`src/utils/fractionGenerator.js`](../src/utils/fractionGenerator.js) (`generateFractionDrillPool`), then a 10-card drill is stratified by `topic` (`add`, `subtract`, `multiply`, `divide`). The same array stays mounted so Retry Missed Only keeps those question ids. Refreshing the page deals a new set.
 
 `custom-spelling` wraps the spelling drill with a local scroll builder. Once sealed, it remounts `SpellingExercise` with the student’s word list and an isolated mastery scope so weekly jutsu progress is not overwritten.
 
@@ -162,6 +165,7 @@ Modules must wrap `MathModuleShell` and provide:
 | `math-exponents` | Integer exponent laws (explorer + MC drill) |
 | `math-scientific-notation` | Decimal-shift visualizer + MC drill |
 | `math-algebraic-expressions` | Area-model distribute/factor + MC drill |
+| `math-fractions-basics` | Rank C four-operation fractions explorer + evergreen MC drill |
 
 ### Conventions
 
