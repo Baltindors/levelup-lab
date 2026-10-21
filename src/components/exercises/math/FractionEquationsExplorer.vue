@@ -374,14 +374,14 @@ const model = computed(() => {
 
     <div class="min-w-0 rounded-[var(--radius-card)] border border-[var(--color-border)] p-4">
       <p class="text-xs font-semibold uppercase tracking-wide text-[var(--color-muted)]">Denominator badges</p>
-      <div class="mt-3 flex flex-wrap gap-2">
+      <div class="mt-3 flex flex-wrap items-stretch gap-2">
         <div
           v-for="(term, index) in model.tiles"
           :key="`${term.side}-${index}`"
-          class="min-w-0 rounded-[var(--radius-card)] border border-[var(--color-border)] px-3 py-2"
+          class="flex min-h-24 flex-col items-center justify-center overflow-visible rounded-[var(--radius-card)] border border-[var(--color-border)] px-3 py-3"
         >
           <p class="text-[10px] font-semibold uppercase tracking-wide text-[var(--color-muted)]">{{ term.side }}</p>
-          <div class="overflow-x-auto max-w-full py-1" v-html="renderKatex('$' + model.fracLatex(term) + '$')" />
+          <div class="overflow-visible px-1 py-2 text-center text-lg leading-none [&_.katex]:text-lg" v-html="renderKatex('$' + model.fracLatex(term) + '$')" />
           <p
             class="mt-1 inline-flex rounded-full border border-[var(--color-border)] px-2 py-0.5 text-xs text-[var(--color-muted)] transition-opacity"
             :class="model.vaporized ? 'opacity-30 line-through' : ''"
