@@ -167,6 +167,108 @@ export const mockData = {
                 },
               ],
             },
+            {
+              id: 'weekly-spelling-102126',
+              title: 'Weekly Spelling Jutsu — 10/21/26',
+              subtitle: 'Unit 3: Earth, Wind & Fire',
+              description: 'Study the scrolls, match each seal, then spell the word from audio alone.',
+              exerciseType: 'spelling-jutsu',
+              roots: [
+                { root: 'geo', meaning: 'earth', origin: 'Greek' },
+                { root: 'aer', meaning: 'air, atmosphere', origin: 'Greek' },
+                { root: 'pyr', meaning: 'heat, fire', origin: 'Greek' },
+              ],
+              words: [
+                {
+                  id: 'ws-102126-1',
+                  word: 'geography',
+                  pos: 'n',
+                  definition:
+                    'an area of study that deals with the location of countries, cities, rivers, mountains, lakes; the natural features (such as rivers, mountains, etc.) of a place',
+                  sentence:
+                    "The astronauts gazed at the beautiful mountains, lakes, and rivers that made up Earth's geography.",
+                  root: 'geo',
+                },
+                {
+                  id: 'ws-102126-2',
+                  word: 'geode',
+                  pos: 'n',
+                  definition: 'a rock containing a cavity lined with crystals or other mineral matter',
+                  sentence: 'I admired the deep purple crystals that sparkled inside the geode.',
+                  root: 'geo',
+                },
+                {
+                  id: 'ws-102126-3',
+                  word: 'geothermal',
+                  pos: 'adj',
+                  definition: 'of, relating to, or using the natural heat produced inside the earth',
+                  sentence:
+                    'The geothermal energy from deep inside the earth can be used to generate electricity.',
+                  root: 'geo',
+                },
+                {
+                  id: 'ws-102126-4',
+                  word: 'aerial',
+                  pos: 'adj',
+                  definition: 'performed in the air; performed by an airplane',
+                  sentence: 'We were amazed by the aerial acrobatics of the circus performers.',
+                  root: 'aer',
+                },
+                {
+                  id: 'ws-102126-5',
+                  word: 'aerodynamic',
+                  pos: 'adj',
+                  definition: 'of or having a shape that reduces the drag from air moving past',
+                  sentence:
+                    "An airplane's exterior must be aerodynamic in order to minimize resistance as it flies through the air.",
+                  root: 'aer',
+                },
+                {
+                  id: 'ws-102126-6',
+                  word: 'aerobic',
+                  pos: 'adj',
+                  definition:
+                    'strengthening the heart and lungs by making them work hard for several minutes or more; using oxygen',
+                  sentence:
+                    'Your breathing rate will increase when performing aerobic activities such as running or swimming.',
+                  root: 'aer',
+                },
+                {
+                  id: 'ws-102126-7',
+                  word: 'aerate',
+                  pos: 'v',
+                  definition: 'to put air or a gas into something, such as soil or a liquid',
+                  sentence:
+                    'The bubbles created by the aquarium pump helps aerate the water, which provides more oxygen for the fish.',
+                  root: 'aer',
+                },
+                {
+                  id: 'ws-102126-8',
+                  word: 'pyrotechnics',
+                  pos: 'n',
+                  definition: 'a bright display of fireworks',
+                  sentence: "The show ended with pyrotechnics that lit up the night's sky for miles.",
+                  root: 'pyr',
+                },
+                {
+                  id: 'ws-102126-9',
+                  word: 'pyromania',
+                  pos: 'n',
+                  definition: 'a mental disorder that makes people have a strong desire to set fires',
+                  sentence: 'The fires were set by a mentally ill person suffering from pyromania.',
+                  root: 'pyr',
+                },
+                {
+                  id: 'ws-102126-10',
+                  word: 'pyroclastic',
+                  pos: 'adj',
+                  definition: 'relating to or consisting of fragments of rock erupted by a volcano',
+                  sentence:
+                    'The pyroclastic flow of hot rock and gas traveled down the sides of the erupting volcano.',
+                  root: 'pyr',
+                },
+              ],
+            },
           ],
         },
         {
