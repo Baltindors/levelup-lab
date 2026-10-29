@@ -17,6 +17,10 @@ export const SCORE_EXERCISE_TYPES = [
   'math-linear-eq-fractions',
   'math-fractions-basics',
   'math-mixed-numbers',
+  'math-trig-verifying',
+  'math-trig-sum-diff',
+  'math-trig-double-half',
+  'math-trig-equations',
   'science-earth-systems',
   'trig-grapher',
 ]

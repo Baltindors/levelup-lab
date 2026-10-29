@@ -76,7 +76,8 @@ Mock data lives in `src/data/mockData.js` and follows this shape:
       name: 'College Trigonometry',
       theme: 'theme-college-trig',
       subjects: [
-        { id: 'graphing-trig', /* trig-grapher */ },
+        { id: 'graphing-trig', /* Chapter 5: Graphing — trig-grapher */ },
+        { id: 'analytic-trigonometry', /* Chapter 6 — verifying, sum-diff, double-half, equations */ },
       ],
     },
   ],
@@ -106,10 +107,22 @@ Views resolve entities by route params (`gradeId`, `subjectId`, `exerciseId`) ag
 | `math-linear-eq-fractions` | `math/FractionEquationsModule.vue` |
 | `math-fractions-basics` | `math/FractionsBasicsModule.vue` |
 | `math-mixed-numbers` | `math/MixedNumbersModule.vue` |
+| `math-trig-verifying` | `math/TrigVerifyingModule.vue` |
+| `math-trig-sum-diff` | `math/TrigSumDiffModule.vue` |
+| `math-trig-double-half` | `math/TrigDoubleHalfModule.vue` |
+| `math-trig-equations` | `math/TrigEquationsModule.vue` |
 | `science-earth-systems` | `science/EarthSystemsMission.vue` (async) |
 | anything else (e.g. `graph-interactive`) | `ExerciseFallback.vue` |
 
 `trig-grapher` uses [`src/utils/trigSolver.js`](../src/utils/trigSolver.js) to parse `y = A f(B(x-C))+D`, compute period/phase/key points, and plot multi-segment SVG paths that break at asymptotes. The parser accepts fractional/parenthesized coefficients (e.g. `(1/2)csc(x)`, `-3/2tan(x)`), bare signs (`-sin(x)`), `x/k` arguments, and fractional midlines (`+1/2`). Formulas render with KaTeX. It is the first module built on the **Standard Math Module Pattern** below.
+
+`math-trig-verifying` is the College Trig identities module under subject `analytic-trigonometry` (Chapter 6: Analytic Trigonometry). It wraps `MathModuleShell`, stacks a reference desk plus three reveal-step strategy explorers on one scroll canvas, and runs a 10-card MC drill (missing logical step / correct strategy) with `stratifyBy: 'topic'` from the 15-card pool in [`src/data/trigVerifyingPool.js`](../src/data/trigVerifyingPool.js). Topics are `strategy-sincos`, `strategy-factor`, and `strategy-fractions`. Like other College Trig trials, it records a letter grade and does not write academy XP. College subject cards show letter-rank pills only — the Shinobi `AnimeRankSeal` stamp is hidden when the theme is not `theme-grade-5`.
+
+`math-trig-sum-diff` is the Chapter 6 sum and difference module on the same `analytic-trigonometry` subject. It wraps `MathModuleShell`, stacks an angle splitter plus two reveal-step explorers (two-triangle problem; identity verification) on one scroll canvas, and runs a 10-card MC drill with `stratifyBy: 'topic'` from [`src/data/trigSumDiffPool.js`](../src/data/trigSumDiffPool.js). Topics are `exact-value-angles`, `two-triangles`, and `simplify-expression`.
+
+`math-trig-double-half` is the Chapter 6 double-angle / power-reducing / half-angle module on `analytic-trigonometry`. It wraps `MathModuleShell`, stacks three reveal-step explorers (double-angle triangle builder; power-reducing step-down; half-angle $\pm$ sign trap) on one scroll canvas, and runs a 10-card MC drill with `stratifyBy: 'topic'` from [`src/data/trigDoubleHalfPool.js`](../src/data/trigDoubleHalfPool.js). Topics are `double-angle-eval`, `power-reducing`, and `half-angle-eval`.
+
+`math-trig-equations` is the Chapter 6 solving trigonometric equations module on `analytic-trigonometry`. It wraps `MathModuleShell`, stacks three reveal-step explorers (linear isolation + $+2n\pi$; factoring trap with square-root secondary; identity substitution) on one scroll canvas, and runs a 10-card MC drill with `stratifyBy: 'topic'` from [`src/data/trigEquationsPool.js`](../src/data/trigEquationsPool.js). Topics are `linear-isolate`, `quadratic-factoring`, and `identities-equations`.
 
 `math-exponents`, `math-scientific-notation`, and `math-algebraic-expressions` are the 6th Grade Scroll 2 exam modules (`math-exam-100526`). Each wraps `MathModuleShell`, uses `useMathDrill` with `stratifyBy: 'topic'`, and draws from practice pools in [`src/data/mathExam100526Pools.js`](../src/data/mathExam100526Pools.js). Trial scores flow through [`useExerciseProgress.js`](../src/composables/useExerciseProgress.js) along with every other score-based trial.
 
@@ -192,6 +205,10 @@ Modules must wrap `MathModuleShell` and provide:
 | `exerciseType` | Module |
 |----------------|--------|
 | `trig-grapher` | College Trig grapher + typed drill |
+| `math-trig-verifying` | College Trig verifying identities (strategy sandbox + MC drill) |
+| `math-trig-sum-diff` | College Trig sum/difference formulas (angle splitter + MC drill) |
+| `math-trig-double-half` | College Trig double/half-angle + power-reducing (sandbox + MC drill) |
+| `math-trig-equations` | College Trig solving equations (isolate/factor/identity + MC drill) |
 | `math-exponents` | Integer exponent laws (explorer + MC drill) |
 | `math-scientific-notation` | Decimal-shift visualizer + MC drill |
 | `math-algebraic-expressions` | Area-model distribute/factor + MC drill |

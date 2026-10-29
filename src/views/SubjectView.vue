@@ -234,6 +234,7 @@ function sealRank(exerciseId) {
               </div>
 
               <div
+                v-if="isShinobi"
                 class="flex h-32 w-36 flex-shrink-0 items-center justify-center pt-1 md:h-36 md:w-44"
               >
                 <AnimeRankSeal

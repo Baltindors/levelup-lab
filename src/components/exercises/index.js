@@ -12,6 +12,10 @@ import DistributiveEquationsModule from './math/DistributiveEquationsModule.vue'
 import FractionEquationsModule from './math/FractionEquationsModule.vue'
 import FractionsBasicsModule from './math/FractionsBasicsModule.vue'
 import MixedNumbersModule from './math/MixedNumbersModule.vue'
+import TrigVerifyingModule from './math/TrigVerifyingModule.vue'
+import TrigSumDiffModule from './math/TrigSumDiffModule.vue'
+import TrigDoubleHalfModule from './math/TrigDoubleHalfModule.vue'
+import TrigEquationsModule from './math/TrigEquationsModule.vue'
 import ExerciseFallback from './ExerciseFallback.vue'
 
 export const exerciseRegistry = {
@@ -28,6 +32,10 @@ export const exerciseRegistry = {
   'math-linear-eq-fractions': FractionEquationsModule,
   'math-fractions-basics': FractionsBasicsModule,
   'math-mixed-numbers': MixedNumbersModule,
+  'math-trig-verifying': TrigVerifyingModule,
+  'math-trig-sum-diff': TrigSumDiffModule,
+  'math-trig-double-half': TrigDoubleHalfModule,
+  'math-trig-equations': TrigEquationsModule,
   'science-earth-systems': defineAsyncComponent(() =>
     import('./science/EarthSystemsMission.vue'),
   ),
@@ -51,5 +59,9 @@ export {
   FractionEquationsModule,
   FractionsBasicsModule,
   MixedNumbersModule,
+  TrigVerifyingModule,
+  TrigSumDiffModule,
+  TrigDoubleHalfModule,
+  TrigEquationsModule,
   ExerciseFallback,
 }

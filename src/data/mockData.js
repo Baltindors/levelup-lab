@@ -8,6 +8,10 @@ import {
   fractionEquationsPracticePool,
   likeTermsPracticePool,
 } from './linearEquationsPools'
+import { trigVerifyingPracticePool } from './trigVerifyingPool'
+import { trigSumDiffPracticePool } from './trigSumDiffPool'
+import { trigDoubleHalfPracticePool } from './trigDoubleHalfPool'
+import { trigEquationsPracticePool } from './trigEquationsPool'
 
 export const mockData = {
   grades: [
@@ -401,11 +405,12 @@ export const mockData = {
       id: 'college-trig',
       name: 'College Trigonometry',
       theme: 'theme-college-trig',
-      blurb: 'Transform and graph trigonometric functions with step-by-step analysis.',
+      blurb:
+        'Graph trigonometric functions and verify identities with step-by-step strategy sandboxes.',
       subjects: [
         {
           id: 'graphing-trig',
-          name: 'Graphing Trigonometric Functions',
+          name: 'Chapter 5: Graphing',
           description: 'Transform and graph sine, cosine, tangent, and reciprocal functions.',
           exercises: [
             {
@@ -502,6 +507,46 @@ export const mockData = {
                   prompt: 'Find amplitude/stretch, period, phase shift, and midline.',
                 },
               ],
+            },
+          ],
+        },
+        {
+          id: 'analytic-trigonometry',
+          name: 'Chapter 6: Analytic Trigonometry',
+          description:
+            'Verify identities and apply analytic strategies across Chapter 6 modules.',
+          exercises: [
+            {
+              id: 'trig-verifying',
+              title: 'Verifying Trigonometric Identities',
+              exerciseType: 'math-trig-verifying',
+              content:
+                'Practice the core strategies for proving trig identities step by step.',
+              practicePool: trigVerifyingPracticePool,
+            },
+            {
+              id: 'trig-sum-diff',
+              title: 'Sum and Difference Formulas',
+              exerciseType: 'math-trig-sum-diff',
+              content:
+                'Decompose angles, solve two-triangle problems, and simplify with sum/difference identities.',
+              practicePool: trigSumDiffPracticePool,
+            },
+            {
+              id: 'trig-double-half',
+              title: 'Double-Angle, Power-Reducing & Half-Angle Formulas',
+              exerciseType: 'math-trig-double-half',
+              content:
+                'Build double angles from ratios, reduce powers, and choose half-angle signs by quadrant.',
+              practicePool: trigDoubleHalfPracticePool,
+            },
+            {
+              id: 'trig-equations',
+              title: 'Solving Trigonometric Equations',
+              exerciseType: 'math-trig-equations',
+              content:
+                'Isolate, factor without dividing away solutions, and use identities to match angles before solving.',
+              practicePool: trigEquationsPracticePool,
             },
           ],
         },
