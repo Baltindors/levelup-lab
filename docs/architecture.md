@@ -319,3 +319,18 @@ The only phase bar is **Study Scrolls**, **Seal Matching**, and **Blindfold Trai
 
 Weekly `spelling-jutsu` exercises supply `words` (`id`, `word`, `definition`, and optional `pos`, `sentence`, `root`) and optional `roots` (`root`, `meaning`, `origin`). Register each new weekly list as its own exercise id under subject `spelling-jutsu`.
 
+**New Words of the Week checklist** (append under grade-6 → `spelling-jutsu` → `exercises` in `src/data/mockData.js`; do not add Vue components):
+
+| Field | Pattern | Example |
+|-------|---------|---------|
+| `id` | `weekly-spelling-MMDDYY` (unique mastery scope) | `weekly-spelling-110626` |
+| `title` | `Weekly Spelling Jutsu — MM/DD/YY` (zero-padded; date only — unit number goes in `subtitle`) | `Weekly Spelling Jutsu — 11/06/26` |
+| `subtitle` | `Unit N: Title` | `Unit 4: A Matter of Life & Death` |
+| `exerciseType` | always `spelling-jutsu` | loads `SpellingExercise.vue` |
+| `badge` | `SPELLING-JUTSU` | |
+| `description` | `Study the scrolls, match each seal, then spell the word from audio alone.` | same copy every week |
+| `roots` | optional; each `{ root, meaning, origin }` | |
+| `words` | each `{ id, word, definition, pos, sentence, root }` — `pos` without parentheses (`v` / `n` / `adj`); `id` = the word string; `root` = the form shown on the study card | |
+
+Reuse `exerciseType: 'spelling-jutsu'` every week. Only the date, unit subtitle, roots, and word list change.
+

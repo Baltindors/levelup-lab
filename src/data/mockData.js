@@ -273,6 +273,115 @@ export const mockData = {
                 },
               ],
             },
+            {
+              id: 'weekly-spelling-110626',
+              title: 'Weekly Spelling Jutsu — 11/06/26',
+              subtitle: 'Unit 4: A Matter of Life & Death',
+              description:
+                'Study the scrolls, match each seal, then spell the word from audio alone.',
+              exerciseType: 'spelling-jutsu',
+              badge: 'SPELLING-JUTSU',
+              roots: [
+                { root: 'viv/vit', meaning: 'life, alive', origin: 'Latin' },
+                { root: 'mort', meaning: 'death', origin: 'Latin' },
+                { root: 'nat/nasc', meaning: 'born, birth', origin: 'Latin' },
+              ],
+              words: [
+                {
+                  id: 'revive',
+                  word: 'revive',
+                  pos: 'v',
+                  definition:
+                    'to make someone or something strong, healthy, or active again',
+                  sentence: 'The doctor tried to revive the patient using CPR.',
+                  root: 'viv',
+                },
+                {
+                  id: 'vivacious',
+                  word: 'vivacious',
+                  pos: 'adj',
+                  definition:
+                    'happy and lively in a way that is attractive, used especially of a woman',
+                  sentence:
+                    'At the age of 75, my vivacious grandmother lives an active and exciting life.',
+                  root: 'viv',
+                },
+                {
+                  id: 'vital',
+                  word: 'vital',
+                  pos: 'adj',
+                  definition: 'extremely important; very lively or energetic',
+                  sentence:
+                    'My nurse played a vital role in my recovery, and without her I would still be very ill.',
+                  root: 'vit',
+                },
+                {
+                  id: 'mortal',
+                  word: 'mortal',
+                  pos: 'adj',
+                  definition: 'certain to die eventually; causing death',
+                  sentence: 'Every living organism is mortal and will eventually die.',
+                  root: 'mort',
+                },
+                {
+                  id: 'mortify',
+                  word: 'mortify',
+                  pos: 'v',
+                  definition: 'to cause someone to feel extremely embarrassed and foolish',
+                  sentence:
+                    'It would mortify Jean if she knew she was walking around all day with spinach stuck between her two front teeth.',
+                  root: 'mort',
+                },
+                {
+                  id: 'mortuary',
+                  word: 'mortuary',
+                  pos: 'n',
+                  definition:
+                    'a funeral home or morgue where the deceased are prepared for funerals',
+                  sentence:
+                    "The flowers were delivered to the mortuary for my great uncle's funeral.",
+                  root: 'mort',
+                },
+                {
+                  id: 'mortality',
+                  word: 'mortality',
+                  pos: 'n',
+                  definition:
+                    'the quality or state of being a person or thing that is alive and therefore certain to die; the quality or state of being mortal; the number of deaths that occur in a particular time or place',
+                  sentence:
+                    'Surviving a near-death car accident has reminded me of my own mortality.',
+                  root: 'mort',
+                },
+                {
+                  id: 'innate',
+                  word: 'innate',
+                  pos: 'adj',
+                  definition: 'existing from the time a person or animal is born',
+                  sentence:
+                    'McKenna had an innate ability to paint and was creating amazing artwork with no formal training at the age of three.',
+                  root: 'nat',
+                },
+                {
+                  id: 'nationality',
+                  word: 'nationality',
+                  pos: 'n',
+                  definition:
+                    'the fact or status of being a member or citizen of a particular nation',
+                  sentence: 'She is American, but her parents are of German nationality.',
+                  root: 'nat',
+                },
+                {
+                  id: 'native',
+                  word: 'native',
+                  pos: 'adj',
+                  definition:
+                    'born in a particular place; belonging to a person since birth or childhood; produced, living, or existing naturally in a particular region',
+                  sentence:
+                    'I am proud to be a native New Yorker, born and raised in Brooklyn.',
+                  root: 'nat',
+                },
+              ],
+            },
           ],
         },
         {

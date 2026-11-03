@@ -1,0 +1,35 @@
+---
+description: Pattern for adding weekly Words of the Week spelling-jutsu modules
+globs: src/data/mockData.js
+alwaysApply: false
+---
+
+# Weekly Spelling Jutsu (Words of the Week)
+
+When adding a new weekly spelling list, **data only** — append one exercise under `grade-6` → subject `spelling-jutsu` → `exercises` in `src/data/mockData.js`. Do not create new Vue components; reuse `exerciseType: 'spelling-jutsu'`.
+
+## Required fields (match Units 2–4)
+
+```js
+{
+  id: 'weekly-spelling-MMDDYY',           // e.g. weekly-spelling-110626 — unique mastery scope
+  title: 'Weekly Spelling Jutsu — MM/DD/YY', // e.g. 11/06/26 — zero-padded date, NOT "Unit N"
+  subtitle: 'Unit N: Title',              // unit number and theme live here only
+  description: 'Study the scrolls, match each seal, then spell the word from audio alone.',
+  exerciseType: 'spelling-jutsu',
+  badge: 'SPELLING-JUTSU',
+  roots: [ { root, meaning, origin } ],   // when the unit has roots
+  words: [ { id, word, pos, definition, sentence, root } ],
+}
+```
+
+## Rules
+
+- **Title = date only.** Never put "Unit N" in `title`; that belongs in `subtitle`.
+- **New `id` every week** (`weekly-spelling-MMDDYY`) so word mastery in `shinobi_spelling_mastery_v2` does not collide with prior lists.
+- **Same exercise type every week** — `spelling-jutsu` → existing `SpellingExercise.vue` (Study Scrolls, Seal Matching, Blindfold Training).
+- **`pos`** without parentheses: `v`, `n`, `adj`.
+- **Word `id`** = the vocabulary word string (e.g. `revive`).
+- **Word `root`** = the display form for the study card (variant that appears in the word when the table lists compounds like `viv/vit`).
+- Only roots and the word list (definitions/sentences) change week to week; keep badge, description, and exerciseType identical.
+- Update `docs/architecture.md` Language / Exercise data section only if this pattern itself changes.
