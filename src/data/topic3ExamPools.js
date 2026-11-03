@@ -30,7 +30,7 @@ export const topic3LikeTermsPracticePool = [
     choices: ['$x = 9$', '$x = 9.81$', '$x = 10$', '$x = 49.05$'],
     correct: '$x = 9$',
     rule: 'Combine Like Terms',
-    explanation: 'Combine: $5.45x=49.05$, so $x=9$.',
+    explanation: 'Combine: $5.45x=49.05$, so $x=9$. Pro-Tip: The decimal stays glued to its coefficient — $0.45x$ means $0.45$ groups of $x$, so add $5+0.45$ before dividing.',
     steps: [
       'Add the coefficients: $5+0.45=5.45$, so $5.45x=49.05$.',
       'Divide both sides by $5.45$: $x=\\dfrac{49.05}{5.45}$.',
@@ -45,7 +45,7 @@ export const topic3LikeTermsPracticePool = [
     choices: ['$x = 4$', '$x = 3.5$', '$x = 7$', '$x = 14$'],
     correct: '$x = 4$',
     rule: 'Combine Like Terms',
-    explanation: '$3.5x=14$, so $x=4$.',
+    explanation: '$3.5x=14$, so $x=4$. Trap: Do not treat $0.5x$ as half of the answer; combine coefficients first, then divide.',
     steps: [
       'Combine: $3+0.5=3.5$, so $3.5x=14$.',
       'Divide by $3.5$: $x=4$.',
@@ -59,7 +59,7 @@ export const topic3LikeTermsPracticePool = [
     choices: ['$y = 5$', '$y = 4$', '$y = 8$', '$y = 10$'],
     correct: '$y = 5$',
     rule: 'Combine Like Terms',
-    explanation: '$4y=20$, so $y=5$.',
+    explanation: '$4y=20$, so $y=5$. Pro-Tip: Like terms share the same variable. Adding their coefficients is just counting how many $x$ (or $y$) you have in total.',
     steps: [
       'Combine: $2.5+1.5=4$, so $4y=20$.',
       'Divide by $4$: $y=5$.',
@@ -73,7 +73,7 @@ export const topic3LikeTermsPracticePool = [
     choices: ['$n = 4$', '$n = 3.5$', '$n = 11$', '$n = 22$'],
     correct: '$n = 4$',
     rule: 'Combine Like Terms',
-    explanation: '$5.5n=22$, so $n=4$.',
+    explanation: '$5.5n=22$, so $n=4$. Trap: Leaving decimals uncombined forces messier division — merge first so one clean coefficient sits next to the variable.',
     steps: [
       'Combine: $6-0.5=5.5$, so $5.5n=22$.',
       'Divide by $5.5$: $n=4$.',
@@ -87,7 +87,7 @@ export const topic3LikeTermsPracticePool = [
     choices: ['$a = 5$', '$a = 4$', '$a = 2$', '$a = 10$'],
     correct: '$a = 5$',
     rule: 'Combine Like Terms',
-    explanation: '$2a=10$, so $a=5$.',
+    explanation: '$2a=10$, so $a=5$. Pro-Tip: Think of $1.2a+0.8a$ as stacking two piles of the same tile; the piles merge into $2a$ before you undo the equation.',
     steps: [
       'Combine: $1.2+0.8=2$, so $2a=10$.',
       'Divide by $2$: $a=5$.',
@@ -101,7 +101,7 @@ export const topic3LikeTermsPracticePool = [
     choices: ['$x = 3$', '$x = 6$', '$x = 10$', '$x = 18$'],
     correct: '$x = 3$',
     rule: 'Combine Like Terms',
-    explanation: '$6x=18$, so $x=3$.',
+    explanation: '$6x=18$, so $x=3$. Pro-Tip: Only terms with the same variable combine. Add their signed coefficients, then divide once.',
     steps: [
       'Add coefficients: $3+5-2=6$, so $6x=18$.',
       'Divide by $6$: $x=3$.',
@@ -115,7 +115,7 @@ export const topic3LikeTermsPracticePool = [
     choices: ['$x = 5$', '$x = 8$', '$x = 20$', '$x = 40$'],
     correct: '$x = 5$',
     rule: 'Combine Like Terms',
-    explanation: '$8x=40$, so $x=5$.',
+    explanation: '$8x=40$, so $x=5$. Trap: A lone $-y$ is still $-1y$ — forgetting the invisible $1$ flips the combined coefficient.',
     steps: [
       'Add coefficients: $7-2+3=8$, so $8x=40$.',
       'Divide by $8$: $x=5$.',
@@ -129,7 +129,7 @@ export const topic3LikeTermsPracticePool = [
     choices: ['$y = 5$', '$y = 4$', '$y = 6$', '$y = 20$'],
     correct: '$y = 5$',
     rule: 'Combine Like Terms',
-    explanation: '$4y=20$, so $y=5$.',
+    explanation: '$4y=20$, so $y=5$. Pro-Tip: Work left to right with signs: each $+$ keeps the next coefficient, each $-$ flips it before you add.',
     steps: [
       'Rewrite $-y$ as $-1y$: $9y-4y-1y$.',
       'Add coefficients: $9-4-1=4$, so $4y=20$.',
@@ -144,7 +144,7 @@ export const topic3LikeTermsPracticePool = [
     choices: ['$a = 3$', '$a = 1$', '$a = 5$', '$a = 15$'],
     correct: '$a = 3$',
     rule: 'Combine Like Terms',
-    explanation: '$5a=15$, so $a=3$.',
+    explanation: '$5a=15$, so $a=3$. Trap: Do not cancel a positive and negative pair and then ignore the remaining like terms — finish the full sum.',
     steps: [
       'Add coefficients: $2+8-5=5$, so $5a=15$.',
       'Divide by $5$: $a=3$.',
@@ -158,7 +158,7 @@ export const topic3LikeTermsPracticePool = [
     choices: ['$n = 4$', '$n = 12$', '$n = 6$', '$n = 24$'],
     correct: '$n = 4$',
     rule: 'Combine Like Terms',
-    explanation: '$6n=24$, so $n=4$.',
+    explanation: '$6n=24$, so $n=4$. Pro-Tip: Combining like terms is just simplifying one side until a single variable term remains.',
     steps: [
       'Add coefficients: $10-6+2=6$, so $6n=24$.',
       'Divide by $6$: $n=4$.',
@@ -172,7 +172,7 @@ export const topic3LikeTermsPracticePool = [
     choices: ['$x = 4$', '$x = 5$', '$x = 8$', '$x = 20$'],
     correct: '$x = 4$',
     rule: 'Combine Then Inverse',
-    explanation: '$5x+6=26 \\Rightarrow 5x=20 \\Rightarrow x=4$.',
+    explanation: '$5x+6=26 \\Rightarrow 5x=20 \\Rightarrow x=4$. Pro-Tip: Combine variable terms first so inverse operations act on one clean coefficient.',
     steps: [
       'Combine like terms: $5x+6=26$.',
       'Subtract $6$: $5x=20$.',
@@ -187,7 +187,7 @@ export const topic3LikeTermsPracticePool = [
     choices: ['$y = 6$', '$y = 4$', '$y = 12$', '$y = 14$'],
     correct: '$y = 6$',
     rule: 'Combine Then Inverse',
-    explanation: '$2y+8=20 \\Rightarrow 2y=12 \\Rightarrow y=6$.',
+    explanation: '$2y+8=20 \\Rightarrow 2y=12 \\Rightarrow y=6$. Trap: Subtracting the constant before combining like terms invites arithmetic mistakes — simplify the left, then move constants.',
     steps: [
       'Combine: $2y+8=20$.',
       'Subtract $8$: $2y=12$.',
@@ -202,7 +202,7 @@ export const topic3LikeTermsPracticePool = [
     choices: ['$a = 4$', '$a = 3$', '$a = 5$', '$a = 36$'],
     correct: '$a = 4$',
     rule: 'Combine Then Inverse',
-    explanation: '$9a-5=31 \\Rightarrow 9a=36 \\Rightarrow a=4$.',
+    explanation: '$9a-5=31 \\Rightarrow 9a=36 \\Rightarrow a=4$. Pro-Tip: After combining, undo addition/subtraction, then undo multiplication — reverse PEMDAS on purpose.',
     steps: [
       'Combine: $9a-5=31$.',
       'Add $5$: $9a=36$.',
@@ -217,7 +217,7 @@ export const topic3LikeTermsPracticePool = [
     choices: ['$n = 7$', '$n = 6$', '$n = 10$', '$n = 21$'],
     correct: '$n = 7$',
     rule: 'Combine Then Inverse',
-    explanation: '$3n+9=30 \\Rightarrow 3n=21 \\Rightarrow n=7$.',
+    explanation: '$3n+9=30 \\Rightarrow 3n=21 \\Rightarrow n=7$. Trap: The constant is not a like term with $x$; leave it alone until the variables are merged.',
     steps: [
       'Combine: $3n+9=30$.',
       'Subtract $9$: $3n=21$.',
@@ -232,7 +232,7 @@ export const topic3LikeTermsPracticePool = [
     choices: ['$x = 7$', '$x = 5$', '$x = 3$', '$x = 35$'],
     correct: '$x = 7$',
     rule: 'Combine Then Inverse',
-    explanation: '$5x-10=25 \\Rightarrow 5x=35 \\Rightarrow x=7$.',
+    explanation: '$5x-10=25 \\Rightarrow 5x=35 \\Rightarrow x=7$. Pro-Tip: Mentally circle every variable term, merge them, then treat the leftover constant with inverse ops.',
     steps: [
       'Combine: $5x-10=25$.',
       'Add $10$: $5x=35$.',
@@ -250,7 +250,7 @@ export const topic3BothSidesPracticePool = [
     choices: ['$x = 3$', '$x = 5$', '$x = 15$', '$x = -3$'],
     correct: '$x = 3$',
     rule: 'Variables Both Sides',
-    explanation: 'Subtract $2x$, then subtract $6$: $15=5x$, so $x=3$.',
+    explanation: 'Subtract $2x$, then subtract $6$: $15=5x$, so $x=3$. Pro-Tip: Crossing the equals sign flips a term\'s sign — subtracting $2x$ from both sides is the same as moving $+2x$ across.',
     steps: [
       'Subtract $2x$ from both sides: $21=5x+6$.',
       'Subtract $6$ from both sides: $15=5x$.',
@@ -265,7 +265,7 @@ export const topic3BothSidesPracticePool = [
     choices: ['$x = 4$', '$x = 3$', '$x = 7$', '$x = 12$'],
     correct: '$x = 4$',
     rule: 'Variables Both Sides',
-    explanation: 'Subtract $2x$: $3x=12$, so $x=4$.',
+    explanation: 'Subtract $2x$: $3x=12$, so $x=4$. Trap: Moving a variable without flipping its sign breaks the balance of the equation.',
     steps: [
       'Subtract $2x$ from both sides: $3x=12$.',
       'Divide by $3$: $x=4$.',
@@ -279,7 +279,7 @@ export const topic3BothSidesPracticePool = [
     choices: ['$x = 4$', '$x = 5$', '$x = 11$', '$x = 20$'],
     correct: '$x = 4$',
     rule: 'Variables Both Sides',
-    explanation: 'Subtract $3x$: $5x=20$, so $x=4$.',
+    explanation: 'Subtract $3x$: $5x=20$, so $x=4$. Pro-Tip: Prefer subtracting the smaller variable coefficient so the remaining variable term stays positive when you can.',
     steps: [
       'Subtract $3x$ from both sides: $5x=20$.',
       'Divide by $5$: $x=4$.',
@@ -293,7 +293,7 @@ export const topic3BothSidesPracticePool = [
     choices: ['$y = 7$', '$y = 5$', '$y = 13$', '$y = 35$'],
     correct: '$y = 7$',
     rule: 'Variables Both Sides',
-    explanation: 'Subtract $4y$: $5y=35$, so $y=7$.',
+    explanation: 'Subtract $4y$: $5y=35$, so $y=7$. Trap: Collect variables onto one side before you start dividing, or you will cancel the wrong pieces.',
     steps: [
       'Subtract $4y$ from both sides: $5y=35$.',
       'Divide by $5$: $y=7$.',
@@ -307,7 +307,7 @@ export const topic3BothSidesPracticePool = [
     choices: ['$x = 3$', '$x = -3$', '$x = 6$', '$x = 18$'],
     correct: '$x = 3$',
     rule: 'Variables Both Sides',
-    explanation: 'Subtract $4x$: $18=6x$, so $x=3$.',
+    explanation: 'Subtract $4x$: $18=6x$, so $x=3$. Pro-Tip: An equation is a balanced scale — every move on one pan must happen on the other.',
     steps: [
       'Subtract $4x$ from both sides: $18=6x$.',
       'Divide by $6$: $x=3$.',
@@ -321,7 +321,7 @@ export const topic3BothSidesPracticePool = [
     choices: ['$a = 5$', '$a = 1$', '$a = 2$', '$a = 20$'],
     correct: '$a = 5$',
     rule: 'Signed Both Sides',
-    explanation: 'Subtract $3a$, add $8$: $4a=20$, so $a=5$.',
+    explanation: 'Subtract $3a$, add $8$: $4a=20$, so $a=5$. Trap: When a constant is already negative (like $-8$), adding that number undoes the subtraction — students often subtract again by habit.',
     steps: [
       'Subtract $3a$: $4a-8=12$.',
       'Add $8$: $4a=20$.',
@@ -336,7 +336,7 @@ export const topic3BothSidesPracticePool = [
     choices: ['$x = 4$', '$x = 3$', '$x = 8$', '$x = 16$'],
     correct: '$x = 4$',
     rule: 'Signed Both Sides',
-    explanation: 'Subtract $2x$, add $5$: $4x=16$, so $x=4$.',
+    explanation: 'Subtract $2x$, add $5$: $4x=16$, so $x=4$. Pro-Tip: After variables are gathered, isolate with the inverse of whatever is stuck to the variable.',
     steps: [
       'Subtract $2x$: $4x-5=11$.',
       'Add $5$: $4x=16$.',
@@ -351,7 +351,7 @@ export const topic3BothSidesPracticePool = [
     choices: ['$y = 6$', '$y = 4$', '$y = 3$', '$y = 24$'],
     correct: '$y = 6$',
     rule: 'Signed Both Sides',
-    explanation: 'Subtract $y$, add $9$: $4y=24$, so $y=6$.',
+    explanation: 'Subtract $y$, add $9$: $4y=24$, so $y=6$. Trap: Sign errors stack: flip carefully when a term crosses the equals sign, then re-check before dividing.',
     steps: [
       'Subtract $y$: $4y-9=15$.',
       'Add $9$: $4y=24$.',
@@ -366,7 +366,7 @@ export const topic3BothSidesPracticePool = [
     choices: ['$n = 4$', '$n = 2$', '$n = 5$', '$n = 20$'],
     correct: '$n = 4$',
     rule: 'Signed Both Sides',
-    explanation: 'Subtract $3n$, add $14$: $5n=20$, so $n=4$.',
+    explanation: 'Subtract $3n$, add $14$: $5n=20$, so $n=4$. Pro-Tip: Rewrite every subtraction as adding a negative if signs feel slippery.',
     steps: [
       'Subtract $3n$: $5n-14=6$.',
       'Add $14$: $5n=20$.',
@@ -381,7 +381,7 @@ export const topic3BothSidesPracticePool = [
     choices: ['$x = 5$', '$x = 3$', '$x = 4$', '$x = 25$'],
     correct: '$x = 5$',
     rule: 'Signed Both Sides',
-    explanation: 'Subtract $4x$, add $20$: $5x=25$, so $x=5$.',
+    explanation: 'Subtract $4x$, add $20$: $5x=25$, so $x=5$. Pro-Tip: Keep variables on the left and constants on the right so the last step is a single division.',
     steps: [
       'Subtract $4x$: $5x-20=5$.',
       'Add $20$: $5x=25$.',
@@ -396,7 +396,7 @@ export const topic3BothSidesPracticePool = [
     choices: ['$x = 4$', '$x = 8$', '$x = 11$', '$x = 6$'],
     correct: '$x = 4$',
     rule: 'Move Constants',
-    explanation: 'Subtract $2x$ and $7$: $2x=8$, so $x=4$.',
+    explanation: 'Subtract $2x$ and $7$: $2x=8$, so $x=4$. Pro-Tip: Move variables first, then constants — each crossing flips the sign so both pans stay equal.',
     steps: [
       'Subtract $2x$: $2x+7=15$.',
       'Subtract $7$: $2x=8$.',
@@ -411,7 +411,7 @@ export const topic3BothSidesPracticePool = [
     choices: ['$x = 3$', '$x = 6$', '$x = 2$', '$x = 12$'],
     correct: '$x = 3$',
     rule: 'Move Constants',
-    explanation: 'Subtract $x$ and $6$: $4x=12$, so $x=3$.',
+    explanation: 'Subtract $x$ and $6$: $4x=12$, so $x=3$. Trap: Forgetting to flip a constant when it crosses turns $7$ into another $+7$ instead of $-7$.',
     steps: [
       'Subtract $x$: $4x+6=18$.',
       'Subtract $6$: $4x=12$.',
@@ -426,7 +426,7 @@ export const topic3BothSidesPracticePool = [
     choices: ['$y = 3$', '$y = 5$', '$y = 11$', '$y = 15$'],
     correct: '$y = 3$',
     rule: 'Move Constants',
-    explanation: 'Subtract $3y$ and $5$: $5y=15$, so $y=3$.',
+    explanation: 'Subtract $3y$ and $5$: $5y=15$, so $y=3$. Pro-Tip: After the variable terms cancel to one side, the leftover arithmetic should be pure numbers.',
     steps: [
       'Subtract $3y$: $5y+5=20$.',
       'Subtract $5$: $5y=15$.',
@@ -441,7 +441,7 @@ export const topic3BothSidesPracticePool = [
     choices: ['$n = 3$', '$n = 5$', '$n = 14$', '$n = 18$'],
     correct: '$n = 3$',
     rule: 'Move Constants',
-    explanation: 'Subtract $4n$ and $6$: $6n=18$, so $n=3$.',
+    explanation: 'Subtract $4n$ and $6$: $6n=18$, so $n=3$. Trap: Do not divide until only one variable term remains on its side.',
     steps: [
       'Subtract $4n$: $6n+6=24$.',
       'Subtract $6$: $6n=18$.',
@@ -456,7 +456,7 @@ export const topic3BothSidesPracticePool = [
     choices: ['$x = 6$', '$x = 4$', '$x = 12$', '$x = 20$'],
     correct: '$x = 6$',
     rule: 'Move Constants',
-    explanation: 'Subtract $x$ and $14$: $2x=12$, so $x=6$.',
+    explanation: 'Subtract $x$ and $14$: $2x=12$, so $x=6$. Pro-Tip: Check by substituting your answer back into both original sides.',
     steps: [
       'Subtract $x$: $2x+14=26$.',
       'Subtract $14$: $2x=12$.',
@@ -474,7 +474,7 @@ export const topic3MultistepPracticePool = [
     choices: ['$x = 5$', '$x = 4$', '$x = 3$', '$x = 10$'],
     correct: '$x = 5$',
     rule: 'Distribute Then Collect',
-    explanation: 'Right side becomes $6x+12$. Then $8x+2=6x+12 \\Rightarrow 2x=10 \\Rightarrow x=5$.',
+    explanation: 'Right side becomes $6x+12$. Then $8x+2=6x+12 \\Rightarrow 2x=10 \\Rightarrow x=5$. Pro-Tip: Distribute before you collect — parentheses must open completely or like terms stay hidden.',
     steps: [
       'Distribute $4$: $8x+2=2x+4x+12$.',
       'Combine right: $8x+2=6x+12$.',
@@ -490,7 +490,7 @@ export const topic3MultistepPracticePool = [
     choices: ['$x = 3$', '$x = 11$', '$x = 17$', '$x = 7$'],
     correct: '$x = 3$',
     rule: 'Distribute Then Collect',
-    explanation: '$3x+12=21 \\Rightarrow 3x=9 \\Rightarrow x=3$.',
+    explanation: '$3x+12=21 \\Rightarrow 3x=9 \\Rightarrow x=3$. Trap: Multiplying only the first term inside parentheses leaves the second term unchanged and breaks the equation.',
     steps: [
       'Distribute: $3x+12=21$.',
       'Subtract $12$: $3x=9$.',
@@ -505,7 +505,7 @@ export const topic3MultistepPracticePool = [
     choices: ['$y = 7$', '$y = 4$', '$y = 1$', '$y = 23$'],
     correct: '$y = 7$',
     rule: 'Distribute Then Collect',
-    explanation: '$5y-15=20 \\Rightarrow 5y=35 \\Rightarrow y=7$.',
+    explanation: '$5y-15=20 \\Rightarrow 5y=35 \\Rightarrow y=7$. Pro-Tip: After expanding, rewrite the equation with no parentheses, then gather variables and constants.',
     steps: [
       'Distribute: $5y-15=20$.',
       'Add $15$: $5y=35$.',
@@ -520,7 +520,7 @@ export const topic3MultistepPracticePool = [
     choices: ['$x = 14$', '$x = 6$', '$x = 10$', '$x = 4$'],
     correct: '$x = 14$',
     rule: 'Distribute Then Collect',
-    explanation: '$2x+10+4=3x \\Rightarrow 2x+14=3x \\Rightarrow x=14$.',
+    explanation: '$2x+10+4=3x \\Rightarrow 2x+14=3x \\Rightarrow x=14$. Trap: A factor outside applies to every term inside, including constants.',
     steps: [
       'Distribute: $2x+10+4=3x$.',
       'Combine: $2x+14=3x$.',
@@ -535,7 +535,7 @@ export const topic3MultistepPracticePool = [
     choices: ['$x = 7$', '$x = 5$', '$x = 1$', '$x = -1$'],
     correct: '$x = 7$',
     rule: 'Distribute Then Collect',
-    explanation: '$4x-8=2x+6 \\Rightarrow 2x=14 \\Rightarrow x=7$.',
+    explanation: '$4x-8=2x+6 \\Rightarrow 2x=14 \\Rightarrow x=7$. Pro-Tip: Expansion is just repeated addition in disguise — $4(x+3)$ means four copies of $x$ and four copies of $3$.',
     steps: [
       'Distribute both sides: $4x-8=2x+6$.',
       'Subtract $2x$: $2x-8=6$.',
@@ -550,7 +550,7 @@ export const topic3MultistepPracticePool = [
     choices: ['$x = -2$', '$x = 2$', '$x = -6$', '$x = 6$'],
     correct: '$x = -2$',
     rule: 'Negative Distribution',
-    explanation: '$-5x+10=20 \\Rightarrow -5x=10 \\Rightarrow x=-2$.',
+    explanation: '$-5x+10=20 \\Rightarrow -5x=10 \\Rightarrow x=-2$. Trap: The negative sign belongs to the outside factor. Distributing $-3$ into $(x-4)$ flips both terms: $-3x+12$, not $-3x-12$.',
     steps: [
       'Distribute: $-5x+10=20$.',
       'Subtract $10$: $-5x=10$.',
@@ -565,7 +565,7 @@ export const topic3MultistepPracticePool = [
     choices: ['$y = 1$', '$y = 9$', '$y = -1$', '$y = 4$'],
     correct: '$y = 1$',
     rule: 'Negative Distribution',
-    explanation: '$-2y+10=8 \\Rightarrow -2y=-2 \\Rightarrow y=1$.',
+    explanation: '$-2y+10=8 \\Rightarrow -2y=-2 \\Rightarrow y=1$. Trap: $-5(x-2)=-5x+10$ because a negative times a subtracted $2$ becomes positive — the double negative is easy to miss.',
     steps: [
       'Distribute: $-2y+10=8$.',
       'Subtract $10$: $-2y=-2$.',
@@ -580,7 +580,7 @@ export const topic3MultistepPracticePool = [
     choices: ['$x = -9$', '$x = 9$', '$x = -1$', '$x = 1$'],
     correct: '$x = -9$',
     rule: 'Negative Distribution',
-    explanation: '$-3x-12=15 \\Rightarrow -3x=27 \\Rightarrow x=-9$.',
+    explanation: '$-3x-12=15 \\Rightarrow -3x=27 \\Rightarrow x=-9$. Pro-Tip: Mentally rewrite $-(x-2)$ as $-1(x-2)$ so every inside sign clearly flips.',
     steps: [
       'Distribute: $-3x-12=15$.',
       'Add $12$: $-3x=27$.',
@@ -595,7 +595,7 @@ export const topic3MultistepPracticePool = [
     choices: ['$a = -2$', '$a = 2$', '$a = -4$', '$a = 4$'],
     correct: '$a = -2$',
     rule: 'Negative Distribution',
-    explanation: '$-4a+4=12 \\Rightarrow -4a=8 \\Rightarrow a=-2$.',
+    explanation: '$-4a+4=12 \\Rightarrow -4a=8 \\Rightarrow a=-2$. Trap: After a negative distribute, dividing by a negative later will flip an inequality — but for equations only the sign of $x$ changes.',
     steps: [
       'Distribute: $-4a+4=12$.',
       'Subtract $4$: $-4a=8$.',
@@ -610,7 +610,7 @@ export const topic3MultistepPracticePool = [
     choices: ['$x = -2$', '$x = 2$', '$x = -1$', '$x = 1$'],
     correct: '$x = -2$',
     rule: 'Negative Distribution',
-    explanation: '$6-2x-6=4 \\Rightarrow -2x=4 \\Rightarrow x=-2$.',
+    explanation: '$6-2x-6=4 \\Rightarrow -2x=4 \\Rightarrow x=-2$. Pro-Tip: Expand fully first; only then combine and isolate.',
     steps: [
       'Distribute $-2$: $6-2x-6=4$.',
       'Combine constants: $-2x=4$.',
@@ -625,7 +625,7 @@ export const topic3MultistepPracticePool = [
     choices: ['$x = 13$', '$x = 7$', '$x = 5$', '$x = 1$'],
     correct: '$x = 13$',
     rule: 'Expand Both Sides',
-    explanation: '$2x+10=3x-3 \\Rightarrow 13=x$.',
+    explanation: '$2x+10=3x-3 \\Rightarrow 13=x$. Pro-Tip: Clear every set of parentheses before collecting like terms across the equals sign.',
     steps: [
       'Distribute: $2x+6+4=3x-3$.',
       'Combine: $2x+10=3x-3$.',
@@ -641,7 +641,7 @@ export const topic3MultistepPracticePool = [
     choices: ['$x = 6$', '$x = 5$', '$x = 4$', '$x = 8$'],
     correct: '$x = 6$',
     rule: 'Expand Both Sides',
-    explanation: '$5x-5=2x+13 \\Rightarrow 3x=18 \\Rightarrow x=6$.',
+    explanation: '$5x-5=2x+13 \\Rightarrow 3x=18 \\Rightarrow x=6$. Trap: Distributing on only one side leaves the other side\'s parentheses to sabotage your combine step.',
     steps: [
       'Distribute: $5x-5=2x+8+5$.',
       'Combine: $5x-5=2x+13$.',
@@ -657,7 +657,7 @@ export const topic3MultistepPracticePool = [
     choices: ['$x = 8$', '$x = 6$', '$x = 4$', '$x = 14$'],
     correct: '$x = 8$',
     rule: 'Expand Both Sides',
-    explanation: '$3x+6=2x+10+4 \\Rightarrow 3x+6=2x+14 \\Rightarrow x=8$.',
+    explanation: '$3x+6=2x+10+4 \\Rightarrow 3x+6=2x+14 \\Rightarrow x=8$. Pro-Tip: Treat each distributed product as its own mini-expression, then rewrite the full equation.',
     steps: [
       'Distribute: $3x+6=2x+10+4$.',
       'Combine: $3x+6=2x+14$.',
@@ -673,7 +673,7 @@ export const topic3MultistepPracticePool = [
     choices: ['$x = 6$', '$x = 4$', '$x = 3$', '$x = 8$'],
     correct: '$x = 6$',
     rule: 'Expand Both Sides',
-    explanation: '$6x-6+2=4x+8 \\Rightarrow 6x-4=4x+8 \\Rightarrow 2x=12 \\Rightarrow x=6$.',
+    explanation: '$6x-6+2=4x+8 \\Rightarrow 6x-4=4x+8 \\Rightarrow 2x=12 \\Rightarrow x=6$. Trap: Extra constants sitting outside parentheses (like $+4$) are not multiplied by the factor — leave them alone.',
     steps: [
       'Distribute: $6x-6+2=4x+8$.',
       'Combine: $6x-4=4x+8$.',
@@ -689,7 +689,7 @@ export const topic3MultistepPracticePool = [
     choices: ['$x = 4$', '$x = 3$', '$x = 2$', '$x = 8$'],
     correct: '$x = 4$',
     rule: 'Expand Both Sides',
-    explanation: '$6x+2=4x+8+2 \\Rightarrow 6x+2=4x+10 \\Rightarrow 2x=8 \\Rightarrow x=4$.',
+    explanation: '$6x+2=4x+8+2 \\Rightarrow 6x+2=4x+10 \\Rightarrow 2x=8 \\Rightarrow x=4$. Pro-Tip: After both sides are expanded, the problem becomes an ordinary both-sides equation.',
     steps: [
       'Distribute: $6x+2=4x+8+2$.',
       'Combine: $6x+2=4x+10$.',
@@ -708,7 +708,7 @@ export const topic3SolutionTypesPracticePool = [
     choices: ['One solution', 'No solution', 'Infinitely many solutions', 'Two solutions'],
     correct: 'One solution',
     rule: 'One Solution',
-    explanation: 'Subtract $2x$: $x+5=11$, so $x=6$ — one solution.',
+    explanation: 'Subtract $2x$: $x+5=11$, so $x=6$ — one solution. Pro-Tip: Think of a scale: finishing at $x=k$ means exactly one weight restores balance.',
     steps: [
       'Subtract $2x$: $x+5=11$.',
       'Subtract $5$: $x=6$.',
@@ -723,7 +723,7 @@ export const topic3SolutionTypesPracticePool = [
     choices: ['$x = 6$ (one solution)', 'No solution', 'Infinitely many', '$x = 2$ (one solution)'],
     correct: '$x = 6$ (one solution)',
     rule: 'One Solution',
-    explanation: 'Subtract $3x$, add $4$: $2x=12$, so $x=6$.',
+    explanation: 'Subtract $3x$, add $4$: $2x=12$, so $x=6$. Pro-Tip: If the variable survives with a nonzero coefficient, you have exactly one solution.',
     steps: [
       'Subtract $3x$: $2x-4=8$.',
       'Add $4$: $2x=12$.',
@@ -738,7 +738,7 @@ export const topic3SolutionTypesPracticePool = [
     choices: ['One solution ($x = 5$)', 'No solution', 'Infinitely many', 'One solution ($x = 7$)'],
     correct: 'One solution ($x = 5$)',
     rule: 'One Solution',
-    explanation: '$4x+4=2x+14 \\Rightarrow 2x=10 \\Rightarrow x=5$.',
+    explanation: '$4x+4=2x+14 \\Rightarrow 2x=10 \\Rightarrow x=5$. Trap: Stopping at a simplified equation like $2x=12$ without dividing still hides the single solution.',
     steps: [
       'Distribute: $4x+4=2x+14$.',
       'Subtract $2x$: $2x+4=14$.',
@@ -753,7 +753,7 @@ export const topic3SolutionTypesPracticePool = [
     choices: ['$x = 5$ (one)', 'No solution', 'Infinitely many', '$x = 2$ (one)'],
     correct: '$x = 5$ (one)',
     rule: 'One Solution',
-    explanation: 'Subtract $5x$: $2x+2=12$, so $x=5$.',
+    explanation: 'Subtract $5x$: $2x+2=12$, so $x=5$. Pro-Tip: One solution means every other number fails the original equation.',
     steps: [
       'Subtract $5x$: $2x+2=12$.',
       'Subtract $2$: $2x=10$.',
@@ -768,7 +768,7 @@ export const topic3SolutionTypesPracticePool = [
     choices: ['One solution', 'No solution', 'Infinitely many solutions', 'Zero and one'],
     correct: 'One solution',
     rule: 'One Solution',
-    explanation: 'Subtract $x$: $x+9=15$, so $x=6$ — one solution.',
+    explanation: 'Subtract $x$: $x+9=15$, so $x=6$ — one solution. Pro-Tip: Substitute your answer back — both sides should match exactly once.',
     steps: [
       'Subtract $x$: $x+9=15$.',
       'Subtract $9$: $x=6$.',
@@ -783,7 +783,7 @@ export const topic3SolutionTypesPracticePool = [
     choices: ['No solution', 'One solution', 'Infinitely many solutions', 'Two solutions'],
     correct: 'No solution',
     rule: 'No Solution',
-    explanation: 'Subtract $3x$: $4=9$, which is false — no solution.',
+    explanation: 'Subtract $3x$: $4=9$, which is false — no solution. Pro-Tip: A false statement like $4=9$ means the scale can never balance — no value of $x$ works.',
     steps: [
       'Subtract $3x$ from both sides: $4=9$.',
       '$4=9$ is a false statement.',
@@ -798,7 +798,7 @@ export const topic3SolutionTypesPracticePool = [
     choices: ['No solution', 'One solution', 'Infinitely many', '$x = 0$'],
     correct: 'No solution',
     rule: 'No Solution',
-    explanation: 'Subtract $5x$: $-2=7$, false — no solution.',
+    explanation: 'Subtract $5x$: $-2=7$, false — no solution. Trap: Canceling identical variable terms and ignoring a leftover contradiction makes people invent a fake solution.',
     steps: [
       'Subtract $5x$: $-2=7$.',
       'A false statement means no value of $x$ works.',
@@ -812,7 +812,7 @@ export const topic3SolutionTypesPracticePool = [
     choices: ['No solution', 'One solution', 'Infinitely many', 'One solution ($x = 1$)'],
     correct: 'No solution',
     rule: 'No Solution',
-    explanation: '$2x+6=2x+1 \\Rightarrow 6=1$, false — no solution.',
+    explanation: '$2x+6=2x+1 \\Rightarrow 6=1$, false — no solution. Pro-Tip: When variables wipe out and constants disagree, classify as no solution instead of solving for $x$.',
     steps: [
       'Distribute: $2x+6=2x+1$.',
       'Subtract $2x$: $6=1$.',
@@ -827,7 +827,7 @@ export const topic3SolutionTypesPracticePool = [
     choices: ['No solution', 'Infinitely many', 'One solution', '$x = 1$'],
     correct: 'No solution',
     rule: 'No Solution',
-    explanation: '$4x+8=4x+4 \\Rightarrow 8=4$, false — no solution.',
+    explanation: '$4x+8=4x+4 \\Rightarrow 8=4$, false — no solution. Trap: $2=3$ is not "almost true" — it is a contradiction, so the solution set is empty.',
     steps: [
       'Distribute right: $4x+8=4x+4$.',
       'Subtract $4x$: $8=4$.',
@@ -842,7 +842,7 @@ export const topic3SolutionTypesPracticePool = [
     choices: ['No solution', 'One solution', 'Infinitely many', 'Two solutions'],
     correct: 'No solution',
     rule: 'No Solution',
-    explanation: '$6x+2=6x+3 \\Rightarrow 2=3$, false — no solution.',
+    explanation: '$6x+2=6x+3 \\Rightarrow 2=3$, false — no solution. Pro-Tip: No solution is different from $x=0$; zero is a number that sometimes works, while a contradiction never does.',
     steps: [
       'Distribute: $6x+2=6x+3$.',
       'Subtract $6x$: $2=3$.',
@@ -857,7 +857,7 @@ export const topic3SolutionTypesPracticePool = [
     choices: ['Infinitely many solutions', 'No solution', 'One solution', 'Two solutions'],
     correct: 'Infinitely many solutions',
     rule: 'Infinitely Many',
-    explanation: 'Right side simplifies to $6x+9$, so $6x+9=6x+9 \\Rightarrow 9=9$ — infinitely many.',
+    explanation: 'Right side simplifies to $6x+9$, so $6x+9=6x+9 \\Rightarrow 9=9$ — infinitely many. Pro-Tip: A true identity like $9=9$ means the scale stays balanced for every value you drop into $x$.',
     steps: [
       'Combine right: $2x+4x+4+5=6x+9$.',
       'Equation becomes $6x+9=6x+9$.',
@@ -872,7 +872,7 @@ export const topic3SolutionTypesPracticePool = [
     choices: ['Infinitely many', 'No solution', 'One solution', '$x = 2$'],
     correct: 'Infinitely many',
     rule: 'Infinitely Many',
-    explanation: '$3x+6=3x+6 \\Rightarrow 6=6$ — infinitely many solutions.',
+    explanation: '$3x+6=3x+6 \\Rightarrow 6=6$ — infinitely many solutions. Pro-Tip: Infinitely many solutions means both sides simplify to the same expression for all $x$.',
     steps: [
       'Distribute: $3x+6=3x+6$.',
       'Subtract $3x$: $6=6$.',
@@ -887,7 +887,7 @@ export const topic3SolutionTypesPracticePool = [
     choices: ['Infinitely many solutions', 'No solution', 'One solution', 'Zero solutions'],
     correct: 'Infinitely many solutions',
     rule: 'Infinitely Many',
-    explanation: '$2x+8=2x+8$ is always true — infinitely many.',
+    explanation: '$2x+8=2x+8$ is always true — infinitely many. Trap: Do not pick a random number just because the equation "works" — report infinitely many, not one example.',
     steps: [
       'Distribute: $2x+8=2x+8$.',
       'Subtract $2x$: $8=8$.',
@@ -902,7 +902,7 @@ export const topic3SolutionTypesPracticePool = [
     choices: ['Infinitely many', 'No solution', 'One solution', '$x = 1$'],
     correct: 'Infinitely many',
     rule: 'Infinitely Many',
-    explanation: 'Right side is $5x-1$, so both sides match for every $x$.',
+    explanation: 'Right side is $5x-1$, so both sides match for every $x$. Pro-Tip: If variables cancel and you are left with a true number sentence, every real number is a solution.',
     steps: [
       'Combine right: $4x+x-1=5x-1$.',
       'Equation: $5x-1=5x-1$.',
@@ -917,7 +917,7 @@ export const topic3SolutionTypesPracticePool = [
     choices: ['Infinitely many solutions', 'No solution', 'One solution', '$x = 3$'],
     correct: 'Infinitely many solutions',
     rule: 'Infinitely Many',
-    explanation: '$4x-12+12=4x \\Rightarrow 4x=4x$ — infinitely many.',
+    explanation: '$4x-12+12=4x \\Rightarrow 4x=4x$ — infinitely many. Trap: Confusing $9=9$ (always true) with $9=0$ (never true) swaps infinitely many with none.',
     steps: [
       'Distribute: $4x-12+12=4x$.',
       'Combine: $4x=4x$.',
@@ -935,7 +935,7 @@ export const topic3InequalitiesPracticePool = [
     choices: ['$x < 6$', '$x > 6$', '$x < 11$', '$x > 11$'],
     correct: '$x < 6$',
     rule: 'Two-Step Inequality',
-    explanation: 'Subtract $5$: $2x<12$, divide by $2$: $x<6$.',
+    explanation: 'Subtract $5$: $2x<12$, divide by $2$: $x<6$. Pro-Tip: Undo addition/subtraction first, then undo multiplication — same order as equations.',
     steps: [
       'Subtract $5$ from both sides: $2x<12$.',
       'Divide by $2$: $x<6$.',
@@ -949,7 +949,7 @@ export const topic3InequalitiesPracticePool = [
     choices: ['$x > 5$', '$x < 5$', '$x > 15$', '$x < 15$'],
     correct: '$x > 5$',
     rule: 'Two-Step Inequality',
-    explanation: 'Add $4$: $3x>15$, divide by $3$: $x>5$.',
+    explanation: 'Add $4$: $3x>15$, divide by $3$: $x>5$. Trap: Flip the inequality symbol only when you multiply or divide by a negative number — not when you add or subtract.',
     steps: [
       'Add $4$: $3x>15$.',
       'Divide by $3$: $x>5$.',
@@ -963,7 +963,7 @@ export const topic3InequalitiesPracticePool = [
     choices: ['$x \\le 3$', '$x \\ge 3$', '$x \\le 15$', '$x \\ge 15$'],
     correct: '$x \\le 3$',
     rule: 'Two-Step Inequality',
-    explanation: 'Subtract $8$: $5x\\le 15$, divide by $5$: $x\\le 3$.',
+    explanation: 'Subtract $8$: $5x\\le 15$, divide by $5$: $x\\le 3$. Pro-Tip: Keep the inequality facing the same way through every step unless a negative multiplier forces a flip.',
     steps: [
       'Subtract $8$: $5x\\le 15$.',
       'Divide by $5$: $x\\le 3$.',
@@ -977,7 +977,7 @@ export const topic3InequalitiesPracticePool = [
     choices: ['$x < -2$', '$x > -2$', '$x < 2$', '$x > 2$'],
     correct: '$x < -2$',
     rule: 'Flip When Dividing by Negative',
-    explanation: 'Subtract $6$: $-2x>4$. Divide by $-2$ and flip: $x<-2$.',
+    explanation: 'Subtract $6$: $-2x>4$. Divide by $-2$ and flip: $x<-2$. Trap: Dividing $-2x>4$ by $-2$ without flipping wrongly yields $x>-2$ instead of $x<-2$.',
     steps: [
       'Subtract $6$: $-2x>4$.',
       'Divide by $-2$ and flip the inequality: $x<-2$.',
@@ -991,7 +991,7 @@ export const topic3InequalitiesPracticePool = [
     choices: ['$x \\ge 4$', '$x \\le 4$', '$x \\ge 16$', '$x \\le 16$'],
     correct: '$x \\ge 4$',
     rule: 'Two-Step Inequality',
-    explanation: 'Add $9$: $4x\\ge 16$, divide by $4$: $x\\ge 4$.',
+    explanation: 'Add $9$: $4x\\ge 16$, divide by $4$: $x\\ge 4$. Pro-Tip: Check one number from your solution set in the original inequality to confirm the direction.',
     steps: [
       'Add $9$: $4x\\ge 16$.',
       'Divide by $4$: $x\\ge 4$.',
@@ -1005,7 +1005,7 @@ export const topic3InequalitiesPracticePool = [
     choices: ['$x < 13$', '$x > 13$', '$x < 21$', '$x > 21$'],
     correct: '$x < 13$',
     rule: 'Distribute Inequality',
-    explanation: '$7x+56<147 \\Rightarrow 7x<91 \\Rightarrow x<13$.',
+    explanation: '$7x+56<147 \\Rightarrow 7x<91 \\Rightarrow x<13$. Pro-Tip: Distribute first (watching signs), then isolate exactly as you would for an equation.',
     steps: [
       'Distribute: $7x+56<147$.',
       'Subtract $56$: $7x<91$.',
@@ -1020,7 +1020,7 @@ export const topic3InequalitiesPracticePool = [
     choices: ['$x > 7$', '$x < 7$', '$x > 5$', '$x < 5$'],
     correct: '$x > 7$',
     rule: 'Distribute Inequality',
-    explanation: '$3x-6>15 \\Rightarrow 3x>21 \\Rightarrow x>7$.',
+    explanation: '$3x-6>15 \\Rightarrow 3x>21 \\Rightarrow x>7$. Trap: A negative outside factor flips every inside term — and if you later divide by a negative, flip the inequality too.',
     steps: [
       'Distribute: $3x-6>15$.',
       'Add $6$: $3x>21$.',
@@ -1035,7 +1035,7 @@ export const topic3InequalitiesPracticePool = [
     choices: ['$x \\le 5$', '$x \\ge 5$', '$x \\le 6$', '$x \\ge 6$'],
     correct: '$x \\le 5$',
     rule: 'Distribute Inequality',
-    explanation: '$4x+4\\le 24 \\Rightarrow 4x\\le 20 \\Rightarrow x\\le 5$.',
+    explanation: '$4x+4\\le 24 \\Rightarrow 4x\\le 20 \\Rightarrow x\\le 5$. Pro-Tip: After expanding, you should see a plain two-step inequality with no parentheses.',
     steps: [
       'Distribute: $4x+4\\le 24$.',
       'Subtract $4$: $4x\\le 20$.',
@@ -1050,7 +1050,7 @@ export const topic3InequalitiesPracticePool = [
     choices: ['$x < -7$', '$x > -7$', '$x < -1$', '$x > -1$'],
     correct: '$x < -7$',
     rule: 'Distribute and Flip',
-    explanation: '$-2x-6>8 \\Rightarrow -2x>14 \\Rightarrow x<-7$ (flip).',
+    explanation: '$-2x-6>8 \\Rightarrow -2x>14 \\Rightarrow x<-7$ (flip). Trap: Multiplying only the first term inside $7(x+8)$ leaves $+8$ untouched and ruins the bound.',
     steps: [
       'Distribute: $-2x-6>8$.',
       'Add $6$: $-2x>14$.',
@@ -1065,7 +1065,7 @@ export const topic3InequalitiesPracticePool = [
     choices: ['$x \\ge 4$', '$x \\le 4$', '$x \\ge 8$', '$x \\le 8$'],
     correct: '$x \\ge 4$',
     rule: 'Distribute Inequality',
-    explanation: '$10x-5\\ge 35 \\Rightarrow 10x\\ge 40 \\Rightarrow x\\ge 4$.',
+    explanation: '$10x-5\\ge 35 \\Rightarrow 10x\\ge 40 \\Rightarrow x\\ge 4$. Pro-Tip: Wordless inequalities still obey the flip rule — negatives are what change direction.',
     steps: [
       'Distribute: $10x-5\\ge 35$.',
       'Add $5$: $10x\\ge 40$.',
@@ -1081,7 +1081,7 @@ export const topic3InequalitiesPracticePool = [
     choices: ['$x < 13$', '$x > 13$', '$x < 21$', '$x \\le 13$'],
     correct: '$x < 13$',
     rule: 'Word Problem Translation',
-    explanation: 'Model: $7(x+8)<147$. Then $x<13$.',
+    explanation: 'Model: $7(x+8)<147$. Then $x<13$. Pro-Tip: Translate the sentence into an inequality before solving — words like "under" become $<$, "at most" become $\\le$.',
     steps: [
       'Translate: $7$ dollars times (hours plus fee units) under $147$: $7(x+8)<147$.',
       'Distribute: $7x+56<147$.',
@@ -1098,7 +1098,7 @@ export const topic3InequalitiesPracticePool = [
     choices: ['$x \\le 11$', '$x < 11$', '$x \\ge 11$', '$x > 11$'],
     correct: '$x \\le 11$',
     rule: 'Word Problem Translation',
-    explanation: '$3x+12\\le 45 \\Rightarrow 3x\\le 33 \\Rightarrow x\\le 11$.',
+    explanation: '$3x+12\\le 45 \\Rightarrow 3x\\le 33 \\Rightarrow x\\le 11$. Trap: Solving the numbers without writing the model often picks the wrong inequality direction.',
     steps: [
       'Model: $3x+12\\le 45$.',
       'Subtract $12$: $3x\\le 33$.',
@@ -1114,7 +1114,7 @@ export const topic3InequalitiesPracticePool = [
     choices: ['$x > 7$', '$x < 7$', '$x > 17$', '$x < 17$'],
     correct: '$x > 7$',
     rule: 'Word Problem Translation',
-    explanation: '$2(x+5)>24 \\Rightarrow x+5>12 \\Rightarrow x>7$.',
+    explanation: '$2(x+5)>24 \\Rightarrow x+5>12 \\Rightarrow x>7$. Pro-Tip: Define $x$ in words (hours, notebooks, a number) so the final inequality answers the question asked.',
     steps: [
       'Translate: $2(x+5)>24$.',
       'Divide by $2$: $x+5>12$.',
@@ -1130,7 +1130,7 @@ export const topic3InequalitiesPracticePool = [
     choices: ['$x \\ge 6$', '$x \\le 6$', '$x \\ge 3$', '$x \\le 3$'],
     correct: '$x \\ge 6$',
     rule: 'Word Problem Translation',
-    explanation: '$4x-6\\ge 18 \\Rightarrow 4x\\ge 24 \\Rightarrow x\\ge 6$.',
+    explanation: '$4x-6\\ge 18 \\Rightarrow 4x\\ge 24 \\Rightarrow x\\ge 6$. Trap: Fees and fixed costs are constants; rates times $x$ are the variable terms — do not multiply the fee by $x$ twice.',
     steps: [
       'Translate: $4x-6\\ge 18$.',
       'Add $6$: $4x\\ge 24$.',
@@ -1146,7 +1146,7 @@ export const topic3InequalitiesPracticePool = [
     choices: ['$x < 8$', '$x > 8$', '$x < 4$', '$x > 4$'],
     correct: '$x < 8$',
     rule: 'Word Problem Translation',
-    explanation: '$5(x-2)<30 \\Rightarrow x-2<6 \\Rightarrow x<8$.',
+    explanation: '$5(x-2)<30 \\Rightarrow x-2<6 \\Rightarrow x<8$. Pro-Tip: After solving, reread the story to confirm your inequality matches "under", "at least", or "greater than".',
     steps: [
       'Translate: $5(x-2)<30$.',
       'Divide by $5$: $x-2<6$.',

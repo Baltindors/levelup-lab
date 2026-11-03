@@ -239,7 +239,7 @@ Modules must wrap `MathModuleShell` and provide:
 - Put a `practicePool` (15+ items recommended) on the exercise object in `src/data/mockData.js` (or an imported pool file under `src/data/`).
 - For multi-lesson pools, pass `stratifyBy: 'topic'` to `useMathDrill` so 10-card drills round-robin across subtopics instead of clustering.
 - Double-escape LaTeX backslashes in JS pool strings (`\\frac`, `\\times`). Render with [`src/utils/mathKatex.js`](../src/utils/mathKatex.js): undelimited text stays plain prose; `$...$` / `$$...$$` segments render as KaTeX.
-- Scroll 2 MC pool items may include optional `rule` (string) and `steps` (string[]) for the **Scroll Master's Breakdown** review UI in `MathMcDrillExplanation`. If `steps` is missing, the UI falls back to `explanation`. Inline math in steps/explanations must use `$...$` delimiters.
+- MC pool items may include optional `rule` (string) and `steps` (string[]) for the **Scroll Master's Breakdown** review UI in `MathMcDrillExplanation`. Keep `rule` as a short badge label. When both `steps` and `explanation` exist, steps are the procedural list and `explanation` carries the rationale (often a `Pro-Tip:` or `Trap:`). If `steps` is missing, the UI still shows `explanation` alone. Inline math in steps/explanations must use `$...$` delimiters.
 
 ### Mandatory UI rules
 

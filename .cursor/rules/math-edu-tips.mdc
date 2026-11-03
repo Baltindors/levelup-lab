@@ -1,0 +1,29 @@
+---
+description: Require educational Pro-Tips/Traps in math pool explanations and explorer intros
+globs:
+  - src/data/*Pools.js
+  - src/components/exercises/math/**/*Explorer.vue
+alwaysApply: false
+---
+
+# Math Educational Tips and Traps
+
+When generating or updating math practice pools or explorer sandboxes, inject rationales — not only procedural steps.
+
+## Pool cards (`src/data/*Pools.js`)
+
+- Keep `rule` as a **short badge** label (a few words).
+- Put the mental model in `explanation`: keep the one-line result, then append a `Pro-Tip:` or `Trap:` sentence when the card teaches a non-obvious idea.
+- Rotate tip wording across a topic so a 10-card drill does not repeat the same sentence every time.
+- Prefer KaTeX `$...$` inside tip sentences for math symbols.
+- Do **not** invent parallel fields (`tip`, `trap`, `hint`) unless `MathMcDrillExplanation` is updated in the same change. The review UI shows `steps` (procedure) then `explanation` (rationale).
+
+## Explorer intros (`*Explorer.vue`)
+
+- The muted intro paragraph under Explore must include **why** the idea works (scale metaphor, sign travel, flip rule, etc.), not only what buttons to press.
+- Mode `callout` strings in Scroll Master's Breakdown should match that tip voice in 1–2 sentences.
+- Do not add extra tip cards, floating badges, or overlays — enrich existing copy only.
+
+## Edit format
+
+When proposing edits to existing files, use path → current block → new block so the modification point is obvious.

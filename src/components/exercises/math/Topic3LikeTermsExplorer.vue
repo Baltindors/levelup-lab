@@ -191,8 +191,8 @@ const model = computed(() => {
     balanced: Math.abs(merged) > 1e-12,
     callout:
       mode.value === 'then-solve'
-        ? 'Combine the variable terms first, then use inverse operations on the constant.'
-        : 'Add the coefficients of the same variable, then divide to isolate.',
+        ? 'Pro-Tip: Merge every variable term first so inverse operations act on one clean coefficient. Trap: the constant is not a like term — leave it until after you combine.'
+        : 'Pro-Tip: Like terms share a variable; adding coefficients counts how many copies you have. Trap: a lone $-y$ is still $-1y$ — do not drop the invisible $1$.',
     tilt: Math.abs(merged) < 1e-12 && Math.abs(target) > 1e-12 ? 8 : 0,
   }
 })
@@ -205,7 +205,7 @@ function chipLatex(chip) {
 <template>
   <div id="explorer" class="min-w-0 space-y-4">
     <p class="text-sm text-[var(--color-muted)]">
-      Collect like terms into one variable expression, then use inverse operations. Start with the Topic 3 decimal example.
+      Think of each variable term as a stack of the same tile. Combining like terms merges stacks that share a variable — decimals stay glued to their coefficients — then inverse operations isolate the unknown. Trap: do not move constants until the variable piles are merged.
     </p>
 
     <MathSegmentedControl

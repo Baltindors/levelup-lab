@@ -142,7 +142,8 @@ const model = computed(() => {
   const step = revealedStep.value
   const isTwoStep = mode.value === 'two-step' || (mode.value === 'word' && activePreset.value === 'w-3')
   const op = compare.value
-  let callout = 'Use inverse operations just like equations. The inequality direction stays the same unless you multiply or divide by a negative.'
+  let callout =
+    'Pro-Tip: Use inverse operations just like equations. Trap: flip the inequality symbol only when you multiply or divide by a negative — adding or subtracting never flips it.'
 
   if (isTwoStep) {
     const a = intOf(leftVar.value)
@@ -158,7 +159,10 @@ const model = computed(() => {
     ])}${op}${r}`
     const moved = `${piece(a, v, true) || '0'}${op}${afterConst}`
     const isolated = solution === null ? '\\text{undefined}' : `${v}${finalOp}${solution}`
-    if (flip) callout = 'Dividing by a negative flips the inequality symbol.'
+    if (flip) {
+      callout =
+        'Trap: Dividing by a negative flips the inequality. Skipping the flip turns $-2x>4$ into the wrong half-line $x>-2$ instead of $x<-2$.'
+    }
     const steps = [
       { title: 'Original inequality', latex: original },
       { title: 'Move the constant', latex: moved },
@@ -192,7 +196,10 @@ const model = computed(() => {
   ])}${op}${r}`
   const moved = `${piece(expandedVar, v, true) || '0'}${op}${afterConst}`
   const isolated = solution === null ? '\\text{undefined}' : `${v}${finalOp}${solution}`
-  if (flip) callout = 'After distributing a negative factor, dividing by a negative flips the inequality.'
+  if (flip) {
+    callout =
+      'Trap: After distributing a negative factor, dividing by a negative flips the inequality a second time — watch both moments.'
+  }
 
   const steps = [
     { title: 'Original inequality', latex: originalPretty },
@@ -217,7 +224,7 @@ const model = computed(() => {
 <template>
   <div id="explorer" class="min-w-0 space-y-4">
     <p class="text-sm text-[var(--color-muted)]">
-      Isolate the variable with inverse operations. Flip the symbol only when you multiply or divide by a negative.
+      Inequalities behave like equations until a negative multiplier appears. Isolate with inverse operations in the same reverse-PEMDAS order, and flip the symbol only when you multiply or divide by a negative. For word problems, translate phrases like "under" or "at most" into &lt; or ≤ before you solve.
     </p>
 
     <MathSegmentedControl

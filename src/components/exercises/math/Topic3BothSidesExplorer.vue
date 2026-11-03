@@ -185,7 +185,7 @@ const model = computed(() => {
         { title: 'Divide to isolate', latex: solution ? `${v}=${solution}` : `${balancedLeft}=\\text{no single solution}` },
       ].slice(0, step + 1),
       balanced: movedVar !== 0 || movedConst === 0,
-      callout: 'Collect variables on one side. Crossing the equals sign flips the term’s sign.',
+      callout: 'Pro-Tip: An equation is a balanced scale — every move on one pan must happen on the other. Trap: crossing the equals sign without flipping the term’s sign breaks the balance.',
       tilt: movedVar === 0 && movedConst !== 0 ? 8 : 0,
     }
   }
@@ -229,7 +229,7 @@ const model = computed(() => {
       { title: 'Divide to isolate', latex: solution ? `${v}=${solution}` : `${collapsedLeft}=\\text{no single solution}` },
     ].slice(0, step + 1),
     balanced: movedVar !== 0 || movedConst === 0,
-    callout: 'After variables are gathered, move constants the same way: cross, flip, then combine.',
+    callout: 'Pro-Tip: After variables are gathered, move constants the same way — cross, flip, then combine. Trap: forgetting to flip a constant when it crosses turns $+7$ into another $+7$ instead of $-7$.',
     tilt: movedVar === 0 && movedConst !== 0 ? 8 : 0,
   }
 })
@@ -242,7 +242,7 @@ function chipLatex(chip) {
 <template>
   <div id="explorer" class="min-w-0 space-y-4">
     <p class="text-sm text-[var(--color-muted)]">
-      Variables can sit on both pans. Move them to one side, constants to the other, then isolate.
+      Variables can sit on both pans of a balanced scale. Collect them on one side and constants on the other — each time a term crosses the equals sign, its sign flips so both pans stay equal. Then divide once to isolate.
     </p>
 
     <MathSegmentedControl

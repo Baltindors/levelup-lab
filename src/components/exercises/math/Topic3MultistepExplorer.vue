@@ -239,11 +239,14 @@ const model = computed(() => {
   if (revealedStep.value >= 2) live = `${expandedLeft}=${expandedRight}`
   if (expand && revealedStep.value >= 3) live = isolated
 
-  let callout = 'Multiply the outside factor by each term inside. Signs travel with the factor.'
+  let callout =
+    'Pro-Tip: Distribute before you collect — parentheses must open completely or like terms stay hidden. Trap: multiplying only the first inside term leaves the rest unchanged.'
   if (m < 0 && b < 0) {
-    callout = 'A negative factor times a subtracted term flips twice, so the constant becomes positive. $-5(x-2)=-5x+10$.'
+    callout =
+      'Trap: A negative factor times a subtracted term flips twice, so the constant becomes positive. $-5(x-2)=-5x+10$, not $-5x-10$.'
   } else if (m < 0) {
-    callout = 'A negative factor flips every sign inside the parentheses.'
+    callout =
+      'Trap: The negative sign belongs to the outside factor and travels into every inside term — rewrite $-(x-2)$ as $-1(x-2)$ if signs feel slippery.'
   }
 
   return {
@@ -272,7 +275,7 @@ function signedLabel(coeff, body) {
 <template>
   <div id="explorer" class="min-w-0 space-y-4">
     <p class="text-sm text-[var(--color-muted)]">
-      Distribute first, then collect like terms. Rose tiles are negative products. Emerald tiles are positive products.
+      Multistep equations hide like terms inside parentheses. Distribute first so every inside term feels the outside factor — rose tiles are negative products, emerald tiles are positive — then collect and isolate. Trap: a negative outside factor flips every sign inside, including constants.
     </p>
 
     <MathSegmentedControl

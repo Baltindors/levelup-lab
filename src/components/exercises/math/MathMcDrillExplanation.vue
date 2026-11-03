@@ -109,8 +109,9 @@ function optionClass(optionId) {
       </ol>
 
       <div
-        v-else
+        v-if="question.explanation"
         class="text-sm leading-relaxed text-[var(--color-text)]"
+        :class="steps.length ? 'border-t border-amber-500/20 pt-3' : ''"
         v-html="explanationHtml"
       />
     </div>

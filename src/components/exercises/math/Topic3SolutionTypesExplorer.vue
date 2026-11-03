@@ -24,7 +24,7 @@ const onePresets = [
       { title: 'Subtract $5$', latex: 'x=6' },
       { title: 'Classify', latex: '\\text{One solution}' },
     ],
-    callout: 'Simplifying yields a single value for $x$. That means one solution.',
+    callout: 'Pro-Tip: Think of a scale — finishing at $x=k$ means exactly one weight restores balance. Trap: stopping before you divide still hides that single solution.',
     result: 'one',
   },
   {
@@ -36,7 +36,7 @@ const onePresets = [
       { title: 'Add $4$', latex: '2x=12' },
       { title: 'Divide by $2$', latex: 'x=6\\quad(\\text{one solution})' },
     ],
-    callout: 'When the variable survives with a nonzero coefficient, you get one solution.',
+    callout: 'Pro-Tip: If the variable survives with a nonzero coefficient, you have exactly one solution. Substitute back to confirm both sides match.',
     result: 'one',
   },
 ]
@@ -51,7 +51,7 @@ const nonePresets = [
       { title: 'Classify', latex: '4=9\\quad\\text{false}' },
       { title: 'Result', latex: '\\text{No solution}' },
     ],
-    callout: 'A false statement like $4=9$ means no value of $x$ can make both sides equal.',
+    callout: 'Pro-Tip: A false statement like $4=9$ means the scale can never balance — no value of $x$ works. Trap: inventing a fake $x$ after the variables cancel ignores the contradiction.',
     result: 'none',
   },
   {
@@ -63,7 +63,7 @@ const nonePresets = [
       { title: 'Subtract $2x$', latex: '6=1' },
       { title: 'Result', latex: '\\text{No solution}' },
     ],
-    callout: 'After simplifying, the variables cancel and leave a contradiction.',
+    callout: 'Trap: After the variables cancel, a leftover false number sentence is a contradiction — report no solution, not $x=0$.',
     result: 'none',
   },
 ]
@@ -78,7 +78,7 @@ const infinitePresets = [
       { title: 'Subtract $6x$', latex: '9=9' },
       { title: 'Result', latex: '\\text{Infinitely many solutions}' },
     ],
-    callout: 'A true statement like $9=9$ is an identity — every $x$ works.',
+    callout: 'Pro-Tip: A true identity like $9=9$ means the scale stays balanced no matter what value you drop into $x$ — infinitely many solutions. Trap: do not report one lucky example instead of the whole set.',
     result: 'infinite',
   },
   {
@@ -90,7 +90,7 @@ const infinitePresets = [
       { title: 'Subtract $3x$', latex: '6=6' },
       { title: 'Result', latex: '\\text{Infinitely many solutions}' },
     ],
-    callout: 'Both sides are identical after expanding — infinitely many solutions.',
+    callout: 'Pro-Tip: When both sides simplify to the same expression, every real number works. Trap: confusing $6=6$ (always true) with $6=0$ (never true) swaps infinitely many with none.',
     result: 'infinite',
   },
 ]
@@ -148,7 +148,7 @@ const model = computed(() => {
 <template>
   <div id="explorer" class="min-w-0 space-y-4">
     <p class="text-sm text-[var(--color-muted)]">
-      Simplify until the variables cancel or a single value remains. True statements mean infinitely many; false statements mean none.
+      Think of an equation as a balanced scale. If your final step is a single value like $x=6$, exactly one weight restores balance. If you land on a universally true statement like $9=9$, the scale stays balanced for every value you drop into the variable bucket — infinitely many solutions. A false leftover like $2=3$ means the scale can never balance — no solution.
     </p>
 
     <MathSegmentedControl
