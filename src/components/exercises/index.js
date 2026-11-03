@@ -16,6 +16,11 @@ import TrigVerifyingModule from './math/TrigVerifyingModule.vue'
 import TrigSumDiffModule from './math/TrigSumDiffModule.vue'
 import TrigDoubleHalfModule from './math/TrigDoubleHalfModule.vue'
 import TrigEquationsModule from './math/TrigEquationsModule.vue'
+import Topic3LikeTermsModule from './math/Topic3LikeTermsModule.vue'
+import Topic3BothSidesModule from './math/Topic3BothSidesModule.vue'
+import Topic3MultistepModule from './math/Topic3MultistepModule.vue'
+import Topic3SolutionTypesModule from './math/Topic3SolutionTypesModule.vue'
+import Topic3InequalitiesModule from './math/Topic3InequalitiesModule.vue'
 import ExerciseFallback from './ExerciseFallback.vue'
 
 export const exerciseRegistry = {
@@ -36,6 +41,11 @@ export const exerciseRegistry = {
   'math-trig-sum-diff': TrigSumDiffModule,
   'math-trig-double-half': TrigDoubleHalfModule,
   'math-trig-equations': TrigEquationsModule,
+  'math-topic3-like-terms': Topic3LikeTermsModule,
+  'math-topic3-both-sides': Topic3BothSidesModule,
+  'math-topic3-multistep': Topic3MultistepModule,
+  'math-topic3-solution-types': Topic3SolutionTypesModule,
+  'math-topic3-inequalities': Topic3InequalitiesModule,
   'science-earth-systems': defineAsyncComponent(() =>
     import('./science/EarthSystemsMission.vue'),
   ),
@@ -63,5 +73,10 @@ export {
   TrigSumDiffModule,
   TrigDoubleHalfModule,
   TrigEquationsModule,
+  Topic3LikeTermsModule,
+  Topic3BothSidesModule,
+  Topic3MultistepModule,
+  Topic3SolutionTypesModule,
+  Topic3InequalitiesModule,
   ExerciseFallback,
 }

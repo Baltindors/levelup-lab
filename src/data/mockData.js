@@ -8,6 +8,13 @@ import {
   fractionEquationsPracticePool,
   likeTermsPracticePool,
 } from './linearEquationsPools'
+import {
+  topic3BothSidesPracticePool,
+  topic3InequalitiesPracticePool,
+  topic3LikeTermsPracticePool,
+  topic3MultistepPracticePool,
+  topic3SolutionTypesPracticePool,
+} from './topic3ExamPools'
 import { trigVerifyingPracticePool } from './trigVerifyingPool'
 import { trigSumDiffPracticePool } from './trigSumDiffPool'
 import { trigDoubleHalfPracticePool } from './trigDoubleHalfPool'
@@ -486,6 +493,62 @@ export const mockData = {
               description:
                 'Scale by the LCD, keep both sides equivalent, and isolate the variable.',
               practicePool: fractionEquationsPracticePool,
+            },
+          ],
+        },
+        {
+          id: 'math-exam-topic-3',
+          name: 'Scroll 4: Algebraic Equations (Topic 3 Exam)',
+          missionTitle: 'Scroll 4: Algebraic Equations (Topic 3 Exam)',
+          difficulty: 'A-Rank Mission',
+          status: 'Scroll Unlocked',
+          description:
+            'Master combining like terms, variables on both sides, multistep equations, solution types, and two-step inequalities.',
+          exercises: [
+            {
+              id: 'topic3-like-terms',
+              title: 'Lesson 3-1: Combine Like Terms',
+              exerciseType: 'math-topic3-like-terms',
+              badge: 'LIKE TERMS',
+              description:
+                'Collect like terms into one variable expression, then use inverse operations to solve.',
+              practicePool: topic3LikeTermsPracticePool,
+            },
+            {
+              id: 'topic3-both-sides',
+              title: 'Lesson 3-2: Variables on Both Sides',
+              exerciseType: 'math-topic3-both-sides',
+              badge: 'BOTH SIDES',
+              description:
+                'Gather variables on one side and constants on the other, then isolate the unknown.',
+              practicePool: topic3BothSidesPracticePool,
+            },
+            {
+              id: 'topic3-multistep',
+              title: 'Lesson 3-3: Multistep Equations',
+              exerciseType: 'math-topic3-multistep',
+              badge: 'MULTISTEP',
+              description:
+                'Distribute first, then combine like terms and balance both sides.',
+              practicePool: topic3MultistepPracticePool,
+            },
+            {
+              id: 'topic3-solution-types',
+              title: 'Lesson 3-4: Solution Types',
+              exerciseType: 'math-topic3-solution-types',
+              badge: 'SOLUTION TYPES',
+              description:
+                'Classify equations as one solution, no solution, or infinitely many after simplifying.',
+              practicePool: topic3SolutionTypesPracticePool,
+            },
+            {
+              id: 'topic3-inequalities',
+              title: 'Lesson 3-5: Two-Step Inequalities',
+              exerciseType: 'math-topic3-inequalities',
+              badge: 'INEQUALITIES',
+              description:
+                'Isolate the variable with inverse operations, flip when multiplying or dividing by a negative, and translate word problems.',
+              practicePool: topic3InequalitiesPracticePool,
             },
           ],
         },

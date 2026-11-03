@@ -68,6 +68,7 @@ Mock data lives in `src/data/mockData.js` and follows this shape:
         { id: 'fractions-decimals', /* math-fractions-basics, math-mixed-numbers */ },
         { id: 'math-exam-100526', /* Scroll 2: three math exam modules */ },
         { id: 'linear-equations', /* Scroll 3: three linear-equation modules */ },
+        { id: 'math-exam-topic-3', /* Scroll 4: five Topic 3 exam modules */ },
         { id: 'earth-systems', /* science-earth-systems */ },
       ],
     },
@@ -111,6 +112,11 @@ Views resolve entities by route params (`gradeId`, `subjectId`, `exerciseId`) ag
 | `math-trig-sum-diff` | `math/TrigSumDiffModule.vue` |
 | `math-trig-double-half` | `math/TrigDoubleHalfModule.vue` |
 | `math-trig-equations` | `math/TrigEquationsModule.vue` |
+| `math-topic3-like-terms` | `math/Topic3LikeTermsModule.vue` |
+| `math-topic3-both-sides` | `math/Topic3BothSidesModule.vue` |
+| `math-topic3-multistep` | `math/Topic3MultistepModule.vue` |
+| `math-topic3-solution-types` | `math/Topic3SolutionTypesModule.vue` |
+| `math-topic3-inequalities` | `math/Topic3InequalitiesModule.vue` |
 | `science-earth-systems` | `science/EarthSystemsMission.vue` (async) |
 | anything else (e.g. `graph-interactive`) | `ExerciseFallback.vue` |
 
@@ -127,6 +133,8 @@ Views resolve entities by route params (`gradeId`, `subjectId`, `exerciseId`) ag
 `math-exponents`, `math-scientific-notation`, and `math-algebraic-expressions` are the 6th Grade Scroll 2 exam modules (`math-exam-100526`). Each wraps `MathModuleShell`, uses `useMathDrill` with `stratifyBy: 'topic'`, and draws from practice pools in [`src/data/mathExam100526Pools.js`](../src/data/mathExam100526Pools.js). Trial scores flow through [`useExerciseProgress.js`](../src/composables/useExerciseProgress.js) along with every other score-based trial.
 
 `math-linear-eq-like-terms`, `math-linear-eq-distributive`, and `math-linear-eq-fractions` are the 6th Grade Scroll 3 mission (`linear-equations`). Each wraps `MathModuleShell`, uses `useMathDrill` with `stratifyBy: 'topic'`, and draws a 10-card trial from a 15-card static pool (3 topics × 5) in [`src/data/linearEquationsPools.js`](../src/data/linearEquationsPools.js). A seal at ≥70% stores the letter rank and awards +25 academy XP once. The subject meter counts all three trials (`Y/3 TRIALS SEALED`).
+
+`math-topic3-like-terms`, `math-topic3-both-sides`, `math-topic3-multistep`, `math-topic3-solution-types`, and `math-topic3-inequalities` are the 6th Grade Scroll 4 Topic 3 exam mission (`math-exam-topic-3`). Each wraps `MathModuleShell`, uses `useMathDrill` with `stratifyBy: 'topic'`, and draws a 10-card trial from a 15-card static pool (3 topics × 5) in [`src/data/topic3ExamPools.js`](../src/data/topic3ExamPools.js). A seal at ≥70% stores the letter rank and awards +25 academy XP once. The subject meter counts all five trials (`Y/5 TRIALS SEALED`).
 
 `math-fractions-basics` is the Rank C fractions mission. Its 20-card pool is generated once per visit by [`src/utils/fractionGenerator.js`](../src/utils/fractionGenerator.js) (`generateFractionDrillPool`), then a 10-card drill is stratified by `topic` (`add`, `subtract`, `multiply`, `divide`). The same array stays mounted so Retry Missed Only keeps those question ids. Refreshing the page deals a new set. The finished drill emits `{ correct, score, total, passed }` and is graded like any other score-based trial.
 
@@ -215,6 +223,11 @@ Modules must wrap `MathModuleShell` and provide:
 | `math-linear-eq-like-terms` | Like-terms balance visualizer + MC drill |
 | `math-linear-eq-distributive` | Signed distributive explorer + MC drill |
 | `math-linear-eq-fractions` | LCD vaporize explorer + MC drill |
+| `math-topic3-like-terms` | Topic 3 combine-like-terms explorer + MC drill |
+| `math-topic3-both-sides` | Topic 3 variables-both-sides explorer + MC drill |
+| `math-topic3-multistep` | Topic 3 distribute-then-collect explorer + MC drill |
+| `math-topic3-solution-types` | Topic 3 one/none/infinite classifier + MC drill |
+| `math-topic3-inequalities` | Topic 3 two-step inequalities explorer + MC drill |
 | `math-fractions-basics` | Rank C four-operation fractions explorer + evergreen MC drill |
 | `math-mixed-numbers` | Rank B mixed-number convert, regroup, borrow, and multiply/divide explorer + evergreen MC drill |
 
